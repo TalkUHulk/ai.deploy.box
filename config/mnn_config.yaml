@@ -1,0 +1,1018 @@
+NAME: "AIDB-MNN-Config"
+
+ModelPath:
+  SCRFD:
+    SCRFD_2_5G_KPS: &mp_scrfd_2_5g "./models/mnn/scrfd/scrfd_2.5g_kps_simplify"
+    SCRFD_10G_KPS: &mp_scrfd_10g "./models/mnn/scrfd/scrfd_10g_kps_simplify"
+    SCRFD_500M_KPS: &mp_scrfd_500m "./models/mnn/scrfd/scrfd_500m_kps_simplify"
+  PFPLD:
+    PFPLD_KPS98: &mp_pfpld "./models/mnn/pfpld/pfpld_kps98_simplify"
+  TDDFAV2:
+    TDDFAV2_MB1_BFM_BASE: &mp_3ddfa_mb1_base "./models/mnn/3ddfav2/3ddfa_v2_mb1_bfm_head_base_simplify"
+    TDDFAV2_MB1_BFM_DENSE: &mp_3ddfa_mb1_dense "./models/mnn/3ddfav2/3ddfa_v2_mb1_bfm_head_dense_simplify"
+    TDDFAV2_MB05_BFM_BASE: &mp_3ddfa_mb05_base "./models/mnn/3ddfav2/3ddfa_v2_mb05_bfm_head_base_simplify"
+    TDDFAV2_MB05_BFM_DENSE: &mp_3ddfa_mb05_dense "./models/mnn/3ddfav2/3ddfa_v2_mb05_bfm_head_dense_simplify"
+  BISENET:
+    BISENET_FACE_PARSING: &mp_bisenet "./models/mnn/bisenet/face-parsing-BiSeNet-simplify"
+  MOVENET:
+    MOVENET: &mp_movenet "./models/mnn/movenet/movenet-simplify"
+  MOBILEVIT:
+    MOBILEVITS: &mp_mb_vit_x "./models/mnn/mobilevit/MobileViT_S"
+    MOBILEVITXXS: &mp_mb_vit_xxs "./models/mnn/mobilevit/MobileViT_XXS"
+  ANIMATED:
+    ANIMEGAN2_PPK: &mp_anime2_ppk "./models/mnn/animated/paprika"
+    ANIMEGAN2_PPK_DYN: &mp_anime2_ppk_dyn "./models/mnn/animated/paprika_dynamic"
+    ANIMEGAN2_CD: &mp_anime2_cd "./models/mnn/animated/celeba_distill"
+    ANIMEGAN2_CD_DYN: &mp_anime2_cd_dyn "./models/mnn/animated/celeba_distill_dynamic"
+    ANIMEGAN2_FP1: &mp_anime2_fp1 "./models/mnn/animated/face_paint_v1"
+    ANIMEGAN2_FP1_DYN: &mp_anime2_fp1_dyn "./models/mnn/animated/face_paint_v1"
+    ANIMEGAN2_FP2: &mp_anime2_fp2 "./models/mnn/animated/face_paint_v2"
+    ANIMEGAN2_FP2_DYN: &mp_anime2_fp2_dyn "./models/mnn/animated/face_paint_v2"
+    ANIMEGAN3_JP: &mp_anime3_jp "./models/mnn/animated/AnimeGANv3_JP_face_v1.0"
+    ANIMEGAN3_PS: &mp_anime3_ps "./models/mnn/animated/AnimeGANv3_PortraitSketch_25"
+  MOBILESTYLEGAN:
+    MAPPINGNETWORK: &mp_mb_stylegan_map "./models/mnn/mobilestylegan/MappingNetwork"
+    SYNTHESISNETWORK: &mp_mb_stylegan_syn "./models/mnn/mobilestylegan/SynthesisNetwork"
+  PPOCR:
+    DBNET: &mp_ppocr_det "./models/mnn/ppocr/ch_ppocr_det_v3_sim"
+    CLS: &mp_ppocr_cls "./models/mnn/ppocr/ch_ppocr_mobile_v2.0_cls_sim"
+    CRNN: &mp_ppocr_rec "./models/mnn/ppocr/ch_ppocr_rec_v3_sim"
+
+
+
+  YOLOX:
+    YOLOX_TINY: &mp_yolox_tiny "./models/mnn/yolox/yolox_tiny"
+    YOLOX_NANO: &mp_yolox_nano "./models/mnn/yolox/yolox_nano"
+    YOLOX_S: &mp_yolox_s "./models/mnn/yolox/yolox_s"
+    YOLOX_M: &mp_yolox_m "./models/mnn/yolox/yolox_m"
+    YOLOX_L: &mp_yolox_l "./models/mnn/yolox/yolox_l"
+    YOLOX_X: &mp_yolox_x "./models/mnn/yolox/yolox_x"
+    YOLOX_DARKNET: &mp_yolox_darknet "./models/mnn/yolox/yolox_darknet"
+  YOLOV7:
+    YOLOV7_TINY: &mp_yolov7_tiny "./models/mnn/yolov7/yolov7-tiny"
+    YOLOV7_TINY_GRID: &mp_yolov7_tiny_grid "./models/mnn/yolov7/yolov7-tiny-grid"
+    YOLOV7: &mp_yolov7 "./models/mnn/yolov7/yolov7"
+    YOLOV7-GRID: &mp_yolov7_grid "./models/mnn/yolov7/yolov7-grid"
+    YOLOV7X: &mp_yolov7x "./models/mnn/yolov7/yolov7x"
+    YOLOV7X_GRID: &mp_yolov7x_grid "./models/mnn/yolov7/yolov7x-grid"
+    YOLOV7_E6_GRID: &mp_yolov7_e6_grid "./models/mnn/yolov7/yolov7-e6-grid"
+    YOLOV7_D6_GRID: &mp_yolov7_d6_grid "./models/mnn/yolov7/yolov7-d6-grid"
+  YOLOV8:
+    YOLOV8_N: &mp_yolov8n "./models/mnn/yolov8/yolov8n"
+    YOLOV8_S: &mp_yolov8s "./models/mnn/yolov8/yolov8s"
+    YOLOV8_M: &mp_yolov8m "./models/mnn/yolov8/yolov8m"
+    YOLOV8_L: &mp_yolov8l "./models/mnn/yolov8/yolov8l"
+    YOLOV8_X: &mp_yolov8x "./models/mnn/yolov8/yolov8x"
+
+Detail:
+  SCRFD: &scrfd_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 128.0
+        - 128.0
+        - 128.0
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "out0"
+      - "out1"
+      - "out2"
+      - "out3"
+      - "out4"
+      - "out5"
+      - "out6"
+      - "out7"
+      - "out8"
+
+  PFPLD: &pfpld_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 112
+        height: 112
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "pose"
+      - "landms"
+
+  3DDFABFM: &3ddfa_bfm_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 120
+        height: 120
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 128.0
+        - 128.0
+        - 128.0
+
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "camera_matrix"
+      - "vertex"
+
+  BISENET: &bisenet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  AnimeGanV2: &animev2_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "outputs" #"generator/G_MODEL/out_layer/Tanh:0"
+
+  AnimeGanV2Dynamic: &animev2_dyn_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      #      inputformat: &format "NHWC"
+      inputformat: &format "NCHW"
+    dynamic: true
+    input_node1: &in_node1
+      #      input_name: "generator_input:0"
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "outputs" #"generator/G_MODEL/out_layer/Tanh:0"
+
+  AnimeGanV3JP: &animev3_jp_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NHWC"
+
+    input_node1: &in_node1
+      input_name: "AnimeGANv3_input:0"
+      format: *format
+      shape: *shape
+    dynamic: true
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "generator/main/out_layer:0"
+
+
+  AnimeGanV3PS: &animev3_ps_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NHWC"
+    dynamic: true
+    input_node1: &in_node1
+      input_name: "animeganv3_input:0"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "generator/main/out_layer:0"
+
+
+  MappingNetwork: &mapping_net_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+
+    input_node1: &in_node1
+      input_name: "var"
+      format: "VECTOR"
+      shape:
+        width: 512
+        height: 1
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "style"
+
+  SynthesisNetwork: &syn_net_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+
+    input_node1: &in_node1
+      input_name: "style"
+      format: "VECTOR"
+      shape:
+        width: 512
+        height: 1
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "img"
+
+  MobileViT: &mobilevit_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+      keep_ratio: false
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "predicts"
+
+  MoveNet: &movenet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 192
+        height: 192
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "heatmap"
+      - "center"
+      - "reg"
+      - "offset"
+
+  YoloV7: &yolo_v7_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output0"
+      - "output1"
+      - "output2"
+
+  YoloV7Grid: &yolo_v7_grid_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  YoloV8: &yolo_v8_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output0"
+
+  YoloX_SMALL: &yolox_small_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 416
+        height: 416
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 1.0
+        - 1.0
+        - 1.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  YoloX_BIG: &yolox_big_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 1.0
+        - 1.0
+        - 1.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  PPOCR_DBNet: &pp_det_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      limit_side_len: 960
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+    dynamic: true
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+#      - "sigmoid_0.tmp_0"
+      - "maps"
+
+  PPOCR_CLS: &pp_cls_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 192
+        height: 48
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+    dynamic: true
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+#      - "softmax_0.tmp_0"
+      - "output"
+
+  PPOCR_CRNN: &pp_crnn_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 320
+        height: 48
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 127.0
+        - 127.0
+        - 127.0
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+    dynamic: true
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+#      - "softmax_5.tmp_0"
+      - "output"
+
+
+ModelZoo:
+  SCRFD_2_5G_KPS: &scrfd_2_5g_kps
+    name: "SCRFD_2.5G_KPS"
+    model: *mp_scrfd_2_5g
+    backend: "MNN"
+    detail: *scrfd_detail
+  SCRFD_10G_KPS: &scrfd_10g_kps
+    name: "SCRFD_10G_KPS"
+    model: *mp_scrfd_10g
+    backend: "MNN"
+    detail: *scrfd_detail
+  SCRFD_500M_KPS: &scrfd_500m_kps
+    name: "SCRFD_500M_KPS"
+    model: *mp_scrfd_500m
+    backend: "MNN"
+    detail: *scrfd_detail
+  PFPLD: &pfpld
+    name: "PFPLD"
+    model: *mp_pfpld
+    backend: "MNN"
+    detail: *pfpld_detail
+  TDDFAV2_MB1_BFM_BASE: &tddfav2_mb1_bfm_base
+    name: "TDDFAV2_MB1_BFM_BASE"
+    model: *mp_3ddfa_mb1_base
+    backend: "MNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB1_BFM_DENSE:  &tddfav2_mb1_bfm_dense
+    name: "TDDFAV2_MB1_BFM_DENSE"
+    model: *mp_3ddfa_mb1_dense
+    backend: "MNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB05_BFM_BASE:  &tddfav2_mb05_bfm_base
+    name: "TDDFAV2_MB05_BFM_BASE"
+    model: *mp_3ddfa_mb05_base
+    backend: "MNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB05_BFM_DENSE: &tddfav2_mb05_bfm_dense
+    name: "TDDFAV2_MB05_BFM_DENSE"
+    model: *mp_3ddfa_mb05_dense
+    backend: "MNN"
+    detail: *3ddfa_bfm_detail
+  BISENET:  &bisenet
+    name: "BISENET"
+    model: *mp_bisenet
+    backend: "MNN"
+    detail: *bisenet_detail
+  MOVENET:  &movenet
+    name: "MOVENET"
+    model: *mp_movenet
+    backend: "MNN"
+    detail: *movenet_detail
+
+  MOBILEVITS: &mobilevits
+    name: "MOBILEVITS"
+    model: *mp_mb_vit_x
+    backend: "MNN"
+    detail: *mobilevit_detail
+  MOBILEVITXXS: &mobilevitxxs
+    name: "MOBILEVITXXS"
+    model: *mp_mb_vit_xxs
+    backend: "MNN"
+    detail: *mobilevit_detail
+
+  ANIMEGAN2_PPK:  &animegan2_ppk
+    name: "ANIMEGAN2_PPK"
+    model: *mp_anime2_ppk
+    backend: "MNN"
+    detail: *animev2_detail
+  ANIMEGAN2_PPK_DYN: &animegan2_ppk_dyn
+    name: "ANIMEGAN2_PPK_DYN"
+    model: *mp_anime2_ppk_dyn
+    backend: "MNN"
+    detail: *animev2_dyn_detail
+  ANIMEGAN2_CD: &animegan2_cd
+    name: "ANIMEGAN2_CD"
+    model: *mp_anime2_cd
+    backend: "MNN"
+    detail: *animev2_detail
+  ANIMEGAN2_CD_DYN: &animegan2_cd_dyn
+    name: "ANIMEGAN2_CD_DYN"
+    model: *mp_anime2_cd_dyn
+    backend: "MNN"
+    detail: *animev2_dyn_detail
+  ANIMEGAN2_FP1:  &animegan2_fp1
+    name: "ANIMEGAN2_FP1"
+    model: *mp_anime2_fp1
+    backend: "MNN"
+    detail: *animev2_detail
+  ANIMEGAN2_FP1_DYN:  &animegan2_fp1_dyn
+    name: "ANIMEGAN2_FP1_DYN"
+    model: *mp_anime2_fp1_dyn
+    backend: "MNN"
+    detail: *animev2_dyn_detail
+  ANIMEGAN2_FP2:  &animegan2_fp2
+    name: "ANIMEGAN2_FP2"
+    model: *mp_anime2_fp2
+    backend: "MNN"
+    detail: *animev2_detail
+  ANIMEGAN2_FP2_DYN:  &animegan2_fp2_dyn
+    name: "ANIMEGAN2_FP2_DYN"
+    model: *mp_anime2_fp2_dyn
+    backend: "MNN"
+    detail: *animev2_dyn_detail
+  ANIMEGAN3_JP: &animegan3_jp
+    name: "ANIMEGAN3_JP"
+    model: *mp_anime3_jp
+    backend: "MNN"
+    detail: *animev3_jp_detail
+  ANIMEGAN3_PS: &animegan3_ps
+    name: "ANIMEGAN3_PS"
+    model: *mp_anime3_ps
+    backend: "MNN"
+    detail: *animev3_ps_detail
+  MAPPINGNETWORK: &mappingnetwork
+    name: "MAPPINGNETWORK"
+    model: *mp_mb_stylegan_map
+    backend: "MNN"
+    detail: *mapping_net_detail
+  SYNTHESISNETWORK: &synthesisnetwork
+    name: "SYNTHESISNETWORK"
+    model: *mp_mb_stylegan_syn
+    backend: "MNN"
+    detail: *syn_net_detail
+  PPOCR_DBNET:  &ppocr_dbnet
+    name: "PPOCR_DBNET"
+    model: *mp_ppocr_det
+    backend: "MNN"
+    detail: *pp_det_detail
+  PPOCR_CLS:  &ppocr_cls
+    name: "PPOCR_CLS"
+    model: *mp_ppocr_cls
+    backend: "MNN"
+    detail: *pp_cls_detail
+  PPOCR_CRNN:  &ppocr_crnn
+    name: "PPOCR_CRNN"
+    model: *mp_ppocr_rec
+    backend: "MNN"
+    detail: *pp_crnn_detail
+  YOLOX_TINY: &yolox_tiny
+    name: "YOLOX_TINY"
+    model: *mp_yolox_tiny
+    backend: "MNN"
+    detail: *yolox_small_detail
+  YOLOX_NANO: &yolox_nano
+    name: "YOLOX_NANO"
+    model: *mp_yolox_nano
+    backend: "MNN"
+    detail: *yolox_small_detail
+  YOLOX_S:  &yolox_s
+    name: "YOLOX_S"
+    model: *mp_yolox_s
+    backend: "MNN"
+    detail: *yolox_big_detail
+  YOLOX_M:  &yolox_m
+    name: "YOLOX_M"
+    model: *mp_yolox_m
+    backend: "MNN"
+    detail: *yolox_big_detail
+  YOLOX_L:  &yolox_l
+    name: "YOLOX_L"
+    model: *mp_yolox_l
+    backend: "MNN"
+    detail: *yolox_big_detail
+  YOLOX_X:  &yolox_x
+    name: "YOLOX_X"
+    model: *mp_yolox_x
+    backend: "MNN"
+    detail: *yolox_big_detail
+  YOLOX_DARKNET:  &yolox_darknet
+    name: "YOLOX_DARKNET"
+    model: *mp_yolox_darknet
+    backend: "MNN"
+    detail: *yolox_big_detail
+  YOLOV7_TINY:  &yolov7_tiny
+    name: "YOLOV7_TINY"
+    model: *mp_yolov7_tiny
+    backend: "MNN"
+    detail: *yolo_v7_detail
+  YOLOV7_TINY_GRID: &yolov7_tiny_grid
+    name: "YOLOV7_TINY_GRID"
+    model: *mp_yolov7_tiny_grid
+    backend: "MNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7: &yolov7
+    name: "YOLOV7"
+    model: *mp_yolov7
+    backend: "MNN"
+    detail: *yolo_v7_detail
+  YOLOV7_GRID:  &yolov7_grid
+    name: "YOLOV7_GRID"
+    model: *mp_yolov7_grid
+    backend: "MNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7X:  &yolov7x
+    name: "YOLOV7X"
+    model: *mp_yolov7x
+    backend: "MNN"
+    detail: *yolo_v7_detail
+  YOLOV7X_GRID: &yolov7x_grid
+    name: "YOLOV7X_GRID"
+    model: *mp_yolov7x_grid
+    backend: "MNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7_E6_GRID: &yolov7_e6_grid
+    name: "YOLOV7_E6_GRID"
+    model: *mp_yolov7_e6_grid
+    backend: "MNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7_D6_GRID: &yolov7_d6_grid
+    name: "YOLOV7_D6_GRID"
+    model: *mp_yolov7_d6_grid
+    backend: "MNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV8_N: &yolov8_n
+    name: "YOLOV8_N"
+    model: *mp_yolov8n
+    backend: "MNN"
+    detail: *yolo_v8_detail
+  YOLOV8_S: &yolov8_s
+    name: "YOLOV8_S"
+    model: *mp_yolov8s
+    backend: "MNN"
+    detail: *yolo_v8_detail
+  YOLOV8_M: &yolov8_m
+    name: "YOLOV8_M"
+    model: *mp_yolov8m
+    backend: "MNN"
+    detail: *yolo_v8_detail
+  YOLOV8_L: &yolov8_l
+    name: "YOLOV8_L"
+    model: *mp_yolov8l
+    backend: "MNN"
+    detail: *yolo_v8_detail
+  YOLOV8_X: &yolov8_x
+    name: "YOLOV8_X"
+    model: *mp_yolov8x
+    backend: "MNN"
+    detail: *yolo_v8_detail
+
+
+AIDBZOO:
+  scrfd_2.5g_kps: *scrfd_2_5g_kps
+  scrfd_10g_kps: *scrfd_10g_kps
+  scrfd_500m_kps: *scrfd_500m_kps
+  pfpld: *pfpld
+  3ddfa_mb1_bfm_base: *tddfav2_mb1_bfm_base
+  3ddfa_mb1_bfm_dense: *tddfav2_mb1_bfm_dense
+  3ddfa_mb05_bfm_base: *tddfav2_mb05_bfm_base
+  3ddfa_mb05_bfm_dense: *tddfav2_mb05_bfm_dense
+  bisenet: *bisenet
+  movenet: *movenet
+  animeganv2_celeba_distill: *animegan2_cd
+  animeganv2_celeba_distill_dynamic: *animegan2_cd_dyn
+  animeganv2_face_paint_v1: *animegan2_fp1
+  animeganv2_face_paint_v1_dynamic: *animegan2_fp1_dyn
+  animeganv2_face_paint_v2: *animegan2_fp2
+  animeganv2_face_paint_v2_dynamic: *animegan2_fp2_dyn
+  animeganv2_paprika: *animegan2_ppk
+  animeganv2_paprika_dynamic: *animegan2_ppk_dyn
+#  animeganv3_jp: *animegan3_jp
+#  animeganv3_ps: *animegan3_ps
+  mobilevit_s: *mobilevits
+  mobilevit_xxs: *mobilevitxxs
+  mobilestylegan_mappingnetwork: *mappingnetwork
+  mobilestylegan_synthesisnetwork: *synthesisnetwork
+  ppocr_det: *ppocr_dbnet
+  ppocr_cls: *ppocr_cls
+  ppocr_ret: *ppocr_crnn
+  yolov7: *yolov7
+  yolov7_grid: *yolov7_grid
+  yolov7x: *yolov7x
+  yolov7x_grid: *yolov7x_grid
+  yolov7_tiny_grid: *yolov7_tiny_grid
+  yolov7_tiny: *yolov7_tiny
+  yolov7_d6_grid: *yolov7_d6_grid
+  yolov7_e6_grid: *yolov7_e6_grid
+  yolov8s: *yolov8_l
+  yolov8m: *yolov8_m
+  yolov8n: *yolov8_n
+  yolov8l: *yolov8_l
+  yolov8x: *yolov8_x
+  yolox_darknet: *yolox_darknet
+  yolox_l: *yolox_l
+  yolox_m: *yolox_m
+  yolox_s: *yolox_s
+  yolox_tiny: *yolox_tiny
+  yolox_nano: *yolox_nano
+  yolox_x: *yolox_x

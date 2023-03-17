@@ -1,0 +1,908 @@
+NAME: "AIDB-TNN-Config"
+
+ModelPath:
+  SCRFD:
+    SCRFD_2_5G_KPS: &mp_scrfd_2_5g "./models/tnn/scrfd/scrfd_2.5g_kps_simplify"
+    SCRFD_10G_KPS: &mp_scrfd_10g "./models/tnn/scrfd/scrfd_10g_kps_simplify"
+    SCRFD_500M_KPS: &mp_scrfd_500m "./models/tnn/scrfd/scrfd_500m_kps_simplify"
+  PFPLD:
+    PFPLD_KPS98: &mp_pfpld "./models/tnn/pfpld/pfpld_kps98_simplify"
+  TDDFAV2:
+    TDDFAV2_MB1_BFM_BASE: &mp_3ddfa_mb1_base "./models/tnn/3ddfav2/3ddfa_v2_mb1_bfm_head_base_simplify.opt"
+    TDDFAV2_MB1_BFM_DENSE: &mp_3ddfa_mb1_dense "./models/tnn/3ddfav2/3ddfa_v2_mb1_bfm_head_dense_simplify.opt"
+    TDDFAV2_MB05_BFM_BASE: &mp_3ddfa_mb05_base "./models/tnn/3ddfav2/3ddfa_v2_mb05_bfm_head_base_simplify.opt"
+    TDDFAV2_MB05_BFM_DENSE: &mp_3ddfa_mb05_dense "./models/tnn/3ddfav2/3ddfa_v2_mb05_bfm_head_dense_simplify.opt"
+  BISENET:
+    BISENET_FACE_PARSING: &mp_bisenet "./models/tnn/bisenet/face-parsing-BiSeNet"
+  MOVENET:
+    MOVENET: &mp_movenet "./models/tnn/movenet/movenet-simplify"
+  YOLOX:
+    YOLOX_TINY: &mp_yolox_tiny "./models/tnn/yolox/yolox_tiny.opt"
+    YOLOX_NANO: &mp_yolox_nano "./models/tnn/yolox/yolox_nano.opt"
+    YOLOX_S: &mp_yolox_s "./models/tnn/yolox/yolox_s.opt"
+    YOLOX_M: &mp_yolox_m "./models/tnn/yolox/yolox_m.opt"
+    YOLOX_L: &mp_yolox_l "./models/tnn/yolox/yolox_l.opt"
+    YOLOX_X: &mp_yolox_x "./models/tnn/yolox/yolox_x.opt"
+    YOLOX_DARKNET: &mp_yolox_darknet "./models/tnn/yolox/yolox_darknet.opt"
+  YOLOV7:
+    YOLOV7_TINY: &mp_yolov7_tiny "./models/tnn/yolov7/yolov7-tiny.opt"
+    YOLOV7_TINY_GRID: &mp_yolov7_tiny_grid "./models/tnn/yolov7/yolov7-tiny-grid.opt"
+    YOLOV7: &mp_yolov7 "./models/tnn/yolov7/yolov7.opt"
+    YOLOV7-GRID: &mp_yolov7_grid "./models/tnn/yolov7/yolov7-grid.opt"
+    YOLOV7X: &mp_yolov7x "./models/tnn/yolov7/yolov7x.opt"
+    YOLOV7X_GRID: &mp_yolov7x_grid "./models/tnn/yolov7/yolov7x-grid.opt"
+    YOLOV7_E6_GRID: &mp_yolov7_e6_grid "./models/tnn/yolov7/yolov7-e6-grid.opt"
+    YOLOV7_D6_GRID: &mp_yolov7_d6_grid "./models/tnn/yolov7/yolov7-d6-grid.opt"
+  YOLOV8:
+    YOLOV8_N: &mp_yolov8n "./models/tnn/yolov8/yolov8n"
+    YOLOV8_S: &mp_yolov8s "./models/tnn/yolov8/yolov8s"
+    YOLOV8_M: &mp_yolov8m "./models/tnn/yolov8/yolov8m"
+    YOLOV8_L: &mp_yolov8l "./models/tnn/yolov8/yolov8l"
+    YOLOV8_X: &mp_yolov8x "./models/tnn/yolov8/yolov8x"
+  PPOCR:
+    DBNET: &mp_ppocr_det "/Users/hulk/Downloads/PaddleOCR2Pytorch-main/tnn/det-sim-opt"
+    CLS: &mp_ppocr_cls "/Users/hulk/Downloads/PaddleOCR2Pytorch-main/tnn/cls-sim-opt"
+    CRNN: &mp_ppocr_rec "/Users/hulk/Downloads/PaddleOCR2Pytorch-main/tnn/rec-v2-sim-opt"
+
+Detail:
+  SCRFD: &scrfd_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 128.0
+        - 128.0
+        - 128.0
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "out0"
+      - "out1"
+      - "out2"
+      - "out3"
+      - "out4"
+      - "out5"
+      - "out6"
+      - "out7"
+      - "out8"
+
+  PFPLD: &pfpld_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 112
+        height: 112
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "pose"
+      - "landms"
+
+  3DDFABFM: &3ddfa_bfm_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 120
+        height: 120
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 128.0
+        - 128.0
+        - 128.0
+
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "camera_matrix"
+      - "vertex"
+
+  BISENET: &bisenet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  AnimeGanV2: &animev2_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "outputs" #"generator/G_MODEL/out_layer/Tanh:0"
+
+  AnimeGanV2Dynamic: &animev2_dyn_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      #      inputformat: &format "NHWC"
+      inputformat: &format "NCHW"
+    dynamic: true
+    input_node1: &in_node1
+      #      input_name: "generator_input:0"
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "outputs" #"generator/G_MODEL/out_layer/Tanh:0"
+
+  AnimeGanV3JP: &animev3_jp_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NHWC"
+
+    input_node1: &in_node1
+      input_name: "AnimeGANv3_input:0"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "generator/main/out_layer:0"
+
+
+  AnimeGanV3PS: &animev3_ps_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 512
+        height: 512
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NHWC"
+
+    input_node1: &in_node1
+      input_name: "animeganv3_input:0"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "generator/main/out_layer:0"
+
+
+  MappingNetwork: &mapping_net_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+
+    input_node1: &in_node1
+      input_name: "var"
+      format: "VECTOR"
+      shape:
+        width: 512
+        height: 1
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "style"
+
+  SynthesisNetwork: &syn_net_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+
+    input_node1: &in_node1
+      input_name: "style"
+      format: "VECTOR"
+      shape:
+        width: 512
+        height: 1
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "img"
+
+  MobileViT: &mobilevit_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+      keep_ratio: false
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "predicts"
+
+  MoveNet: &movenet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 192
+        height: 192
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "input"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "heatmap"
+      - "center"
+      - "reg"
+      - "offset"
+
+  YoloV7: &yolo_v7_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output0"
+      - "output1"
+      - "output2"
+
+  YoloV7Grid: &yolo_v7_grid_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  YoloV8: &yolo_v8_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output0"
+
+  YoloX_SMALL: &yolox_small_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 416
+        height: 416
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 1.0
+        - 1.0
+        - 1.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  YoloX_BIG: &yolox_big_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 640
+        height: 640
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 1.0
+        - 1.0
+        - 1.0
+      border_constant:
+        - 114.0
+        - 114.0
+        - 114.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  PPOCR_DBNet: &pp_det_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      keep_ratio: false
+      limit_side_len: 960
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "maps"
+
+  PPOCR_CLS: &pp_cls_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 192
+        height: 48
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+  PPOCR_CRNN: &pp_crnn_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 320
+        height: 48
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 127.5
+        - 127.5
+        - 127.5
+      var:
+        - 127.5
+        - 127.5
+        - 127.5
+      border_constant:
+        - 127.0
+        - 127.0
+        - 127.0
+      imageformat: "BGR"
+      inputformat: &format "NCHW"
+
+    input_node1: &in_node1
+      input_name: "x"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "output"
+
+
+ModelZoo:
+  SCRFD_2_5G_KPS: &scrfd_2_5g_kps
+    name: "SCRFD_2.5G_KPS"
+    model: *mp_scrfd_2_5g
+    backend: "TNN"
+    detail: *scrfd_detail
+  SCRFD_10G_KPS: &scrfd_10g_kps
+    name: "SCRFD_10G_KPS"
+    model: *mp_scrfd_10g
+    backend: "TNN"
+    detail: *scrfd_detail
+  SCRFD_500M_KPS: &scrfd_500m_kps
+    name: "SCRFD_500M_KPS"
+    model: *mp_scrfd_500m
+    backend: "TNN"
+    detail: *scrfd_detail
+  PFPLD: &pfpld
+    name: "PFPLD"
+    model: *mp_pfpld
+    backend: "TNN"
+    detail: *pfpld_detail
+  TDDFAV2_MB1_BFM_BASE: &tddfav2_mb1_bfm_base
+    name: "TDDFAV2_MB1_BFM_BASE"
+    model: *mp_3ddfa_mb1_base
+    backend: "TNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB1_BFM_DENSE:  &tddfav2_mb1_bfm_dense
+    name: "TDDFAV2_MB1_BFM_DENSE"
+    model: *mp_3ddfa_mb1_dense
+    backend: "TNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB05_BFM_BASE:  &tddfav2_mb05_bfm_base
+    name: "TDDFAV2_MB05_BFM_BASE"
+    model: *mp_3ddfa_mb05_base
+    backend: "TNN"
+    detail: *3ddfa_bfm_detail
+  TDDFAV2_MB05_BFM_DENSE: &tddfav2_mb05_bfm_dense
+    name: "TDDFAV2_MB05_BFM_DENSE"
+    model: *mp_3ddfa_mb05_dense
+    backend: "TNN"
+    detail: *3ddfa_bfm_detail
+  BISENET:  &bisenet
+    name: "BISENET"
+    model: *mp_bisenet
+    backend: "TNN"
+    detail: *bisenet_detail
+  MOVENET:  &movenet
+    name: "MOVENET"
+    model: *mp_movenet
+    backend: "TNN"
+    detail: *movenet_detail
+  YOLOX_TINY: &yolox_tiny
+    name: "YOLOX_TINY"
+    model: *mp_yolox_tiny
+    backend: "TNN"
+    detail: *yolox_small_detail
+  YOLOX_NANO: &yolox_nano
+    name: "YOLOX_NANO"
+    model: *mp_yolox_nano
+    backend: "TNN"
+    detail: *yolox_small_detail
+  YOLOX_S:  &yolox_s
+    name: "YOLOX_S"
+    model: *mp_yolox_s
+    backend: "TNN"
+    detail: *yolox_big_detail
+  YOLOX_M:  &yolox_m
+    name: "YOLOX_M"
+    model: *mp_yolox_m
+    backend: "TNN"
+    detail: *yolox_big_detail
+  YOLOX_L:  &yolox_l
+    name: "YOLOX_L"
+    model: *mp_yolox_l
+    backend: "TNN"
+    detail: *yolox_big_detail
+  YOLOX_X:  &yolox_x
+    name: "YOLOX_X"
+    model: *mp_yolox_x
+    backend: "TNN"
+    detail: *yolox_big_detail
+  YOLOX_DARKNET:  &yolox_darknet
+    name: "YOLOX_DARKNET"
+    model: *mp_yolox_darknet
+    backend: "TNN"
+    detail: *yolox_big_detail
+  YOLOV7_TINY:  &yolov7_tiny
+    name: "YOLOV7_TINY"
+    model: *mp_yolov7_tiny
+    backend: "TNN"
+    detail: *yolo_v7_detail
+  YOLOV7_TINY_GRID: &yolov7_tiny_grid
+    name: "YOLOV7_TINY_GRID"
+    model: *mp_yolov7_tiny_grid
+    backend: "TNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7: &yolov7
+    name: "YOLOV7"
+    model: *mp_yolov7
+    backend: "TNN"
+    detail: *yolo_v7_detail
+  YOLOV7_GRID:  &yolov7_grid
+    name: "YOLOV7_GRID"
+    model: *mp_yolov7_grid
+    backend: "TNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7X:  &yolov7x
+    name: "YOLOV7X"
+    model: *mp_yolov7x
+    backend: "TNN"
+    detail: *yolo_v7_detail
+  YOLOV7X_GRID: &yolov7x_grid
+    name: "YOLOV7X_GRID"
+    model: *mp_yolov7x_grid
+    backend: "TNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7_E6_GRID: &yolov7_e6_grid
+    name: "YOLOV7_E6_GRID"
+    model: *mp_yolov7_e6_grid
+    backend: "TNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV7_D6_GRID: &yolov7_d6_grid
+    name: "YOLOV7_D6_GRID"
+    model: *mp_yolov7_d6_grid
+    backend: "TNN"
+    detail: *yolo_v7_grid_detail
+  YOLOV8_N: &yolov8_n
+    name: "YOLOV8_N"
+    model: *mp_yolov8n
+    backend: "TNN"
+    detail: *yolo_v8_detail
+  YOLOV8_S: &yolov8_s
+    name: "YOLOV8_S"
+    model: *mp_yolov8s
+    backend: "TNN"
+    detail: *yolo_v8_detail
+  YOLOV8_M: &yolov8_m
+    name: "YOLOV8_M"
+    model: *mp_yolov8m
+    backend: "TNN"
+    detail: *yolo_v8_detail
+  YOLOV8_L: &yolov8_l
+    name: "YOLOV8_L"
+    model: *mp_yolov8l
+    backend: "TNN"
+    detail: *yolo_v8_detail
+  YOLOV8_X: &yolov8_x
+    name: "YOLOV8_X"
+    model: *mp_yolov8x
+    backend: "TNN"
+    detail: *yolo_v8_detail
+  PPOCR_DBNET: &ppocr_dbnet
+    name: "PPOCR_DBNET"
+    model: *mp_ppocr_det
+    backend: "TNN"
+    detail: *pp_det_detail
+  PPOCR_CLS: &ppocr_cls
+    name: "PPOCR_CLS"
+    model: *mp_ppocr_cls
+    backend: "TNN"
+    detail: *pp_cls_detail
+  PPOCR_CRNN: &ppocr_crnn
+    name: "PPOCR_CRNN"
+    model: *mp_ppocr_rec
+    backend: "TNN"
+    detail: *pp_crnn_detail
+
+
+AIDBZOO:
+  scrfd_2.5g_kps: *scrfd_2_5g_kps
+  scrfd_10g_kps: *scrfd_10g_kps
+  scrfd_500m_kps: *scrfd_500m_kps
+  pfpld: *pfpld
+  3ddfa_mb1_bfm_base: *tddfav2_mb1_bfm_base
+  3ddfa_mb1_bfm_dense: *tddfav2_mb1_bfm_dense
+  3ddfa_mb05_bfm_base: *tddfav2_mb05_bfm_base
+  3ddfa_mb05_bfm_dense: *tddfav2_mb05_bfm_dense
+  bisenet: *bisenet
+  movenet: *movenet
+  yolov7: *yolov7
+  yolov7_grid: *yolov7_grid
+  yolov7x: *yolov7x
+  yolov7x_grid: *yolov7x_grid
+  yolov7_tiny_grid: *yolov7_tiny_grid
+  yolov7_tiny: *yolov7_tiny
+  yolov7_d6_grid: *yolov7_d6_grid
+  yolov7_e6_grid: *yolov7_e6_grid
+  yolov8s: *yolov8_l
+  yolov8m: *yolov8_m
+  yolov8n: *yolov8_n
+  yolov8l: *yolov8_l
+  yolov8x: *yolov8_x
+  yolox_darknet: *yolox_darknet
+  yolox_l: *yolox_l
+  yolox_m: *yolox_m
+  yolox_tiny: *yolox_tiny
+  yolox_nano: *yolox_nano
+  yolox_x: *yolox_x
+  yolox_s: *yolox_s
+#  ppocr_det: *ppocr_dbnet
+#  ppocr_cls: *ppocr_cls
+#  ppocr_ret: *ppocr_crnn

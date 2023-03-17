@@ -1,0 +1,9 @@
+Version: "0.0.1"
+
+Backend:
+  "ONNX": "config/onnx/onnx_sample_config.yaml"
+  "MNN": "config/mnn/mnn_sample_config.yaml"
+  "NCNN": "config/ncnn/ncnn_sample_config.yaml"
+  "TNN": "config/tnn/tnn_sample_config.yaml"
+  "Paddle": "config/paddle/paddle_sample_config.yaml"
+  "OpenVINO": "config/openvino/openvino_sample_config.yaml"
