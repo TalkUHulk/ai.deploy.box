@@ -1,0 +1,10 @@
+<ie>
+    <plugins>
+        <plugin name="HETERO" location="libHeteroPlugin.dylib">
+        </plugin>
+        <plugin name="CPU" location="libMKLDNNPlugin.dylib">
+        </plugin>
+        <plugin name="MULTI" location="libMultiDevicePlugin.dylib">
+        </plugin>
+    </plugins>
+</ie>
