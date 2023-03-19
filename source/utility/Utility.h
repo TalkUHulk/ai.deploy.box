@@ -11,8 +11,21 @@
 #include "Eigen/Dense"
 #include <opencv2/opencv.hpp>
 #include <memory>
+#include <yaml-cpp/yaml.h>
+
+
 
 namespace AIDB{
+
+#define ONE_MB 104857600
+#define AIDB_TRACE "AIDB_TRACE"
+#define AIDB_DEBUG "AIDB_DEBUG"
+#define AIDB_INFO "AIDB_INFO"
+#define AIDB_WARNING "AIDB_WARNING"
+#define AIDB_ERROR "AIDB_ERROR"
+#define AIDB_CRITICAL "AIDB_CRITICAL"
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+
 
     struct GridAndStride{
         int grid0;
@@ -34,6 +47,7 @@ namespace AIDB{
     inline T clip(float x, T _min, T _max){
         return (T)fmax(fmin(x, _max), _min);
     }
+
 
     class AIDB_PUBLIC Utility {
     public:

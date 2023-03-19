@@ -17,8 +17,7 @@ namespace AIDB {
         TNN = 4,
         OPENVINO = 5,
         PADDLE_LITE = 6,
-        TRT = 7,
-        TRITON = 8
+        TRT = 7
 
     };  /*!< Engine类型*/
 

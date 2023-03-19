@@ -93,9 +93,10 @@ namespace AIDB{
         _session = std::make_shared<Ort::Session>(_env, param._model_path.c_str(), _session_options);
 
         if (nullptr == _session) {
+            spdlog::get(AIDB_DEBUG)->error("backend onnx init failed!");
             return MODEL_CREATE_ERROR;
         }
-
+        spdlog::get(AIDB_DEBUG)->debug("backend onnx init succeed!");
         return NO_ERROR;
     }
 

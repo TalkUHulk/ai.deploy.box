@@ -76,6 +76,8 @@ namespace AIDB {
         _config.set_threads(param._numThread);
         _predictor = paddle::lite_api::CreatePaddlePredictor<paddle::lite_api::MobileConfig>(_config);
 
+        spdlog::get(AIDB_DEBUG)->debug("backend paddle-lite init succeed!");
+
         return NO_ERROR;
 
     }

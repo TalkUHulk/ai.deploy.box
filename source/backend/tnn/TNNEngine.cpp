@@ -68,8 +68,6 @@ namespace AIDB {
             ::memcpy(outputs[index].data(), output_mat->GetData(), output_len * sizeof(float));
         }
 
-
-        std::cout << "====>> forward end\n";
     }
 
 
@@ -129,8 +127,9 @@ namespace AIDB {
         tnn::Status status;
         _net = std::make_shared<tnn::TNN>();
         status = _net->Init(model_config);
+
         if (status != tnn::TNN_OK || !_net){
-            std::cout << "tnn net->Init failed!\n";
+            spdlog::get(AIDB_DEBUG)->error("backend tnn init failed! status:{}", status);
             return MODEL_CREATE_ERROR;
         }
 
@@ -140,15 +139,15 @@ namespace AIDB {
         network_config.device_type = _network_device_type;
 
         _instance = _net->CreateInst(network_config, status);
-        if (status != tnn::TNN_OK || !_instance)
-        {
-            std::cout << "CreateInst failed!" << status.description().c_str() << "\n";
+
+        if (status != tnn::TNN_OK || !_instance){
+            spdlog::get(AIDB_DEBUG)->error("backend tnn CreateInst failed! status:{}", status);
             return MODEL_CREATE_ERROR;
         }
 
         _instance->SetCpuNumThreads(param._numThread);
 
-        std::cout << _model_name << " TNN init OK\n";
+        spdlog::get(AIDB_DEBUG)->debug("backend tnn init succeed!");
         return NO_ERROR;
 
     }

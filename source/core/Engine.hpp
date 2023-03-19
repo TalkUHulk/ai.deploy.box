@@ -9,6 +9,8 @@
 #include <string>
 #include "Parameter.hpp"
 #include "StatusCode.h"
+#include "utility/log.h"
+#include "utility/Utility.h"
 
 namespace AIDB {
     class AIDB_PUBLIC Engine {

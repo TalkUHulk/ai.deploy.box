@@ -31,8 +31,6 @@ namespace AIDB {
             return PADDLE_LITE;
         else if(_d == "TensorRT" || _d == "tensorrt" || _d == "TENSORRT" || _d == "Tensorrt")
             return TRT;
-        else if(_d == "TRITON" || _d == "triton" || _d == "Triton")
-            return TRITON;
         else
             return IDLE;
     }

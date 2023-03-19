@@ -97,12 +97,12 @@ namespace AIDB {
 
         status = _net->load_model(param._model_path.c_str());
         if (0 != status) {
+            spdlog::get(AIDB_DEBUG)->error("backend ncnn load model failed! status:{}", status);
             return MODEL_CREATE_ERROR;
         }
 
         _net->opt = _opt;
-
-        std::cout << "init ok\n";
+        spdlog::get(AIDB_DEBUG)->debug("backend ncnn init succeed!");
         return NO_ERROR;
 
     }

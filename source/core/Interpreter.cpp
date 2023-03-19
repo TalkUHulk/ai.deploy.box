@@ -10,82 +10,11 @@
 #include "BaseInput.hpp"
 #include <algorithm>
 #include <preprocess/ImageInput.hpp>
+#include "utility/log.h"
+#include "utility/Utility.h"
+
 
 namespace AIDB {
-
-//    Interpreter *Interpreter::createFromNode(const YAML::Node& engine_mode) {
-//
-//        StatusCode status = NO_ERROR;
-//        Engine* ptr_engine = nullptr;
-//        switch(engineType(engine_mode["backend"].as<std::string>())){
-//
-//            case ONNX:{
-//#ifdef ENABLE_ORT
-//                ONNXParameter param = ONNXParameter(engine_mode);
-//                ptr_engine = new ONNXEngine();
-//                status = ptr_engine->init(param);
-//#endif
-//                break;
-//            }
-//
-//            case MNN:{
-//#ifdef ENABLE_MNN
-//                MNNParameter param = MNNParameter(engine_mode);
-//                ptr_engine = new MNNEngine();
-//                status = ptr_engine->init(param);
-//#endif
-//                break;
-//            }
-//
-//            case NCNN:{
-//#ifdef ENABLE_NCNN
-//                NCNNParameter param = NCNNParameter(engine_mode);
-//                ptr_engine = new NCNNEngine();
-//                status = ptr_engine->init(param);
-//#endif
-//                break;
-//            }
-//            case TNN:{
-//#ifdef ENABLE_TNN
-//                TNNParameter param = TNNParameter(engine_mode);
-//                ptr_engine = new TNNEngine();
-//                status = ptr_engine->init(param);
-//#endif
-//            }
-//                break;
-//            case OPENVINO:{
-//#ifdef ENABLE_OPV
-//                OPVParameter param = OPVParameter(engine_mode);
-//                ptr_engine = new OPVEngine();
-//                status = ptr_engine->init(param);
-//                std::cout << "init OPENVINO!\n";
-//#endif
-//            }
-//                break;
-//            case PADDLE_LITE:{
-//#ifdef ENABLE_PPLite
-//                PPLiteParameter param = PPLiteParameter(engine_mode);
-//                ptr_engine = new PPLiteEngine();
-//                status = ptr_engine->init(param);
-//#endif
-//            }
-//                break;
-//            case TRT:
-//                break;
-//            case TRITON:
-//                break;
-//            default:
-//                std::cout << "default"  << std::endl;
-//                break;
-//        }
-//
-//        if(NO_ERROR != status){
-//            delete ptr_engine;
-//            std::cout << "!!! init error:" << status << std::endl;
-//            return nullptr;
-//        }
-//        return new Interpreter(ptr_engine);
-//    }
 
     void Interpreter::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
         ENGINE_ASSERT(nullptr != _ptr_engine)
@@ -115,6 +44,8 @@ namespace AIDB {
     Interpreter::createInstance(const std::string& model, const std::string& backend, const std::string& config_zoo) {
         StatusCode status = NO_ERROR;
 
+        aidb_log_init(AIDB_DEBUG, "debug");
+
         std::string backend_lower(backend);
         transform(backend.begin(),backend.end(),backend_lower.begin(),::tolower);
 
@@ -128,7 +59,9 @@ namespace AIDB {
         }
 
         std::string config_path;
-        std::cout << "backend_lower:" << backend_lower << "; model_lower:"<< model_lower << std::endl;
+
+        spdlog::get(AIDB_DEBUG)->debug("backend:{}, model:{}", backend_lower, model_lower);
+
         if("onnx" == backend_lower){
 #ifdef ENABLE_ORT
             config_path = config_prefix + "onnx_config.yaml";
@@ -166,7 +99,7 @@ namespace AIDB {
         auto node = YAML::LoadFile(config_path);
         auto AIDBZoo = node["AIDBZOO"];
         if(!AIDBZoo[model_lower.c_str()].IsDefined()){
-            std::cout << "Not support Model:" << model << std::endl;
+            spdlog::get(AIDB_DEBUG)->error("model not support! backend:{}, model:{}", backend_lower, model_lower);
             return nullptr;
         }
 
@@ -214,7 +147,6 @@ namespace AIDB {
                 OPVParameter param = OPVParameter(model_node);
                 ptr_engine = new OPVEngine();
                 status = ptr_engine->init(param);
-                std::cout << "init OPENVINO!\n";
 #endif
             }
                 break;
@@ -228,16 +160,13 @@ namespace AIDB {
                 break;
             case TRT:
                 break;
-            case TRITON:
-                break;
             default:
-                std::cout << "default"  << std::endl;
                 break;
         }
 
         if(NO_ERROR != status){
             delete ptr_engine;
-            std::cout << "!!! init error:" << status << std::endl;
+            spdlog::get(AIDB_DEBUG)->error("model init error! backend:{}, model:{}, status:{}", backend_lower, model_lower, status);
             return nullptr;
         }
         AIDBInput* ptr_input = nullptr;

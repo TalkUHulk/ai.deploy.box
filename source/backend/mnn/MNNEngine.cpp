@@ -71,16 +71,19 @@ namespace AIDB {
 
         _mnn_net = std::shared_ptr<MNN::Interpreter>(MNN::Interpreter::createFromFile(param._model_path.c_str()));
         if (nullptr == _mnn_net) {
+            spdlog::get(AIDB_DEBUG)->error("backend mnn create interpreter failed!");
             return MODEL_CREATE_ERROR;
         }
 
         _mnn_session = _mnn_net->createSession(_net_cfg);
 
         if (nullptr == _mnn_session) {
+            spdlog::get(AIDB_DEBUG)->error("backend mnn create session failed!");
             return SESSION_CREATE_ERROR;
         }
 
         //this->reshape_input(param._input_shape);
+        spdlog::get(AIDB_DEBUG)->debug("backend mnn init succeed!");
         return NO_ERROR;
 
     }

@@ -96,6 +96,7 @@ namespace AIDB {
         _model = _core.read_model(param._model_path, param._param_path);
 
         if (nullptr == _model) {
+            spdlog::get(AIDB_DEBUG)->error("backend openvino read model failed!");
             return MODEL_CREATE_ERROR;
         }
 
@@ -107,6 +108,7 @@ namespace AIDB {
         // -------- Create an infer request --------
         _infer_request = _compiled_model.create_infer_request();
 
+        spdlog::get(AIDB_DEBUG)->debug("backend openvino init succeed!");
         return NO_ERROR;
 
     }
