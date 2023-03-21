@@ -2,6 +2,7 @@
  <img src="./doc/logo.png" align="middle" width = "240"/>
 <p align="center">
 
+<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a>
 
 ## Introduction
 
@@ -66,7 +67,18 @@ Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipC
 
 ## 📖 Tutorials
 
-### Build
+### Compile
+
+#### Docker
+
+```asm
+docker pull mister5ive/ai.deploy.box
+```
+
+or 你自己的环境
+
+#### Build
+
 ```asm
 mkdir build && cd build
 cmake .. -DENGINE_MNN={ON/OFF} -DENGINE_ORT={ON/OFF} -DENGINE_NCNN={ON/OFF} -DENGINE_TNN={ON/OFF} -DENGINE_OPV={ON/OFF} -DENGINE_PPLite={ON/OFF}
@@ -75,7 +87,10 @@ make -j8
 
 ### Run
 
+_Linux下，run前执行_  `source set_env.sh`
+
 #### Face Detect
+
 ```asm
 ./build/samples/FaceDetect model_name backend type inputfile
 ```
