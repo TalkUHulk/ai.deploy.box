@@ -129,7 +129,7 @@ namespace AIDB {
         status = _net->Init(model_config);
 
         if (status != tnn::TNN_OK || !_net){
-            spdlog::get(AIDB_DEBUG)->error("backend tnn init failed! status:{}", status);
+            spdlog::get(AIDB_DEBUG)->error("backend tnn init failed! status:{}", status.description());
             return MODEL_CREATE_ERROR;
         }
 
@@ -141,7 +141,7 @@ namespace AIDB {
         _instance = _net->CreateInst(network_config, status);
 
         if (status != tnn::TNN_OK || !_instance){
-            spdlog::get(AIDB_DEBUG)->error("backend tnn CreateInst failed! status:{}", status);
+            spdlog::get(AIDB_DEBUG)->error("backend tnn CreateInst failed! status:{}", status.description());
             return MODEL_CREATE_ERROR;
         }
 

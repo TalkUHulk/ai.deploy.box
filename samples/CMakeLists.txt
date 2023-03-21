@@ -5,8 +5,9 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/../3rdparty/)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/utility)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/)
-link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/mac/openvino/intel64/Release/)
-link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/mac/)
+link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/openvino/intel64/)
+link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/)
+
 
 file(GLOB_RECURSE SAMPLES_FILES ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 foreach (filepath IN LISTS SAMPLES_FILES)

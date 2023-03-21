@@ -13,7 +13,7 @@
 #include "center_weight.h"
 #include "labels.h"
 #include "clipper.h"
-#include<opencv2/freetype.hpp>
+#include <opencv2/freetype.hpp>
 
 namespace AIDB {
     template<class T>
