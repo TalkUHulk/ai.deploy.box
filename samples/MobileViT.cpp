@@ -7,6 +7,9 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
+#if __linux__
+#include <fstream>
+#endif
 
 
 int main(int argc, char** argv){
@@ -44,7 +47,18 @@ int main(int argc, char** argv){
     for(int i = 0; i < topK; i++){
         std::cout << i << ": " << "label: [" << predicts[i]->label_str << "] conf: [" << predicts[i]->conf << "]\n\t";
     }
+
+#if __linux__
+    // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("src_image", src_image);
+            cv::waitKey();
+        }
+#else
     cv::imshow("src_image", src_image);
     cv::waitKey();
+#endif
+
     return 0;
 }

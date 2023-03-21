@@ -6,7 +6,9 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
-
+#if __linux__
+#include <fstream>
+#endif
 
 void test_yolov7(AIDB::Interpreter* ins, const cv::Mat& bgr, cv::Mat &result, bool grid=false){
     cv::Mat blob = *ins << bgr;
@@ -59,8 +61,20 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_yolov7(interpreter, bgr, result, grid);
+
+        cv::imwrite("YoloV7.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("YoloV7", result);
+            cv::waitKey();
+        }
+#else
         cv::imshow("YoloV7", result);
         cv::waitKey();
+#endif
+
     } else {
         cv::VideoCapture cap;
 //        cv::VideoWriter writer;

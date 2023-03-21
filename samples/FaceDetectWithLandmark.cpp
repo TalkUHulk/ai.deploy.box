@@ -7,6 +7,10 @@
 #include "Interpreter.h"
 #include "utility/Utility.h"
 #include <memory>
+#if __linux__
+#include <fstream>
+#endif
+
 
 void plot_pose_cube(cv::Mat& image, const std::vector<float> &pose, float tdx, float tdy, float size){
     auto p = pose[0] * CV_PI / 180;
@@ -123,8 +127,19 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_landmark(face_detect_interpreter, face_landmark_interpreter, bgr, result);
-        cv::imshow("Face", result);
+        cv::imwrite("FaceLandMark.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("FaceLandMark", result);
+            cv::waitKey();
+        }
+#else
+        cv::imshow("FaceLandMark", result);
         cv::waitKey();
+#endif
+
     } else {
         cv::VideoCapture cap;
 //        cv::VideoWriter writer;

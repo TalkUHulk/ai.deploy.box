@@ -6,6 +6,10 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
+#if __linux__
+#include <fstream>
+#endif
+
 
 void test_yolox(AIDB::Interpreter* ins, const cv::Mat& bgr, cv::Mat &result){
     cv::Mat blob = *ins << bgr;
@@ -49,8 +53,18 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_yolox(interpreter, bgr, result);
+        cv::imwrite("YoloX.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("YoloX", result);
+            cv::waitKey();
+        }
+#else
         cv::imshow("YoloX", result);
         cv::waitKey();
+#endif
     } else {
         cv::VideoCapture cap;
 //        cv::VideoWriter writer;

@@ -6,6 +6,10 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
+#if __linux__
+#include <fstream>
+#endif
+
 
 void animegan(AIDB::Interpreter* ins, const cv::Mat& bgr, cv::Mat &result){
     cv::Mat blob = *ins << bgr;
@@ -41,8 +45,19 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         animegan(interpreter, bgr, result);
+
+        cv::imwrite("AnimeGan.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("AnimeGan", result);
+            cv::waitKey();
+        }
+#else
         cv::imshow("AnimeGan", result);
         cv::waitKey();
+#endif
     } else {
         cv::VideoCapture cap;
         if(input_file.size() < 2)

@@ -6,6 +6,10 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
+#if __linux__
+#include <fstream>
+#endif
+
 
 auto post_process = AIDB::Utility::PPOCR();
 
@@ -82,8 +86,20 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_ppocr(dbnet_interpreter, cls_interpreter, crnn_interpreter,  bgr, result);
+
+        cv::imwrite("PPOCR.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("PPOCR", result);
+            cv::waitKey();
+        }
+#else
         cv::imshow("PPOCR", result);
         cv::waitKey();
+#endif
+
     } else {
         cv::VideoCapture cap;
 //        cv::VideoWriter writer;

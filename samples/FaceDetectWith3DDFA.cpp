@@ -8,6 +8,9 @@
 #include "Interpreter.h"
 #include "utility/Utility.h"
 #include <memory>
+#if __linux__
+#include <fstream>
+#endif
 
 void test_tddfav2(AIDB::Interpreter* det_ins, AIDB::Interpreter* tdd_ins, const cv::Mat& bgr, cv::Mat &result, bool dense=false, const std::string &obj_file="extra/spiderman2_obj.obj"){
     cv::Mat blob = *det_ins << bgr;
@@ -86,8 +89,19 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_tddfav2(face_detect_interpreter, face_3ddfa_interpreter, bgr, result, dense);
+        cv::imwrite("Face3DDFAV2.jpg", result);
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("3DDFAV2", result);
+            cv::waitKey();
+        }
+#else
         cv::imshow("3DDFAV2", result);
         cv::waitKey();
+#endif
+
     } else {
         cv::VideoCapture cap;
 //        cv::VideoWriter writer;

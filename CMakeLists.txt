@@ -25,6 +25,7 @@ message(STATUS "\tTNN: ${ENGINE_TNN}")
 message(STATUS "\tOpenVINO: ${ENGINE_OPV}")
 message(STATUS "\tPaddleLite: ${ENGINE_PPLite}")
 
+
 if (UNIX AND NOT APPLE)
     set(OS linux)
 elseif (APPLE)

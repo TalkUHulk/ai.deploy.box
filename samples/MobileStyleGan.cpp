@@ -8,6 +8,9 @@
 #include "utility/Utility.h"
 #include <chrono>
 #include <random>
+#if __linux__
+#include <fstream>
+#endif
 
 
 int main(int argc, char** argv){
@@ -50,8 +53,23 @@ int main(int argc, char** argv){
         AIDB::Utility::stylegan_post_process(generated, outputs_syn[0], outputs_shape_syn[0]);
 
         cv::Mat Z(256, 256, CV_32FC1, z.data());
+
+
+#if __linux__
+        // docker
+        std::ifstream f("/.dockerenv");
+        if(!f.good()){
+            cv::imshow("noise", Z);
+            cv::imshow("generated", generated);
+        } else {
+             cv::imwrite("noise.jpg", Z);
+              cv::imwrite("generated.jpg", generated);
+        }
+#else
         cv::imshow("noise", Z);
         cv::imshow("generated", generated);
+#endif
+
         if (cv::waitKey(100) == 27) {
             break;
         }
