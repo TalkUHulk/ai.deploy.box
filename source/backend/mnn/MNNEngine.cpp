@@ -8,7 +8,7 @@ namespace AIDB {
         _mnn_net = nullptr;
     }
 
-    void MNNEngine::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+    void MNNEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
         for (auto & _input_node : _input_nodes) {
 
@@ -88,30 +88,30 @@ namespace AIDB {
 
     }
 
-    StatusCode MNNEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in) {
-        _model_name = param._model_name;
-        _net_cfg.type = MNN_FORWARD_CPU;
-        _net_cfg.numThread = param._numThread;
-        _output_node_name = param._output_node_name;
-//        _input_node_name = param._input_node_name;
-        _input_nodes = param._input_nodes;
-        _dynamic = param._dynamic;
-
-        if (nullptr == buffer_in) {
-            return INPUT_DATA_ERROR;
-        }
-        if (0 == buffer_size_in) {
-            return INPUT_DATA_ERROR;
-        }
-        _mnn_net = std::shared_ptr<MNN::Interpreter>(MNN::Interpreter::createFromBuffer(buffer_in, buffer_size_in));
-        _mnn_session = _mnn_net->createSession(_net_cfg);
-        if (nullptr == _mnn_session) {
-            return SESSION_CREATE_ERROR;
-        }
-
-        //this->reshape_input(param._input_shape);
-        return NO_ERROR;
-    }
+//    StatusCode MNNEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in) {
+//        _model_name = param._model_name;
+//        _net_cfg.type = MNN_FORWARD_CPU;
+//        _net_cfg.numThread = param._numThread;
+//        _output_node_name = param._output_node_name;
+////        _input_node_name = param._input_node_name;
+//        _input_nodes = param._input_nodes;
+//        _dynamic = param._dynamic;
+//
+//        if (nullptr == buffer_in) {
+//            return INPUT_DATA_ERROR;
+//        }
+//        if (0 == buffer_size_in) {
+//            return INPUT_DATA_ERROR;
+//        }
+//        _mnn_net = std::shared_ptr<MNN::Interpreter>(MNN::Interpreter::createFromBuffer(buffer_in, buffer_size_in));
+//        _mnn_session = _mnn_net->createSession(_net_cfg);
+//        if (nullptr == _mnn_session) {
+//            return SESSION_CREATE_ERROR;
+//        }
+//
+//        //this->reshape_input(param._input_shape);
+//        return NO_ERROR;
+//    }
 
     void MNNEngine::reshape_input(const std::vector<int>& dim) {
         MNN::Tensor *input;
@@ -140,6 +140,10 @@ namespace AIDB {
 
         out->copyToHostTensor(res_tensor.get());
         return res_tensor;
+    }
+
+    StatusCode MNNEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
+        return NOT_IMPLEMENT;
     }
 }
 

@@ -101,30 +101,55 @@ if (${PLATFORM} STREQUAL win64)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif ()
 
-set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM})
-link_directories(${LIB_PATH})
+file(GLOB_RECURSE PPS_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/preprocess/*.cpp)
+file(GLOB_RECURSE UTL_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/utility/*.cpp)
+list(APPEND SOURCE_FILES ${PPS_SOURCE_FILES} ${UTL_SOURCE_FILES})
 
-find_package(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
+if(NOT ENGINE_NCNN_WASM)
+    set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM})
+    link_directories(${LIB_PATH})
 
-file(GLOB_RECURSE INPUT_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/preprocess/*.cpp)
-file(GLOB_RECURSE OUTPUT_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/utility/*.cpp)
+    find_package(OpenCV REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
 
-list(APPEND SOURCE_FILES ${INPUT_SOURCE_FILES} ${OUTPUT_SOURCE_FILES})
+    add_library(aidb SHARED ${SOURCE_FILES})
+    target_link_libraries(aidb ${OpenCV_LIBS} ${LINK_LIBS})
+else ()
+    add_definitions(-DENABLE_NCNN_WASM)
+    set(ncnn_DIR "${CMAKE_CURRENT_LIST_DIR}/../libs/ncnn-20230223-webassembly/${WASM_FEATURE}/lib/cmake/ncnn")
+    message(${ncnn_DIR} )
+    find_package(ncnn REQUIRED)
 
-add_library(aidb SHARED ${SOURCE_FILES})
-target_link_libraries(aidb ${OpenCV_LIBS} ${LINK_LIBS})
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s FORCE_FILESYSTEM=1 -s INITIAL_MEMORY=256MB -s EXIT_RUNTIME=1")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s FORCE_FILESYSTEM=1 -s INITIAL_MEMORY=256MB -s EXIT_RUNTIME=1")
+#    set(CMAKE_EXECUTBLE_LINKER_FLAGS "${CMAKE_EXECUTBLE_LINKER_FLAGS} -s FORCE_FILESYSTEM=1 -s INITIAL_MEMORY=256MB -s EXIT_RUNTIME=1")
+#
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -sEXPORTED_FUNCTIONS=['_yolov5_ncnn','_malloc','_free'] --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@.")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sEXPORTED_FUNCTIONS=['_yolov5_ncnn','_malloc','_free'] --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@.")
+#    set(CMAKE_EXECUTBLE_LINKER_FLAGS "${CMAKE_EXECUTBLE_LINKER_FLAGS} -sEXPORTED_FUNCTIONS=['_yolov5_ncnn','_malloc','_free'] --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@.")
 
+    if(${WASM_FEATURE} MATCHES "threads")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -pthread -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pthread -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fopenmp -pthread -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4")
+    endif()
 
-set(INCLUDE_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/core/AIDBData.h
-        ${CMAKE_CURRENT_LIST_DIR}/core/AIDBInput.h
-        ${CMAKE_CURRENT_LIST_DIR}/core/Interpreter.h
-        ${CMAKE_CURRENT_LIST_DIR}/core/StatusCode.h
-        ${CMAKE_CURRENT_LIST_DIR}/utility/Utility.h)
+    file(GLOB_RECURSE NCNN_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/backend/ncnn/*.cpp)
+    list(APPEND SOURCE_FILES ${NCNN_SOURCE_FILES})
 
-install(FILES ${INCLUDE_FILES}
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../include)
+    add_library(aidb SHARED ${SOURCE_FILES})
+    target_link_libraries(aidb ncnn)
+endif ()
+
+#set(INCLUDE_FILES
+#        ${CMAKE_CURRENT_LIST_DIR}/core/AIDBData.h
+#        ${CMAKE_CURRENT_LIST_DIR}/core/AIDBInput.h
+#        ${CMAKE_CURRENT_LIST_DIR}/core/Interpreter.h
+#        ${CMAKE_CURRENT_LIST_DIR}/core/StatusCode.h
+#        ${CMAKE_CURRENT_LIST_DIR}/utility/Utility.h)
+#
+#install(FILES ${INCLUDE_FILES}
+#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/../include)
 
 
 

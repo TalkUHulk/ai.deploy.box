@@ -16,10 +16,7 @@
 
 namespace AIDB {
 
-    void Interpreter::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
-        ENGINE_ASSERT(nullptr != _ptr_engine)
-        _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
-    }
+
 
     Interpreter::~Interpreter() {
         if(nullptr != _ptr_engine)
@@ -178,6 +175,38 @@ namespace AIDB {
         return new Interpreter(ptr_engine, ptr_input);
     }
 
+    Interpreter *
+    Interpreter::createInstance(const void *buffer_in1, const void *buffer_in2, const std::string &config) {
+#ifdef ENABLE_NCNN_WASM
+#endif
+        StatusCode status = NO_ERROR;
+
+        aidb_log_init(AIDB_DEBUG, "debug");
+
+        Engine* ptr_engine = nullptr;
+        NCNNParameter param = NCNNParameter(config);
+        ptr_engine = new NCNNEngine();
+        status = ptr_engine->init(param, buffer_in1, buffer_in2);
+
+        if(NO_ERROR != status){
+            delete ptr_engine;
+            spdlog::get(AIDB_DEBUG)->error("model init error!, status:{}", status);
+            return nullptr;
+        }
+
+        AIDBInput* ptr_input = nullptr;
+
+        ptr_input = new ImageInput(config);
+
+        return new Interpreter(ptr_engine, ptr_input);
+    }
+
+#ifndef ENABLE_NCNN_WASM
+    void Interpreter::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+        ENGINE_ASSERT(nullptr != _ptr_engine)
+        _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
+    }
+
     cv::Mat Interpreter::operator<< (const cv::Mat &image){
         assert(nullptr != _ptr_input);
         cv::Mat blob;
@@ -194,7 +223,33 @@ namespace AIDB {
         _ptr_input->forward(bgr, blob);
         return blob;
     }
+#else
+//    void Interpreter::forward(const ncnn::Mat frame, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+//        ENGINE_ASSERT(nullptr != _ptr_engine)
+//        _ptr_engine->forward(frame, outputs, outputs_shape);
+//    }
+    void Interpreter::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+        ENGINE_ASSERT(nullptr != _ptr_engine)
+        _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
+    }
 
+    ncnn::Mat Interpreter::operator<< (const cv::Mat &image){
+        assert(nullptr != _ptr_input);
+        ncnn::Mat blob;
+        _ptr_input->forward(image, blob);
+        return blob;
+    }
+
+
+    ncnn::Mat Interpreter::operator<< (const std::string &image_path) {
+        assert(nullptr != _ptr_input);
+        auto bgr = cv::imread(image_path);
+        assert(!bgr.empty());
+        ncnn::Mat blob;
+        _ptr_input->forward(bgr, blob);
+        return blob;
+    }
+#endif
     int Interpreter::width() const {
         return _ptr_input->width();
     }
@@ -218,7 +273,8 @@ namespace AIDB {
 //        return *this;
 //    }
     void Interpreter::operator>>(cv::Mat &dst) {
-        this->_ptr_input->_src_image.copyTo(dst);
+//        this->_ptr_input->_src_image.copyTo(dst);
+        dst = this->_ptr_input->_src_image.clone();
 //        return *this;
     }
 
@@ -228,5 +284,11 @@ namespace AIDB {
             ins = nullptr;
         }
     }
+
+    void Interpreter::set_roi(cv::Rect2f roi) {
+        _ptr_input->set_roi(true);
+        _ptr_input->set_roi(roi);
+    }
+
 
 }

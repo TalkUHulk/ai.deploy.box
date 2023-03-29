@@ -14,7 +14,7 @@ namespace AIDB {
        _predictor = nullptr;
     }
 
-    void PPLiteEngine::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+    void PPLiteEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
         // prepare data
         for (auto & _input_node : _input_nodes) {
@@ -82,9 +82,10 @@ namespace AIDB {
 
     }
 
-    StatusCode PPLiteEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in) {
+    StatusCode PPLiteEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
         return NOT_IMPLEMENT;
     }
+
 
 }
 

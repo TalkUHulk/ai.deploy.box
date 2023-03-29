@@ -13,7 +13,7 @@ namespace AIDB{
         }
     }
 
-    void ONNXEngine::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+    void ONNXEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
 
         Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtAllocatorType::OrtArenaAllocator, OrtMemType::OrtMemTypeDefault);
 
@@ -100,34 +100,38 @@ namespace AIDB{
         return NO_ERROR;
     }
 
-    StatusCode ONNXEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in){
-        _model_name = param._model_name;
-        _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
-        _input_nodes = param._input_nodes;
-
-        if (nullptr == buffer_in) {
-            return INPUT_DATA_ERROR;
-        }
-        if (0 == buffer_size_in) {
-            return INPUT_DATA_ERROR;
-        }
-
-        _env = Ort::Env(ORT_LOGGING_LEVEL_ERROR, _model_name.c_str());
-
-        _session_options.SetIntraOpNumThreads(param._numThread);
-
-        // cuda
-        // OrtSessionOptionsAppendExecutionProvider_CUDA(session_options, device_id);
-
-        _session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
-        _session_options.SetLogSeverityLevel(ORT_LOGGING_LEVEL_ERROR);
-
-        _session = std::make_shared<Ort::Session>(_env, buffer_in, buffer_size_in, _session_options);
-
-        if (nullptr == _session) {
-            return MODEL_CREATE_ERROR;
-        }
-
-        return NO_ERROR;
+    StatusCode ONNXEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
+        return NOT_IMPLEMENT;
     }
+
+//    StatusCode ONNXEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in){
+//        _model_name = param._model_name;
+//        _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
+//        _input_nodes = param._input_nodes;
+//
+//        if (nullptr == buffer_in) {
+//            return INPUT_DATA_ERROR;
+//        }
+//        if (0 == buffer_size_in) {
+//            return INPUT_DATA_ERROR;
+//        }
+//
+//        _env = Ort::Env(ORT_LOGGING_LEVEL_ERROR, _model_name.c_str());
+//
+//        _session_options.SetIntraOpNumThreads(param._numThread);
+//
+//        // cuda
+//        // OrtSessionOptionsAppendExecutionProvider_CUDA(session_options, device_id);
+//
+//        _session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
+//        _session_options.SetLogSeverityLevel(ORT_LOGGING_LEVEL_ERROR);
+//
+//        _session = std::make_shared<Ort::Session>(_env, buffer_in, buffer_size_in, _session_options);
+//
+//        if (nullptr == _session) {
+//            return MODEL_CREATE_ERROR;
+//        }
+//
+//        return NO_ERROR;
+//    }
 }

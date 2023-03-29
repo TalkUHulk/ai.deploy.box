@@ -10,7 +10,7 @@ namespace AIDB {
         _instance = nullptr;
     }
 
-    void TNNEngine::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+    void TNNEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
 
         for (auto & _input_node : _input_nodes) {
@@ -152,9 +152,6 @@ namespace AIDB {
 
     }
 
-    StatusCode TNNEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in) {
-        return NOT_IMPLEMENT;
-    }
 
     std::string TNNEngine::content_buffer_from(const char *proto_or_model_path){
 
@@ -293,6 +290,10 @@ namespace AIDB {
             return blob->GetBlobDesc().data_format;
         }
         return tnn::DATA_FORMAT_NCHW;
+    }
+
+    StatusCode TNNEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
+        return NOT_IMPLEMENT;
     }
 
 

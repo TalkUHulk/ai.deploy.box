@@ -19,6 +19,7 @@ namespace AIDB {
         Parameter() = delete;
         virtual ~Parameter() = default;
         explicit Parameter(const YAML::Node& ){};
+        explicit Parameter(const std::string& ){};
 
     public:
         int _numThread=4;

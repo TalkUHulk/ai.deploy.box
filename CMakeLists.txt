@@ -9,12 +9,13 @@ add_definitions(-std=c++11 -pthread)
 
 
 # backend options
-option(ENGINE_MNN "Enable MNN" ON)
-option(ENGINE_ORT "Enable ONNXRuntime" ON)
-option(ENGINE_NCNN "Enable NCNN" ON)
-option(ENGINE_TNN "Enable TNN" ON)
-option(ENGINE_OPV "Enable OpenVINO" ON) #Mac 与TNN冲突
-option(ENGINE_PPLite "Enable paddle-lite" ON)
+option(ENGINE_MNN "Enable MNN" OFF)
+option(ENGINE_ORT "Enable ONNXRuntime" OFF)
+option(ENGINE_NCNN "Enable NCNN" OFF)
+option(ENGINE_TNN "Enable TNN" OFF)
+option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
+option(ENGINE_PPLite "Enable paddle-lite" OFF)
+option(ENGINE_NCNN_WASM "Enable NCNN WASM" ON)
 
 message(STATUS ">>>>>>>>>>>>>")
 message(STATUS "AIDeployBox BUILD INFO:")
@@ -24,9 +25,14 @@ message(STATUS "\tNCNN: ${ENGINE_NCNN}")
 message(STATUS "\tTNN: ${ENGINE_TNN}")
 message(STATUS "\tOpenVINO: ${ENGINE_OPV}")
 message(STATUS "\tPaddleLite: ${ENGINE_PPLite}")
+message(STATUS "\tWASM: ${ENGINE_NCNN_WASM}")
 
-
-if (UNIX AND NOT APPLE)
+if(ENGINE_NCNN_WASM)
+    if(NOT WASM_FEATURE)
+        message(FATAL_ERROR "You must pass cmake option -DWASM_FEATURE and possible values are basic, simd, threads and simd-threads")
+    endif()
+    set(OS wasm)
+elseif (UNIX AND NOT APPLE)
     set(OS linux)
 elseif (APPLE)
     set(OS mac)
@@ -37,5 +43,10 @@ endif ()
 set(PLATFORM ${OS} CACHE INTERNAL "current os" )
 
 add_subdirectory(source)
-add_subdirectory(samples)
+
+if(NOT ENGINE_NCNN_WASM)
+    add_subdirectory(samples)
+else ()
+    add_subdirectory(sample-wasm)
+endif ()
 

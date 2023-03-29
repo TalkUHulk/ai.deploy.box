@@ -15,7 +15,8 @@
 #include "backend/onnxruntime/ONNXParameter.hpp"
 #endif
 
-#ifdef ENABLE_NCNN
+
+#if defined(ENABLE_NCNN) || defined(ENABLE_NCNN_WASM)
 #include "backend/ncnn/NCNNParameter.hpp"
 #include "backend/ncnn/NCNNEngine.hpp"
 #endif

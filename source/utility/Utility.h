@@ -8,11 +8,15 @@
 #include "AIDBData.h"
 #include "AIDBDefine.h"
 #include <iostream>
-#include "Eigen/Dense"
-#include <opencv2/opencv.hpp>
+
 #include <memory>
 #include <yaml-cpp/yaml.h>
-
+#ifdef ENABLE_NCNN_WASM
+#include <simpleocv.h>
+#else
+#include <opencv2/opencv.hpp>
+#include "Eigen/Dense"
+#endif
 
 
 namespace AIDB{
@@ -52,10 +56,24 @@ namespace AIDB{
     class AIDB_PUBLIC Utility {
     public:
 
+        class Common{
+        public:
+            template<class T>
+            static float IOU(const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2);
+            template<class T>
+            static void NMS(std::vector<std::shared_ptr<T>> &metas, std::vector<std::shared_ptr<T>> &keep_metas, float threshold);
+
+            static void parse_roi_from_bbox(std::shared_ptr<FaceMeta> org_meta,  std::shared_ptr<FaceMeta> dst_meta, int image_w, int image_h, float expand_ratio=1.0f, float re_centralize_ratio=0.0f);
+
+            static void draw_objects(const cv::Mat& src, cv::Mat &dst, const std::vector<std::shared_ptr<ObjectMeta>>& objects);
+        };
+
+
         static void scrfd_post_process(const std::vector<std::vector<float>> &outputs, std::vector<std::shared_ptr<FaceMeta>> &face_metas, int target_w, int target_h, float det_scale, float nms_thresh=0.4);
 
         static void pfpld_post_process(const std::vector<std::vector<float>> &outputs, const std::shared_ptr<FaceMeta> scale_face_metas, std::shared_ptr<FaceMeta> dst_face_metas, int pts_num=98);
 
+#ifndef ENABLE_NCNN_WASM
         static void tddfa_post_process(const std::vector<std::vector<float>> &outputs, const std::vector<std::vector<int>> &outputs_shape,
                            const std::shared_ptr<FaceMeta>& face_meta, std::vector<float> &vertices, std::vector<float> &pose, std::vector<float> &sRt, int target=120);
 
@@ -90,18 +108,6 @@ namespace AIDB{
                                         std::vector<std::shared_ptr<ObjectMeta>> &results,
                                         float conf_thresh, float nms_thresh,
                                         float scale);
-
-        class Common{
-        public:
-            template<class T>
-            static float IOU(const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2);
-            template<class T>
-            static void NMS(std::vector<std::shared_ptr<T>> &metas, std::vector<std::shared_ptr<T>> &keep_metas, float threshold);
-
-            static void parse_roi_from_bbox(std::shared_ptr<FaceMeta> org_meta,  std::shared_ptr<FaceMeta> dst_meta, int image_w, int image_h, float expand_ratio=1.0f, float re_centralize_ratio=0.0f);
-
-            static void draw_objects(const cv::Mat& src, cv::Mat &dst, const std::vector<std::shared_ptr<ObjectMeta>>& objects);
-        };
 
         class TddfaUtility{
         public:
@@ -212,6 +218,7 @@ namespace AIDB{
             int _max_candidates = 1000;
             std::string _det_db_score_mode = "slow";
         };
+#endif
     };
 }
 

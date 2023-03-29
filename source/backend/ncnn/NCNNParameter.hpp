@@ -13,6 +13,7 @@ namespace AIDB {
     public:
         ~NCNNParameter() override= default;
         explicit NCNNParameter(const YAML::Node& node);
+        explicit NCNNParameter(const std::string& node);
     };
 
 

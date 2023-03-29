@@ -13,9 +13,13 @@
 #include "center_weight.h"
 #include "labels.h"
 #include "clipper.h"
+
+#ifndef ENABLE_NCNN_WASM
 #include <opencv2/freetype.hpp>
+#endif
 
 namespace AIDB {
+
     template<class T>
     float Utility::Common::IOU(const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2) {
         float x1 = fmax(meta1->x1, meta2->x1);
@@ -75,6 +79,35 @@ namespace AIDB {
         if (dst_meta->x2 >= image_w) dst_meta->x2 = image_w - 1;
         if (dst_meta->y2 >= image_h) dst_meta->y2 = image_h - 1;
 
+    }
+
+    void Utility::Common::draw_objects(const cv::Mat &src, cv::Mat &dst, const vector<std::shared_ptr<ObjectMeta>> &objects) {
+
+//        src.copyTo(dst);
+        dst = src.clone();
+        for (const auto & object : objects){
+
+
+            cv::rectangle(dst, cv::Point(object->x1, object->y1), cv::Point(object->x2, object->y2), cv::Scalar(255, 0, 0));
+
+            char text[256];
+            sprintf(text, "%s %.1f%%", coco_labels[object->label], object->score * 100);
+            int baseLine = 0;
+            cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
+
+            int x = object->x1;
+            int y = object->y1 - label_size.height - baseLine;
+            if (y < 0)
+                y = 0;
+            if (x + label_size.width > dst.cols)
+                x = dst.cols - label_size.width;
+
+            cv::rectangle(dst, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),
+                          cv::Scalar(255, 255, 255), -1);
+
+            cv::putText(dst, text, cv::Point(x, y + label_size.height),
+                        cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+        }
     }
 
     void Utility::scrfd_post_process(const std::vector<std::vector<float>> &outputs, std::vector<std::shared_ptr<FaceMeta>> &face_metas,
@@ -205,7 +238,7 @@ namespace AIDB {
     void Utility::pfpld_post_process(const std::vector<std::vector<float>> &outputs,
                                      const std::shared_ptr<FaceMeta> scale_face_metas, std::shared_ptr<FaceMeta> dst_face_metas, int pts_num) {
 
-        assert(2 == outputs.size());
+//        assert(2 == outputs.size());
         auto pose_pred = outputs[0];
         auto landmark_pred = outputs[1];
         for (auto &p: pose_pred) {
@@ -224,6 +257,7 @@ namespace AIDB {
     }
 
 
+#ifndef ENABLE_NCNN_WASM
     void Utility::TddfaUtility::similar_transform(const std::vector<float> &input, int bs, int pts3d_num,
                            std::vector<float> &output,
                            const std::shared_ptr<FaceMeta>& facemeta, int target){
@@ -378,6 +412,7 @@ namespace AIDB {
         cv::line(img, pts[0][3], pts[0][8], color, line_width, cv::LINE_AA);
 
     }
+
     void Utility::TddfaUtility::load_obj(const char *obj_fp, std::vector<float> &vertices, std::vector<float> &colors, std::vector<int> &triangles, int nver, int ntri) {
         FILE *fp;
         fp = fopen(obj_fp, "r");
@@ -1032,34 +1067,6 @@ namespace AIDB {
 
     }
 
-    void Utility::Common::draw_objects(const cv::Mat &src, cv::Mat &dst, const vector<std::shared_ptr<ObjectMeta>> &objects) {
-
-        src.copyTo(dst);
-        for (const auto & object : objects){
-
-
-            cv::rectangle(dst, cv::Point(object->x1, object->y1), cv::Point(object->x2, object->y2), cv::Scalar(255, 0, 0));
-
-            char text[256];
-            sprintf(text, "%s %.1f%%", coco_labels[object->label], object->score * 100);
-            int baseLine = 0;
-            cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
-
-            int x = object->x1;
-            int y = object->y1 - label_size.height - baseLine;
-            if (y < 0)
-                y = 0;
-            if (x + label_size.width > dst.cols)
-                x = dst.cols - label_size.width;
-
-            cv::rectangle(dst, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)),
-                          cv::Scalar(255, 255, 255), -1);
-
-            cv::putText(dst, text, cv::Point(x, y + label_size.height),
-                        cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
-        }
-    }
-
 
     std::vector<std::vector<float>> Utility::PPOCR::Mat2Vector(cv::Mat mat) {
         std::vector<std::vector<float>> img_vec;
@@ -1590,7 +1597,7 @@ namespace AIDB {
         imagenet_post_process(output, output_shape, result, topK);
 
     }
-
+#endif
 }
 
 

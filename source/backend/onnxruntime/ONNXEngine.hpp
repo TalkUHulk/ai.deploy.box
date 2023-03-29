@@ -12,9 +12,10 @@ namespace AIDB{
     public:
         ONNXEngine();
         StatusCode init(const Parameter&) override;
-        StatusCode init(const Parameter&, const uint8_t *buffer_in, size_t buffer_size_in) override;
+        StatusCode init(const Parameter&, const void *buffer_in1, const void* buffer_in2) override;
+
         ~ONNXEngine() override;
-        void forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
+        void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
 
     private:
         Ort::Env _env;
