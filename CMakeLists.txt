@@ -11,7 +11,7 @@ SET(CMAKE_BUILD_TYPE "Release")
 
 # backend options
 option(ENGINE_MNN "Enable MNN" OFF)
-option(ENGINE_ORT "Enable ONNXRuntime" ON)
+option(ENGINE_ORT "Enable ONNXRuntime" OFF)
 option(ENGINE_NCNN "Enable NCNN" OFF)
 option(ENGINE_TNN "Enable TNN" OFF)
 option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
