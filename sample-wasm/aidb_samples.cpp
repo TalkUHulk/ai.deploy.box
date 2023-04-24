@@ -266,7 +266,7 @@ static std::thread t(worker);
 extern "C" {
 
 void aidb_wasm(unsigned char* _rgba_data, int _w, int _h, int _model_type){
-//    std::cout << "aidb_wasm pthread\n";
+    std::cout << "aidb_wasm pthread\n";
     lock.lock();
     while (rgba_data != 0)
     {
@@ -295,11 +295,11 @@ void aidb_wasm(unsigned char* _rgba_data, int _w, int _h, int _model_type){
 #else // __EMSCRIPTEN_PTHREADS__
 extern "C" {
 
-void aidb_wasm(unsigned char* rgba_data, int w, int h, int model_type)
+void aidb_wasm(unsigned char* _rgba_data, int _w, int _h, int _model_type)
 {
-//    std::cout << "aidb_wasm\n";
-    cv::Mat rgba(h, w, CV_8UC4, (void*)rgba_data);
-    on_image_render(rgba, model_type);
+    std::cout << "aidb_wasm\n";
+    cv::Mat rgba(_h, _w, CV_8UC4, (void*)_rgba_data);
+    on_image_render(rgba, _model_type);
 }
 
 }

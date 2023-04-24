@@ -5,7 +5,8 @@ SET(CMAKE_BUILD_TYPE "Release")
 # https://github.com/Linzaer/Ultra-Light-Fast-Generic-Face-Detector-1MB
 #set(CMAKE_CXX_STANDARD 11)
 #add_definitions(-std=c++11 -g -O3 -pthread)
-add_definitions(-std=c++11 -pthread)
+#add_definitions(-std=c++11 -pthread)
+
 
 
 # backend options
@@ -47,8 +48,10 @@ set(PLATFORM ${OS} CACHE INTERNAL "current os" )
 add_subdirectory(source)
 
 if(NOT ENGINE_NCNN_WASM)
+    add_definitions(-std=c++11 -pthread)
     add_subdirectory(samples)
 else ()
+    add_definitions(-std=c++11)
     add_subdirectory(sample-wasm)
 endif ()
 
