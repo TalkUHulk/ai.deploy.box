@@ -44,14 +44,11 @@ public:
 //            std::cout << "roi:" << face_meta_roi->x1<< ";" << face_meta_roi->y1<< ";" << face_meta_roi->width()<< ";" << face_meta_roi->height()<< ";" << std::endl;
             _ins->set_roi(roi);
 
-            std::cout << "1:" << rgba.rows << ";" << rgba.cols << std::endl;
             ncnn::Mat blob = *_ins << rgba;
 
             _ins->forward(blob.data, blob.w, blob.h, blob.c, outputs, outputs_shape);
-            std::cout << "2:" << rgba.rows << ";" << rgba.cols << std::endl;
             AIDB::Utility::pfpld_post_process(outputs, face_meta_roi, face_meta, 98);
 
-            std::cout << "pfpld_ncnn" << a << std::endl;
             a += 1;
         }
 
@@ -94,7 +91,7 @@ private:
 
     std::string _config = "name: \"pfpld\"\n"
                           "backend: \"wasm\"\n"
-                          "num_thread: 4\n"
+                          "num_thread: 2\n"
                           "device: \"CPU\"\n"
                           "PreProcess:\n"
                           "    shape: &shape\n"

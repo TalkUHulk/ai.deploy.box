@@ -13,6 +13,7 @@
 #include <yaml-cpp/yaml.h>
 #ifdef ENABLE_NCNN_WASM
 #include <simpleocv.h>
+#include "Eigen/Dense"
 #else
 #include <opencv2/opencv.hpp>
 #include "Eigen/Dense"
@@ -73,23 +74,24 @@ namespace AIDB{
 
         static void pfpld_post_process(const std::vector<std::vector<float>> &outputs, const std::shared_ptr<FaceMeta> scale_face_metas, std::shared_ptr<FaceMeta> dst_face_metas, int pts_num=98);
 
-#ifndef ENABLE_NCNN_WASM
+        static void movenet_post_process(const cv::Mat &src_image, cv::Mat &result_image,
+                                         const std::vector<std::vector<float>> &outputs,
+                                         const std::vector<std::vector<int>> &outputs_shape);
+
+
         static void tddfa_post_process(const std::vector<std::vector<float>> &outputs, const std::vector<std::vector<int>> &outputs_shape,
                            const std::shared_ptr<FaceMeta>& face_meta, std::vector<float> &vertices, std::vector<float> &pose, std::vector<float> &sRt, int target=120);
-
+#ifndef ENABLE_NCNN_WASM
         static void animated_gan_post_process(const std::vector<float> &output,
                                                 const std::vector<int> &outputs_shape, cv::Mat &animated);
 
         static void bisenet_post_process(const cv::Mat &src_image, cv::Mat &parsing_image, const std::vector<float> &outputs,
                                            const std::vector<int> &outputs_shape);
-        static void movenet_post_process(const cv::Mat &src_image, cv::Mat &result_image,
-                                         const std::vector<std::vector<float>> &outputs,
-                                         const std::vector<std::vector<int>> &outputs_shape);
 
         static void stylegan_post_process(cv::Mat &result_image,
                                          const std::vector<float> &output,
                                          const std::vector<int> &output_shape);
-
+#endif
         // without grid
         static void yolov7_post_process(const std::vector<float> &output,
                                         const std::vector<int> &output_shape,
@@ -109,6 +111,18 @@ namespace AIDB{
                                         float conf_thresh, float nms_thresh,
                                         float scale);
 
+        class MoveNetUtility{
+        public:
+            static int line_map[20][2];
+
+            // only support 1 batch
+            static void MoveNetDecode(const std::vector<std::vector<float>> &outputs,
+                                      const std::vector<std::vector<int>> &outputs_shape,
+                                      std::vector<std::vector<float>> &decoded_keypoints,
+                                      int joints_num=17, float heatmap_thresh=0.1, int target_size=48);
+            static void get_max_points(const std::vector<float> &output, int height, int width, int channel, float &max_x, float& max_y, bool center=true);
+        };
+
         class TddfaUtility{
         public:
             static void similar_transform(const std::vector<float> &input,
@@ -119,26 +133,19 @@ namespace AIDB{
             static void calc_pose(const std::vector<float> &input, std::vector<float> &sRt, std::vector<float> &pose);
             static void calc_hypotenuse_and_mean(const std::vector<float> &ver, float &mean_x, float &mean_y, float &llength, int kpts_num=68, int mean_index_end=27);
             static Eigen::Matrix<float, 10, 4, Eigen::RowMajor> build_camera_box(float rear_size=90);
-
+#ifndef ENABLE_NCNN_WASM
             static void plot_pose_box(cv::Mat &img, const std::vector<float> &P, const std::vector<float> &ver, int kpts_num, cv::Scalar color=cv::Scalar(40, 255, 0), int line_width=2);
+#endif
             static void load_obj(const char *obj_fp, std::vector<float> &vertices, std::vector<float> &colors, std::vector<int> &triangles, int nver, int ntri);
 
-            static void tddfa_rasterize(cv::Mat &image, const std::vector<float> &vertices, const char *obj_file);
+            // color_rgb_swap: obj color 是RGB,如果image为BGR需要swap
+            static void tddfa_rasterize(cv::Mat &image, const std::vector<float> &vertices, const char *obj, int obj_type, bool color_rgb_swap=true);
+
+            static void load_obj2(const char *obj, std::vector<float> &vertices, std::vector<float> &colors, std::vector<int> &triangles, int nver, int ntri);
 
         };
 
-        class MoveNetUtility{
-        public:
-            static int line_map[20][2];
-
-            // only support 1 batch
-            static void MoveNetDecode(const std::vector<std::vector<float>> &outputs,
-                               const std::vector<std::vector<int>> &outputs_shape,
-                               std::vector<std::vector<float>> &decoded_keypoints,
-                               int joints_num=17, float heatmap_thresh=0.1, int target_size=48);
-            static void get_max_points(const std::vector<float> &output, int height, int width, int channel, float &max_x, float& max_y, bool center=true);
-        };
-
+#ifndef ENABLE_NCNN_WASM
         class ImageNet{
         public:
             ImageNet(const std::string &label_path){
@@ -152,6 +159,7 @@ namespace AIDB{
         };
 
 
+#endif
 
         class YoloX{
         public:
@@ -169,6 +177,7 @@ namespace AIDB{
             float _conf_thresh;
         };
 
+#ifndef ENABLE_NCNN_WASM
         class PPOCR{
         public:
             PPOCR(float det_db_thresh=0.3, float det_db_box_thresh=0.5,

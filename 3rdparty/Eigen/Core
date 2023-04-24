@@ -62,7 +62,7 @@
   #define EIGEN_HAS_GPU_BF16
 #endif
 
-#if (defined _OPENMP) && (!defined EIGEN_DONT_PARALLELIZE)
+#if (defined _OPENMP) && (!defined EIGEN_DONT_PARALLELIZE) && (!defined ENABLE_NCNN_WASM)
   #define EIGEN_HAS_OPENMP
 #endif
 

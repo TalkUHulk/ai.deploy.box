@@ -265,10 +265,11 @@ void _rasterize(
                     get_point_weight(weight, p, p0, p1, p2);
                     p_depth = weight[0] * p0_depth + weight[1] * p1_depth + weight[2] * p2_depth;
                     if ((p_depth > depth_buffer[y * w + x])) {
-                        for (k = 0; k < c; k++) {
-                            p0_color = colors[c * tri_p0_ind + k];
-                            p1_color = colors[c * tri_p1_ind + k];
-                            p2_color = colors[c * tri_p2_ind + k];
+//                        for (k = 0; k < (c>3?3:c); k++) {
+                        for (k = 0; k < (c>3?3:c); k++) {
+                            p0_color = colors[(c>3?3:c) * tri_p0_ind + k];
+                            p1_color = colors[(c>3?3:c) * tri_p1_ind + k];
+                            p2_color = colors[(c>3?3:c) * tri_p2_ind + k];
 //                            p2_color = colors[c * tri_p0_ind + k];
 //                            p1_color = colors[c * tri_p1_ind + k];
 //                            p0_color = colors[c * tri_p2_ind + k];
@@ -279,10 +280,9 @@ void _rasterize(
                                         (1 - alpha) * image[(h - 1 - y) * w * c + x * c + k] + alpha * 255 * p_color);
 //                                image[(h - 1 - y) * w * c + x * c + k] = (unsigned char) (255 * p_color);
                             } else {
-
                                 image[y * w * c + x * c + k] = (unsigned char) (
-                                        (1 - alpha) * image[y * w * c + x * c + k] + alpha * 255 * p_color);
-//                                image[y * w * c + x * c + k] = (unsigned char) (255 * p_color);
+                                        min(255.0f, (1 - alpha) * image[y * w * c + x * c + k] + alpha * 255 * p_color));
+
                             }
                         }
 

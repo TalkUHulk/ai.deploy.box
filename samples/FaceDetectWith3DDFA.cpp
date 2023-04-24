@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
+#include "td_obj.h"
 #include <memory>
 #if __linux__
 #include <fstream>
@@ -47,7 +48,10 @@ void test_tddfav2(AIDB::Interpreter* det_ins, AIDB::Interpreter* tdd_ins, const 
                     cv::circle(result, cv::Point(vertices[3*i], vertices[3*i+1]), 2, cv::Scalar(255, 255, 255), -1);
                 }
             } else{
-                AIDB::Utility::TddfaUtility::tddfa_rasterize(result, vertices, obj_file.c_str());
+//                AIDB::Utility::TddfaUtility::tddfa_rasterize(result, vertices, obj_file.c_str(), 0);
+//                AIDB::Utility::TddfaUtility::tddfa_rasterize(result, vertices, spider_man_obj, 1);
+                AIDB::Utility::TddfaUtility::tddfa_rasterize(result, vertices, hulk_obj, 1, false);
+
             }
         }
         else{

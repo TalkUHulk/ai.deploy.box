@@ -29,7 +29,6 @@ public:
 
     int detect(const cv::Mat& rgba, std::vector<std::shared_ptr<AIDB::FaceMeta>> &result){
 
-        std::cout << "######"  << std::endl;
         ncnn::Mat blob = *_ins << rgba;
 
         std::vector<std::vector<float>> outputs;
@@ -39,8 +38,6 @@ public:
 
         AIDB::Utility::scrfd_post_process(outputs, result, _ins->width(), _ins->height(), _ins->scale_h());
 //        AIDB::Utility::scrfd_post_process(outputs, result, 640, 640, rgba.cols / 640);
-
-        std::cout << "@@@@@@" << result.size() << std::endl;
         return 0;
     }
 
@@ -74,7 +71,7 @@ private:
 
     std::string _config = "name: \"scrfd\"\n"
                          "backend: \"wasm\"\n"
-                         "num_thread: 4\n"
+                         "num_thread: 2\n"
                          "device: \"CPU\"\n"
                          "PreProcess:\n"
                          "    shape: &shape\n"

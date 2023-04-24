@@ -5,8 +5,11 @@
 #include "Utility.h"
 #include "AIDBDefine.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 #include <cmath>
-#include<algorithm>
+#include <limits>
+#include <algorithm>
 #include <utility>
 #include "rasterize.h"
 #include "triangles.hpp"
@@ -19,7 +22,7 @@
 #endif
 
 namespace AIDB {
-
+#define AIDB_PI 3.1415926
     template<class T>
     float Utility::Common::IOU(const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2) {
         float x1 = fmax(meta1->x1, meta2->x1);
@@ -256,8 +259,33 @@ namespace AIDB {
 
     }
 
+    void Utility::movenet_post_process(const cv::Mat &src_image,
+                                       cv::Mat &result_image,
+                                       const vector<std::vector<float>> &outputs,
+                                       const vector<std::vector<int>> &outputs_shape) {
+        std::vector<std::vector<float>> decoded_keypoints;
 
-#ifndef ENABLE_NCNN_WASM
+        AIDB::Utility::MoveNetUtility::MoveNetDecode(outputs, outputs_shape, decoded_keypoints);
+
+//        src_image.copyTo(result_image);
+        if(result_image.data != src_image.data)
+            result_image = src_image.clone();
+
+        for_each(decoded_keypoints.begin(), decoded_keypoints.end(), [=](std::vector<float> &kps){ kps[0] *= src_image.cols; kps[1] *= src_image.rows; });
+
+
+        for(auto kps: decoded_keypoints){
+            cv::circle(result_image, cv::Point(kps[0], kps[1]), 3, cv::Scalar(0, 255, 0), -1);
+        }
+
+        for(auto & index : AIDB::Utility::MoveNetUtility::line_map){
+            cv::line(result_image, cv::Point(decoded_keypoints[index[0]][0], decoded_keypoints[index[0]][1]),
+                     cv::Point(decoded_keypoints[index[1]][0], decoded_keypoints[index[1]][1]),
+                     cv::Scalar(0, 255, 255), 2);
+        }
+    }
+
+
     void Utility::TddfaUtility::similar_transform(const std::vector<float> &input, int bs, int pts3d_num,
                            std::vector<float> &output,
                            const std::shared_ptr<FaceMeta>& facemeta, int target){
@@ -271,7 +299,7 @@ namespace AIDB {
         auto s = (scale_x + scale_y) / 2.0f;
 
         for(int n = 0; n < bs; n++){
-            float min_z = FLT_MAX;
+            float min_z = std::numeric_limits<float>::max();
             for(int i = 0; i < pts3d_num; i++){
                 output[n * pts3d_num * 3 + i] = (input[n * pts3d_num * 3 + i] - 1) * scale_x + facemeta->x1; // x
                 output[n * pts3d_num * 3 + pts3d_num + i] = (target - input[n * pts3d_num * 3 + pts3d_num + i]) * scale_y + facemeta->y1; // y
@@ -295,11 +323,11 @@ namespace AIDB {
         pose.resize(3);
         if(sRt[8] > 0.998){
             pose[2] = 0;
-            pose[0] = CV_PI / 2;
+            pose[0] = AIDB_PI / 2;
             pose[1] = pose[2] + atan2(-sRt[1], -sRt[2]);
         } else if(sRt[8] < -0.998){
             pose[2] = 0;
-            pose[0] = -CV_PI / 2;
+            pose[0] = -AIDB_PI / 2;
             pose[1] = -pose[2] + atan2(-sRt[1], -sRt[2]);
         } else{
             pose[0] = asin(sRt[8]);
@@ -330,15 +358,15 @@ namespace AIDB {
 
         matrix2angle(sRt, pose);
         for(auto &p: pose){
-            p *= (180 / CV_PI);
+            p *= (180 / AIDB_PI);
         }
     }
 
     void Utility::TddfaUtility::calc_hypotenuse_and_mean(const std::vector<float> &ver, float &mean_x, float &mean_y, float &llength, int kpts_num, int mean_index_end){
-        float min_x = FLT_MAX;
-        float min_y = FLT_MAX;
-        float max_x = -FLT_MAX;
-        float max_y = -FLT_MAX;
+        float min_x = std::numeric_limits<float>::max();
+        float min_y = std::numeric_limits<float>::max();
+        float max_x = std::numeric_limits<float>::lowest();
+        float max_y = std::numeric_limits<float>::lowest();
         int step = ver.size() / kpts_num;
         mean_x = 0;
         mean_y = 0;
@@ -382,6 +410,7 @@ namespace AIDB {
                 -front_size, -front_size, front_depth, 1;
         return point_3d_homo;
     }
+#ifndef ENABLE_NCNN_WASM
     void Utility::TddfaUtility::plot_pose_box(cv::Mat &img, const std::vector<float> &P, const std::vector<float> &ver, int kpts_num, cv::Scalar color, int line_width){
 
         float mean_ver_x;
@@ -412,7 +441,7 @@ namespace AIDB {
         cv::line(img, pts[0][3], pts[0][8], color, line_width, cv::LINE_AA);
 
     }
-
+#endif
     void Utility::TddfaUtility::load_obj(const char *obj_fp, std::vector<float> &vertices, std::vector<float> &colors, std::vector<int> &triangles, int nver, int ntri) {
         FILE *fp;
         fp = fopen(obj_fp, "r");
@@ -449,6 +478,51 @@ namespace AIDB {
             fclose(fp);
         }
     }
+
+    void Utility::TddfaUtility::load_obj2(const char *obj, std::vector<float> &vertices, std::vector<float> &colors, std::vector<int> &triangles, int nver, int ntri) {
+        std::istringstream iss;
+        iss.str(obj);
+        std::string line;
+        auto nver_rest = nver;
+        auto ntri_rest = ntri;
+
+        while (std::getline(iss, line)) {
+            if (nver_rest) {
+                nver_rest--;
+
+                std::vector<std::string> rst;
+                auto split = [&rst](const std::string &str) {
+                    std::stringstream ss(str);
+                    std::string buffer;
+                    while (std::getline(ss, buffer, ' ')) rst.push_back(buffer);
+                };
+                split(line);
+                assert(rst[0] == 'v');
+                for (int i = 0; i < 3; ++i) {
+                    vertices.push_back(std::stof(rst[i + 1]));
+                    colors.push_back(std::stof(rst[i + 4]));
+                }
+            }
+
+            if (ntri_rest) {
+                ntri_rest--;
+
+                std::vector<std::string> rst;
+                auto split = [&rst](const std::string &str) {
+                    std::stringstream ss(str);
+                    std::string buffer;
+                    while (std::getline(ss, buffer, ' ')) rst.push_back(buffer);
+                };
+                split(line);
+                assert(rst[0] == 'f');
+                for (int i = 0; i < 3; ++i) {
+                    triangles.push_back(std::stof(rst[i + 1]));
+                }
+            }
+
+        }
+    }
+
 
     void Utility::tddfa_post_process(const std::vector<std::vector<float>> &outputs,
                             const std::vector<std::vector<int>> &outputs_shape,
@@ -491,7 +565,7 @@ namespace AIDB {
     }
 
 
-    void Utility::TddfaUtility::tddfa_rasterize(cv::Mat &image, const std::vector<float> &vertices, const char* obj_file){
+    void Utility::TddfaUtility::tddfa_rasterize(cv::Mat &image, const std::vector<float> &vertices, const char* obj, int obj_type, bool color_rgb_swap){
 
         std::vector<float> _vertices;
         std::vector<float> colors;
@@ -500,22 +574,31 @@ namespace AIDB {
         int nver = 38365;
         int ntri = 76073;
 
-        load_obj(obj_file, _vertices, colors, _triangles, nver, ntri);
+        if(obj_type == 0){
+            load_obj(obj, _vertices, colors, _triangles, nver, ntri);
+        }
+        else{
+            load_obj2(obj, _vertices, colors, _triangles, nver, ntri);
+        }
 
         // RGB -> BGR
-        for(int i = 0; i < nver; i ++){
-        auto tmp = colors[3 * i];
-        colors[3 * i] = colors[3 * i + 2];
-        colors[3 * i + 2] = tmp;
-    }
+        if(color_rgb_swap){
+            for(int i = 0; i < nver; i ++){
+                auto tmp = colors[3 * i];
+                colors[3 * i] = colors[3 * i + 2];
+                colors[3 * i + 2] = tmp;
+            }
+        }
+
 
     int buffer_size = image.cols * image.rows;
-    std::vector<float> depth_buffer(buffer_size, -FLT_MAX);
+    std::vector<float> depth_buffer(buffer_size, std::numeric_limits<float>::lowest());
     _rasterize(image.data, vertices.data(), triangles.data(), colors.data(), depth_buffer.data(), ntri, image.rows, image.cols, image.channels(), 0.8, false);
 
     }
 
 
+#ifndef ENABLE_NCNN_WASM
     void Utility::animated_gan_post_process(const std::vector<float> &output,
                                    const std::vector<int> &outputs_shape, cv::Mat &animated){
         std::vector<uint8_t> _data;
@@ -545,7 +628,7 @@ namespace AIDB {
         int dim = outputs_shape.size();
         int output_n = dim == 3? 1: outputs_shape[0];
         // only support 1 batch
-        assert(1 == output_n);
+//        assert(1 == output_n);
         int output_c = outputs_shape[outputs_shape.size() - 3];
         int output_h = outputs_shape[outputs_shape.size() - 2];
         int output_w = outputs_shape[outputs_shape.size() - 1];
@@ -589,30 +672,7 @@ namespace AIDB {
         cv::addWeighted(resized, 0.4, vis_parsing_anno_color, 0.6, 0, parsing_image);
     }
 
-    void Utility::movenet_post_process(const cv::Mat &src_image,
-                                       cv::Mat &result_image,
-                                       const vector<std::vector<float>> &outputs,
-                                       const vector<std::vector<int>> &outputs_shape) {
-        std::vector<std::vector<float>> decoded_keypoints;
 
-        AIDB::Utility::MoveNetUtility::MoveNetDecode(outputs, outputs_shape, decoded_keypoints);
-
-        src_image.copyTo(result_image);
-
-        for_each(decoded_keypoints.begin(), decoded_keypoints.end(), [=](std::vector<float> &kps){ kps[0] *= src_image.cols; kps[1] *= src_image.rows; });
-
-
-        for(auto kps: decoded_keypoints){
-            cv::circle(result_image, cv::Point(kps[0], kps[1]), 3, cv::Scalar(0, 255, 0), -1);
-        }
-
-
-        for(auto & index : AIDB::Utility::MoveNetUtility::line_map){
-            cv::line(result_image, cv::Point(decoded_keypoints[index[0]][0], decoded_keypoints[index[0]][1]),
-                     cv::Point(decoded_keypoints[index[1]][0], decoded_keypoints[index[1]][1]),
-                     cv::Scalar(0, 255, 255), 2);
-        }
-    }
 
     void Utility::stylegan_post_process(cv::Mat &result_image, const std::vector<float> &output,
                                         const std::vector<int> &output_shape) {
@@ -635,6 +695,7 @@ namespace AIDB {
 
     }
 
+#endif
     void Utility::yolov7_post_process(const std::vector<std::vector<float>> &outputs,
                              const std::vector<std::vector<int>> &outputs_shape,
                              std::vector<std::shared_ptr<ObjectMeta>> &results,
@@ -659,7 +720,7 @@ namespace AIDB {
         output.resize(nb * no);
 
         for(int i = 0; i < outputs.size(); i++){
-            assert(1 == outputs_shape[i][0]);
+//            assert(1 == outputs_shape[i][0]);
 
             int na = outputs_shape[i][1];
             int ny = outputs_shape[i][2];
@@ -690,8 +751,8 @@ namespace AIDB {
                                       float scale) {
 
         results.clear();
-        assert(3 == output_shape.size());
-        assert(1 == output_shape[0]);
+//        assert(3 == output_shape.size());
+//        assert(1 == output_shape[0]);
         int bs = output_shape[0];  // batch size 1 here
         int nc = output_shape[2] - 5;  // number of classes
         int np = output_shape[1];
@@ -806,7 +867,7 @@ namespace AIDB {
 
         results.clear();
 
-        assert(1 == output_shape[0]);
+//        assert(1 == output_shape[0]);
 
         static int strides[3] = {8, 16, 32};
         static int input_size = 640;
@@ -867,6 +928,7 @@ namespace AIDB {
 
     }
 
+
     // MoveNet
     int Utility::MoveNetUtility::line_map[20][2] = {{2,  1}, {2, 4}, {1, 3}, {4, 0}, {0, 3},
                                             {4,  6}, {3, 5}, {6, 8}, {8, 10}, {5, 7}, {7, 9},
@@ -878,8 +940,8 @@ namespace AIDB {
                                                 vector<std::vector<float>> &decoded_keypoints, int joints_num,
                                                 float heatmap_thresh, int target_size) {
 
-        assert(4 == outputs.size());
-        assert(4 == outputs_shape.size());
+//        assert(4 == outputs.size());
+//        assert(4 == outputs_shape.size());
 
         decoded_keypoints.clear();
 
@@ -974,6 +1036,7 @@ namespace AIDB {
 
     }
 
+
     void Utility::YoloX::generate_grids_and_stride(int target_size, const vector<int> &strides) {
         for (auto stride : strides){
             int num_grid = target_size / stride;
@@ -996,7 +1059,6 @@ namespace AIDB {
         const int num_class = outputs_shape[2] - 5;
         const int num_anchors = _grid_strides.size();
 
-        std::cout << "num_anchors:" << num_anchors << std::endl;
         const float* feat_ptr = feat_blob.data();
 
         for (int anchor_idx = 0; anchor_idx < num_anchors; anchor_idx++)
@@ -1067,7 +1129,7 @@ namespace AIDB {
 
     }
 
-
+#ifndef ENABLE_NCNN_WASM
     std::vector<std::vector<float>> Utility::PPOCR::Mat2Vector(cv::Mat mat) {
         std::vector<std::vector<float>> img_vec;
         std::vector<float> tmp;

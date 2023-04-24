@@ -201,11 +201,13 @@ namespace AIDB {
         return new Interpreter(ptr_engine, ptr_input);
     }
 
-#ifndef ENABLE_NCNN_WASM
-    void Interpreter::forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+    void Interpreter::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
         ENGINE_ASSERT(nullptr != _ptr_engine)
         _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
     }
+
+#ifndef ENABLE_NCNN_WASM
+
 
     cv::Mat Interpreter::operator<< (const cv::Mat &image){
         assert(nullptr != _ptr_input);
@@ -228,10 +230,10 @@ namespace AIDB {
 //        ENGINE_ASSERT(nullptr != _ptr_engine)
 //        _ptr_engine->forward(frame, outputs, outputs_shape);
 //    }
-    void Interpreter::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
-        ENGINE_ASSERT(nullptr != _ptr_engine)
-        _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
-    }
+//    void Interpreter::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+//        ENGINE_ASSERT(nullptr != _ptr_engine)
+//        _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
+//    }
 
     ncnn::Mat Interpreter::operator<< (const cv::Mat &image){
         assert(nullptr != _ptr_input);

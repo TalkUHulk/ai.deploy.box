@@ -10,12 +10,13 @@ add_definitions(-std=c++11 -pthread)
 
 # backend options
 option(ENGINE_MNN "Enable MNN" OFF)
-option(ENGINE_ORT "Enable ONNXRuntime" OFF)
+option(ENGINE_ORT "Enable ONNXRuntime" ON)
 option(ENGINE_NCNN "Enable NCNN" OFF)
 option(ENGINE_TNN "Enable TNN" OFF)
 option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
 option(ENGINE_PPLite "Enable paddle-lite" OFF)
-option(ENGINE_NCNN_WASM "Enable NCNN WASM" ON)
+option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
+
 
 message(STATUS ">>>>>>>>>>>>>")
 message(STATUS "AIDeployBox BUILD INFO:")
@@ -32,6 +33,7 @@ if(ENGINE_NCNN_WASM)
         message(FATAL_ERROR "You must pass cmake option -DWASM_FEATURE and possible values are basic, simd, threads and simd-threads")
     endif()
     set(OS wasm)
+#    option(EIGEN_DONT_PARALLELIZE "Eigen OMP" ON)
 elseif (UNIX AND NOT APPLE)
     set(OS linux)
 elseif (APPLE)
