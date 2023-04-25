@@ -2,21 +2,30 @@
  <img src="./doc/logo.png" align="middle" width = "240"/>
 <p align="center">
 
-<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a>
+<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a> <img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green"></a>
 
-## Introduction
+# Introduction
 
 AIDB的目的是使用c++快速AI模型，集成了目前市面上比较主流的几个c++部署框架，包括ONNX、MNN、NCNN、TNN、Paddle和OpenVINO。将几个框架抽象成统一的接口，通过配置文件可以方便调用不同框架和模型。
 并且提供了很多预训练模型供调用测试，涉及目标检测、分类和生成模型。
 
 _持续更新ing_
 
+# Demo
 
-## Models
+🐶[Try Demo](https://www.hulk.show/aidb-webassembly-demo/)
+
+|  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
+|  ----  | ----  |
+| <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-webcam-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
+
+
+
+# Models
 
 Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipCnOBGXEJzGzPU) | [Baidu: 92e8](https://pan.baidu.com/s/1ALxl085aMD3NEujAQDES8A?pwd=92e8)
 
-### Model List
+## Model List
 
 
 | Model name             | Model Type         | Pretrained From                                                             | ONNX                                                                                                                                                       | MNN                                                                                                                                                         | NCNN                                                                                                                                     | OpenVINO                                                                                                                                 | TNN                                                                                                                                      |  Paddle Lite                                                                                                                                                | Demo              |
@@ -65,11 +74,11 @@ Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipC
 | MOBILE_STYLEGAN        | Gan                | [MobileStyleGAN.pytorch](https://github.com/bes-dev/MobileStyleGAN.pytorch) | [MEGA](https://mega.nz/folder/xbMRlR6T#I5KxWkkQebCqc7j2GfOxkw)                    & [Baidu[d5dk]](https://pan.baidu.com/s/1fWQ1a8wgp8ofCCKfyOG9Aw?pwd=d5dk)| [MEGA](https://mega.nz/folder/UbNnjIJb#AuScaW-mRda4r60moYtMBA)                    & [Baidu[tcic]](https://pan.baidu.com/s/1R_UcNTM8720DN-c5CsHZhg?pwd=tcic) | ❎                                                                                                                                       | [MEGA](https://mega.nz/folder/Qf0QlbzR#3TbLMAH_WKoBbzU3cZskEw) & [Baidu[n79w]](https://pan.baidu.com/s/1bmOkCBz1NzoKDdnt9CTCuw?pwd=n79w) | ❎                                                                                                                                        | ❎                                                                                                                                                           | <p align="center"> <img src="./doc/demo/mobilestylegan_small.gif" align="middle" width = "240"/> <p align="center"> |
 
 
-## 📖 Tutorials
+# 📖 Tutorials
 
-### Compile
+## Build and Test
 
-#### Docker
+### Docker
 
 ```asm
 docker pull mister5ive/ai.deploy.box
@@ -77,7 +86,14 @@ docker pull mister5ive/ai.deploy.box
 
 or 你自己的环境
 
-#### Build
+### Build
+
+### Webassembly
+
+Refer to [aidb-webassembly-demo](https://github.com/TalkUHulk/aidb-webassembly-demo)
+
+
+### Linux/MacOS
 
 ```asm
 mkdir build && cd build
@@ -85,11 +101,11 @@ cmake .. -DENGINE_MNN={ON/OFF} -DENGINE_ORT={ON/OFF} -DENGINE_NCNN={ON/OFF} -DEN
 make -j8
 ```
 
-### Run
+## Run
 
 _Linux下，run前执行_  `source set_env.sh`
 
-#### Face Detect
+### Face Detect
 
 ```asm
 ./build/samples/FaceDetect model_name backend type inputfile
@@ -113,7 +129,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### Face landmark
+### Face landmark
 ```asm
 ./build/samples/FaceDetectWithLandmark model_name backend pfpld backend type inputfile
 ```
@@ -137,7 +153,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### Face 3D
+### Face 3D
 
 ```asm
 ./build/samples/FaceDetectWith3DDFA det_model_name backend tddfa_model_name backend type inputfile
@@ -168,7 +184,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### Face Parsing
+### Face Parsing
 
 ```asm
 ./build/samples/FaceParsing bisenet backend type inputfile
@@ -188,7 +204,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### OCR
+### OCR
 
 ```asm
 ./build/samples/PPOcr ppocr_det det_backend ppocr_cls cls_backend ppocr_ret rec_backend  type inputfile
@@ -207,7 +223,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### YoloX
+### YoloX
 ```asm
 ./build/samples/YoloX model_name backend type inputfile
 ```
@@ -235,7 +251,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### YoloV7
+### YoloV7
 
 ```asm
 ./build/samples/YoloV7 model_name backend type inputfile
@@ -265,7 +281,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### YoloV8
+### YoloV8
 
 ```asm
 ./build/samples/YoloV8 model_name backend type inputfile
@@ -291,7 +307,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### MobileVit
+### MobileVit
 
 ```asm
 ./build/samples/MobileViT model_name backend inputfile
@@ -307,7 +323,7 @@ _Linux下，run前执行_  `source set_env.sh`
     * OpenVINO
     
     
-#### MoveNet
+### MoveNet
 
 ```asm
 ./build/samples/Movenet movenet backend type inputfile
@@ -326,7 +342,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 - inputfile: 0 is webcam
 
-#### MobileStyleGan
+### MobileStyleGan
 
 ```asm
 ./build/samples/MobileStyleGan mobilestylegan_mappingnetwork map_backend mobilestylegan_synthesisnetwork syn_backend
@@ -338,7 +354,7 @@ _Linux下，run前执行_  `source set_env.sh`
     * OpenVINO
 
     
-#### AnimeGan
+### AnimeGan
 
 ```asm
 ./build/samples/AnimeGan model_name backend 0 inputfile
