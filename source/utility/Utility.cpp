@@ -16,8 +16,10 @@
 #include "center_weight.h"
 #include "labels.h"
 #include "clipper.h"
+#include <chrono>
+#include <thread>
 
-#ifndef ENABLE_NCNN_WASM
+#if !defined(ENABLE_NCNN_WASM) && !defined(__ANDROID__)
 #include <opencv2/freetype.hpp>
 #endif
 
@@ -37,22 +39,46 @@ namespace AIDB {
 
     template<class T>
     void Utility::Common::NMS(std::vector<std::shared_ptr<T>> &metas, std::vector<std::shared_ptr<T>> &keep_metas, float threshold) {
-        std::sort(metas.begin(), metas.end(),
-                  [](const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2) { return meta1->score > meta2->score; });
-        while (!metas.empty()) {
-            keep_metas.push_back(metas[0]);
-            int index = 1;
-            while (index < metas.size()) {
-                float iou_value = IOU<T>(metas[0], metas[index]);
-                if (iou_value > threshold) {
-                    metas.erase(metas.begin() + index);
-                } else {
-                    index++;
-                }
-
-            }
-            metas.erase(metas.begin());
+//        std::sort(metas.begin(), metas.end(),
+//                  [](const std::shared_ptr<T> meta1, const std::shared_ptr<T> meta2) { return meta1->score > meta2->score; });
+//        while (!metas.empty()) {
+//            keep_metas.push_back(metas[0]);
+//            int index = 1;
+//            while (index < metas.size()) {
+//                float iou_value = IOU<T>(metas[0], metas[index]);
+//                if (iou_value > threshold) {
+//                    metas.erase(metas.begin() + index);
+//                } else {
+//                    index++;
+//                }
+//
+//            }
+//            metas.erase(metas.begin());
+//        }
+        keep_metas.clear();
+        std::vector<int> picked;
+        const int n = metas.size();
+        std::vector<float> areas(n);
+        for (int i = 0; i < n; i++) {
+            areas[i] = metas[i]->area();
         }
+
+        for (int i = 0; i < n; i++) {
+            const auto &a = metas[i];
+            int keep = 1;
+            for (int j : picked) {
+                const auto &b = metas[j];
+                float iou = IOU<T>(a, b);
+                if (iou > threshold)
+                    keep = 0;
+            }
+
+            if (keep)
+                picked.push_back(i);
+        }
+        for(int i: picked)
+            keep_metas.push_back(metas[picked[i]]);
+
     }
 
     void Utility::Common::parse_roi_from_bbox(const std::shared_ptr<FaceMeta> org_meta, std::shared_ptr<FaceMeta> dst_meta, int image_w, int image_h,
@@ -161,6 +187,11 @@ namespace AIDB {
         }
 
 
+        std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+        std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+
+
         std::vector<std::shared_ptr<FaceMeta>> _face_metas;
         for (int idx = 0; idx < feat_stride_fpn.size(); idx++) {
             auto stride = feat_stride_fpn[idx];
@@ -181,61 +212,121 @@ namespace AIDB {
             int width = int(target_w / stride);
 
             float thresh = 0.5;
-            std::vector<int> pos_inds;
-            for (int pos = 0; pos < scores.size(); pos++) {
-                if (scores[pos] >= thresh) {
-                    pos_inds.push_back(pos);
-                }
-            }
-            // bbox
-            std::vector<std::vector<float>> bbox;
-            std::vector<std::vector<float>> kps;
+//            std::vector<int> pos_inds;
+            std::vector<std::vector<int>> pos_inds3d;
+
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    int anchor_x = x * stride;
-                    int anchor_y = y * stride;
                     for (int n = 0; n < num_anchors; n++) {
-                        int pos = (y * width * 2 + x * 2 + n) * 4;
-                        float x1 = anchor_x - bbox_preds[pos];
-                        float y1 = anchor_y - bbox_preds[pos + 1];
-                        float x2 = anchor_x + bbox_preds[pos + 2];
-                        float y2 = anchor_y + bbox_preds[pos + 3];
-                        std::vector<float> _box{x1, y1, x2, y2};
-                        bbox.push_back(_box);
-                        if (use_kps) {
-                            int kpos = (y * width * 2 + x * 2 + n) * 10;
-                            std::vector<float> _kps;
-                            for (int k = 0; k < 5; k++) {
-                                float kx = anchor_x + kps_preds[kpos + k * 2];
-                                float ky = anchor_y + kps_preds[kpos + k * 2 + 1];
-                                _kps.push_back(kx);
-                                _kps.push_back(ky);
-
-                            }
-                            kps.push_back(_kps);
+                        if (scores[y * width * num_anchors + x * num_anchors + n] >= thresh) {
+                            pos_inds3d.push_back({y, x, n});
                         }
                     }
                 }
             }
+//            for (int pos = 0; pos < scores.size(); pos++) {
+//                if (scores[pos] >= thresh) {
+//                    pos_inds.push_back(pos);
+//                }
+//            }
 
-            for (auto _pos: pos_inds) {
-//                FaceMeta face_meta;
+//            if(pos_inds.empty())
+//                continue;
+
+            // bbox
+            std::vector<std::vector<float>> bbox;
+            std::vector<std::vector<float>> kps;
+
+
+//            for (int y = 0; y < height; y++) {
+//                for (int x = 0; x < width; x++) {
+//                    int anchor_x = x * stride;
+//                    int anchor_y = y * stride;
+//                    for (int n = 0; n < num_anchors; n++) {
+//                        int pos = (y * width * 2 + x * 2 + n) * 4;
+//                        float x1 = anchor_x - bbox_preds[pos];
+//                        float y1 = anchor_y - bbox_preds[pos + 1];
+//                        float x2 = anchor_x + bbox_preds[pos + 2];
+//                        float y2 = anchor_y + bbox_preds[pos + 3];
+//                        std::vector<float> _box{x1, y1, x2, y2};
+//                        bbox.push_back(_box);
+//                        if (use_kps) {
+//                            int kpos = (y * width * 2 + x * 2 + n) * 10;
+//                            std::vector<float> _kps;
+//                            for (int k = 0; k < 5; k++) {
+//                                float kx = anchor_x + kps_preds[kpos + k * 2];
+//                                float ky = anchor_y + kps_preds[kpos + k * 2 + 1];
+//                                _kps.push_back(kx);
+//                                _kps.push_back(ky);
+//
+//                            }
+//                            kps.push_back(_kps);
+//                        }
+//                    }
+//                }
+//            }
+
+
+            for (auto _pos: pos_inds3d) {
+                auto y = _pos[0];
+                auto x = _pos[1];
+                auto n = _pos[2];
+                int anchor_x = x * stride;
+                int anchor_y = y * stride;
+
+                int pos = y * width * num_anchors + x * num_anchors + n;
+                int pos_bbox = (y * width * 2 + x * 2 + n) * 4;
+                float x1 = anchor_x - bbox_preds[pos_bbox];
+                float y1 = anchor_y - bbox_preds[pos_bbox + 1];
+                float x2 = anchor_x + bbox_preds[pos_bbox + 2];
+                float y2 = anchor_y + bbox_preds[pos_bbox + 3];
+
                 std::shared_ptr<FaceMeta> face_meta = std::make_shared<FaceMeta>();
-                face_meta->score = scores[_pos];
-                face_meta->x1 = bbox[_pos][0] / det_scale;
-                face_meta->y1 = bbox[_pos][1] / det_scale;
-                face_meta->x2 = bbox[_pos][2] / det_scale;
-                face_meta->y2 = bbox[_pos][3] / det_scale;
-                face_meta->kps.resize(kps[_pos].size());
-                face_meta->kps.assign(kps[_pos].begin(), kps[_pos].end());
-                for_each(face_meta->kps.begin(), face_meta->kps.end(), [&](float &k) { k /= det_scale; });
+
+                face_meta->score = scores[pos];
+                face_meta->x1 = x1 / det_scale;
+                face_meta->y1 = y1 / det_scale;
+                face_meta->x2 = x2 / det_scale;
+                face_meta->y2 = y2 / det_scale;
+
+                if (use_kps) {
+                    int pos_kps = (y * width * 2 + x * 2 + n) * 10;
+                    std::vector<float> _kps;
+                    for (int k = 0; k < 5; k++) {
+                        float kx = anchor_x + kps_preds[pos_kps + k * 2];
+                        float ky = anchor_y + kps_preds[pos_kps + k * 2 + 1];
+                        face_meta->kps.push_back(kx);
+                        face_meta->kps.push_back(ky);
+
+                    }
+                    for_each(face_meta->kps.begin(), face_meta->kps.end(), [&](float &k) { k /= det_scale; });
+
+                }
+
                 _face_metas.push_back(face_meta);
 
             }
+
+//            for (auto _pos: pos_inds) {
+////                FaceMeta face_meta;
+//                std::shared_ptr<FaceMeta> face_meta = std::make_shared<FaceMeta>();
+//                face_meta->score = scores[_pos];
+//                face_meta->x1 = bbox[_pos][0] / det_scale;
+//                face_meta->y1 = bbox[_pos][1] / det_scale;
+//                face_meta->x2 = bbox[_pos][2] / det_scale;
+//                face_meta->y2 = bbox[_pos][3] / det_scale;
+//                face_meta->kps.resize(kps[_pos].size());
+//                face_meta->kps.assign(kps[_pos].begin(), kps[_pos].end());
+//                for_each(face_meta->kps.begin(), face_meta->kps.end(), [&](float &k) { k /= det_scale; });
+//                _face_metas.push_back(face_meta);
+//
+//            }
         }
+
 
         face_metas.clear();
         Common::NMS<FaceMeta>(_face_metas, face_metas, nms_thresh);
+
     }
 
     void Utility::pfpld_post_process(const std::vector<std::vector<float>> &outputs,
@@ -497,7 +588,7 @@ namespace AIDB {
                     while (std::getline(ss, buffer, ' ')) rst.push_back(buffer);
                 };
                 split(line);
-                assert(rst[0] == 'v');
+//                assert(rst[0] == 'v');
                 for (int i = 0; i < 3; ++i) {
                     vertices.push_back(std::stof(rst[i + 1]));
                     colors.push_back(std::stof(rst[i + 4]));
@@ -514,7 +605,7 @@ namespace AIDB {
                     while (std::getline(ss, buffer, ' ')) rst.push_back(buffer);
                 };
                 split(line);
-                assert(rst[0] == 'f');
+//                assert(rst[0] == 'f');
                 for (int i = 0; i < 3; ++i) {
                     triangles.push_back(std::stof(rst[i + 1]));
                 }
@@ -1609,7 +1700,7 @@ namespace AIDB {
         int thickness = -1;
         int linestyle = 8;
         int baseline = 0;
-
+#ifndef __ANDROID__
         cv::Ptr<cv::freetype::FreeType2> ft2 = cv::freetype::createFreeType2();
         ft2->loadFontData(fontFileName,0);
 
@@ -1622,6 +1713,7 @@ namespace AIDB {
 
         ft2->putText(image, meta->label, textOrg, fontHeight,
                      cv::Scalar(255, 0,0), thickness, linestyle, true );
+#endif
     }
 
     void Utility::ImageNet::imagenet_post_process(const std::vector<float>& output, const std::vector<int>& output_shape, std::vector<std::shared_ptr<ClsMeta>> &result, int topK){

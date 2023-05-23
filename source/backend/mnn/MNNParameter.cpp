@@ -1,7 +1,6 @@
 //
 // Created by TalkUHulk on 2022/10/18.
 //
-
 #include "backend/mnn/MNNParameter.hpp"
 #include <string>
 namespace AIDB {
@@ -11,7 +10,6 @@ namespace AIDB {
 
         _model_name = node["name"].as<std::string>();
         _model_path = node["model"].as<std::string>() + ".mnn";
-
         auto detail = node["detail"];
 
         if(detail["dynamic"].IsDefined()) _dynamic = detail["dynamic"].as<bool>();

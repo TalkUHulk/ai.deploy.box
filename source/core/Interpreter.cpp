@@ -12,7 +12,7 @@
 #include <preprocess/ImageInput.hpp>
 #include "utility/log.h"
 #include "utility/Utility.h"
-
+#include "utility/Logging.h"
 
 namespace AIDB {
 
@@ -40,7 +40,6 @@ namespace AIDB {
     Interpreter *
     Interpreter::createInstance(const std::string& model, const std::string& backend, const std::string& config_zoo) {
         StatusCode status = NO_ERROR;
-
         aidb_log_init(AIDB_DEBUG, "debug");
 
         std::string backend_lower(backend);
@@ -58,7 +57,6 @@ namespace AIDB {
         std::string config_path;
 
         spdlog::get(AIDB_DEBUG)->debug("backend:{}, model:{}", backend_lower, model_lower);
-
         if("onnx" == backend_lower){
 #ifdef ENABLE_ORT
             config_path = config_prefix + "onnx_config.yaml";
@@ -87,7 +85,6 @@ namespace AIDB {
             std::cout << "Not support backend:" << backend << std::endl;
             return nullptr;
         }
-
         if(config_path.empty()){
             std::cout << "remake to support backend:" << backend << std::endl;
             return nullptr;
@@ -174,11 +171,9 @@ namespace AIDB {
 
         return new Interpreter(ptr_engine, ptr_input);
     }
-
+#ifdef ENABLE_NCNN_WASM
     Interpreter *
     Interpreter::createInstance(const void *buffer_in1, const void *buffer_in2, const std::string &config) {
-#ifdef ENABLE_NCNN_WASM
-#endif
         StatusCode status = NO_ERROR;
 
         aidb_log_init(AIDB_DEBUG, "debug");
@@ -200,7 +195,7 @@ namespace AIDB {
 
         return new Interpreter(ptr_engine, ptr_input);
     }
-
+#endif
     void Interpreter::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
         ENGINE_ASSERT(nullptr != _ptr_engine)
         _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);

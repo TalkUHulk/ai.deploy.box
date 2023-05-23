@@ -96,7 +96,9 @@ void test_landmark(AIDB::Interpreter* det_ins, AIDB::Interpreter* ldm_ins, const
                       cv::Point(int(face_meta->x2), int(face_meta->y2)),
                       cv::Scalar(255, 0, 0), 2);
 
-        for(int n = 0; n < face_meta->kps.size(); n++){
+        for(int n = 0; n < face_meta->kps.size() / 2; n++){
+//            cv::putText(result, std::to_string(n), cv::Point(int(face_meta->kps[2 * n]), int(face_meta->kps[2 * n + 1])),
+//                        cv::FONT_HERSHEY_SIMPLEX, 0.3, cv::Scalar(255, 255, 255));
             cv::circle(result, cv::Point(int(face_meta->kps[2 * n]), int(face_meta->kps[2 * n + 1])), 3, cv::Scalar(0, 0, 255), -1);
         }
 
