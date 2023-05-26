@@ -66,7 +66,7 @@ namespace AIDB {
         for (int i = 0; i < n; i++) {
             const auto &a = metas[i];
             int keep = 1;
-            for (int j : picked) {
+            for (const auto j : picked) {
                 const auto &b = metas[j];
                 float iou = IOU<T>(a, b);
                 if (iou > threshold)
@@ -77,7 +77,7 @@ namespace AIDB {
                 picked.push_back(i);
         }
         for(int i: picked)
-            keep_metas.push_back(metas[picked[i]]);
+            keep_metas.push_back(metas[i]);
 
     }
 
@@ -356,14 +356,11 @@ namespace AIDB {
                                        const vector<std::vector<int>> &outputs_shape) {
         std::vector<std::vector<float>> decoded_keypoints;
 
-        AIDB::Utility::MoveNetUtility::MoveNetDecode(outputs, outputs_shape, decoded_keypoints);
-
 //        src_image.copyTo(result_image);
         if(result_image.data != src_image.data)
             result_image = src_image.clone();
 
-        for_each(decoded_keypoints.begin(), decoded_keypoints.end(), [=](std::vector<float> &kps){ kps[0] *= src_image.cols; kps[1] *= src_image.rows; });
-
+        movenet_post_process(src_image, outputs, outputs_shape, decoded_keypoints);
 
         for(auto kps: decoded_keypoints){
             cv::circle(result_image, cv::Point(kps[0], kps[1]), 3, cv::Scalar(0, 255, 0), -1);
@@ -376,6 +373,17 @@ namespace AIDB {
         }
     }
 
+    void Utility::movenet_post_process(const cv::Mat &src_image,
+                                       const vector<std::vector<float>> &outputs,
+                                       const vector<std::vector<int>> &outputs_shape,
+                                       std::vector<std::vector<float>>& decoded_keypoints) {
+
+
+        AIDB::Utility::MoveNetUtility::MoveNetDecode(outputs, outputs_shape, decoded_keypoints);
+
+        for_each(decoded_keypoints.begin(), decoded_keypoints.end(), [=](std::vector<float> &kps){ kps[0] *= src_image.cols; kps[1] *= src_image.rows; });
+
+    }
 
     void Utility::TddfaUtility::similar_transform(const std::vector<float> &input, int bs, int pts3d_num,
                            std::vector<float> &output,

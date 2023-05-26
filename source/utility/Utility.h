@@ -78,6 +78,10 @@ namespace AIDB{
                                          const std::vector<std::vector<float>> &outputs,
                                          const std::vector<std::vector<int>> &outputs_shape);
 
+        static void movenet_post_process(const cv::Mat &src_image,
+                                         const std::vector<std::vector<float>> &outputs,
+                                         const std::vector<std::vector<int>> &outputs_shape,
+                                         std::vector<std::vector<float>>& decoded_keypoints);
 
         static void tddfa_post_process(const std::vector<std::vector<float>> &outputs, const std::vector<std::vector<int>> &outputs_shape,
                            const std::shared_ptr<FaceMeta>& face_meta, std::vector<float> &vertices, std::vector<float> &pose, std::vector<float> &sRt, int target=120);
