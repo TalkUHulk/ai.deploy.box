@@ -115,6 +115,9 @@ namespace AIDB {
 //        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
         _dynamic = param._dynamic;
 
+        LOGD("==@@##!!", "_param_path: %s", param._param_path.c_str());
+        LOGD("==@@##!!", "_model_path: %s", param._model_path.c_str());
+
         std::string proto_content_buffer, model_content_buffer;
         proto_content_buffer = content_buffer_from(param._param_path.c_str());
         model_content_buffer = content_buffer_from(param._model_path.c_str());
@@ -146,7 +149,6 @@ namespace AIDB {
         }
 
         _instance->SetCpuNumThreads(param._numThread);
-
         spdlog::get(AIDB_DEBUG)->debug("backend tnn init succeed!");
         return NO_ERROR;
 

@@ -1,6 +1,6 @@
 #include "backend/paddle_lite/PPLiteEngine.hpp"
 #include <iostream>
-
+#include "utility/Logging.h"
 
 namespace AIDB {
 
@@ -16,6 +16,7 @@ namespace AIDB {
 
     void PPLiteEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
+        LOGD("====>>>", "forward");
         // prepare data
         for (auto & _input_node : _input_nodes) {
             std::vector<int64_t> input_dim(_input_node.second.begin(), _input_node.second.end());
@@ -27,9 +28,10 @@ namespace AIDB {
             input_tensor->Resize(input_dim);
             auto* data = input_tensor->mutable_data<float>();
 
-            for (int i = 0; i < frame_channel * frame_width * frame_height; ++i) {
-                data[i] = frame[i];
-            }
+            memcpy(data, frame, frame_channel * frame_width * frame_height * sizeof(float));
+//            for (int i = 0; i < frame_channel * frame_width * frame_height; ++i) {
+//                data[i] = frame[i];
+//            }
         }
 
         // inference

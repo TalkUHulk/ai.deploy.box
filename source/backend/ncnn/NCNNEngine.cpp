@@ -3,7 +3,6 @@
 #include "CustomLayer.hpp"
 
 
-
 namespace AIDB {
 
 #define NCNN_LAYER_CREATOR(name)  name##_layer_creator
@@ -89,9 +88,6 @@ namespace AIDB {
     }
 
     StatusCode NCNNEngine::init(const Parameter &param) {
-
-
-
         _model_name = param._model_name;
 //        _opt.num_threads = param._numThread;
 //        _opt.blob_allocator = &_ncnn_blob_pool_allocator;
@@ -112,7 +108,6 @@ namespace AIDB {
 
         status = _net->load_model(param._model_path.c_str());
         if (0 != status) {
-            spdlog::get(AIDB_DEBUG)->error("backend ncnn load model failed! status:{}", status);
             return MODEL_CREATE_ERROR;
         }
 

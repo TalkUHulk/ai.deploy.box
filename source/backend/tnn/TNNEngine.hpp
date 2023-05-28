@@ -22,10 +22,15 @@ namespace AIDB{
     private:
         std::shared_ptr<tnn::TNN> _net;
         std::shared_ptr<tnn::Instance> _instance;
+#ifdef __ANDROID__
+        tnn::DeviceType _input_device_type = tnn::DEVICE_ARM; // only CPU, namely ARM or X86  DEVICE_ARM
+        tnn::DeviceType _output_device_type = tnn::DEVICE_ARM; // only CPU, namely ARM or X86
+        tnn::DeviceType _network_device_type = tnn::DEVICE_ARM; // e.g DEVICE_X86 DEVICE_NAIVE DEVICE_ARM
+#else
         tnn::DeviceType _input_device_type = tnn::DEVICE_X86; // only CPU, namely ARM or X86
         tnn::DeviceType _output_device_type = tnn::DEVICE_X86; // only CPU, namely ARM or X86
         tnn::DeviceType _network_device_type = tnn::DEVICE_X86; // e.g DEVICE_X86 DEVICE_NAIVE DEVICE_ARM
-
+#endif
     private:
         tnn::DimsVector get_input_shape(const std::string& name);
         tnn::DimsVector get_output_shape(const std::string& name);
