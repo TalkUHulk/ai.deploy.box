@@ -1,9 +1,8 @@
-// Copyright (C) 2018-2022 Intel Corporation
+// Copyright (C) 2018-2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 
 #pragma once
-#include "ngraph/compatibility.hpp"
 #include "openvino/core/any.hpp"
 #include "openvino/frontend/paddle/decoder.hpp"
 #include "openvino/frontend/paddle/exception.hpp"
