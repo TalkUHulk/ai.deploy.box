@@ -13,7 +13,10 @@ _持续更新ing_
 
 # Demo
 
-🐶[Try Demo](https://www.hulk.show/aidb-webassembly-demo/)
+* Try out the web demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
+
+* Run the demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1XgYhHZONHVcJN9KgtIER0zi9RZXJyRvj)
+
 
 |  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
 |  ----  | ----  |
