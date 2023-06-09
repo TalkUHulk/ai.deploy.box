@@ -52,11 +52,11 @@ int main(int argc, char** argv){
     // docker
         std::ifstream f("/.dockerenv");
         if(!f.good()){
-            cv::imshow("src_image", src_image);
+            cv::imshow("MobileViT", src_image);
             cv::waitKey();
         }
 #else
-    cv::imshow("src_image", src_image);
+    cv::imshow("MobileViT", src_image);
     cv::waitKey();
 #endif
 

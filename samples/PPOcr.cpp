@@ -87,16 +87,16 @@ int main(int argc, char** argv){
         cv::Mat result;
         test_ppocr(dbnet_interpreter, cls_interpreter, crnn_interpreter,  bgr, result);
 
-        cv::imwrite("PPOCR.jpg", result);
+        cv::imwrite("PPOcr.jpg", result);
 #if __linux__
         // docker
         std::ifstream f("/.dockerenv");
         if(!f.good()){
-            cv::imshow("PPOCR", result);
+            cv::imshow("PPOcr", result);
             cv::waitKey();
         }
 #else
-        cv::imshow("PPOCR", result);
+        cv::imshow("PPOcr", result);
         cv::waitKey();
 #endif
 

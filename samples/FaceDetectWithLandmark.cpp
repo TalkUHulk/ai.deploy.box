@@ -129,16 +129,16 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_landmark(face_detect_interpreter, face_landmark_interpreter, bgr, result);
-        cv::imwrite("FaceLandMark.jpg", result);
+        cv::imwrite("FaceDetectWithLandmark.jpg", result);
 #if __linux__
         // docker
         std::ifstream f("/.dockerenv");
         if(!f.good()){
-            cv::imshow("FaceLandMark", result);
+            cv::imshow("FaceDetectWithLandmark", result);
             cv::waitKey();
         }
 #else
-        cv::imshow("FaceLandMark", result);
+        cv::imshow("FaceDetectWithLandmark", result);
         cv::waitKey();
 #endif
 
@@ -157,7 +157,7 @@ int main(int argc, char** argv){
         while (cap.read(bgr)) {
             test_landmark(face_detect_interpreter, face_landmark_interpreter, bgr, result);
 //            writer << result;
-            cv::imshow("Face", result);
+            cv::imshow("FaceDetectWithLandmark", result);
             if (cv::waitKey(1) == 27) {
                 break;
             }

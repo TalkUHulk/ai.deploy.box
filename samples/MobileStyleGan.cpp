@@ -63,11 +63,11 @@ int main(int argc, char** argv){
             cv::imshow("generated", generated);
         } else {
              cv::imwrite("noise.jpg", Z);
-              cv::imwrite("generated.jpg", generated);
+              cv::imwrite("MobileStyleGan.jpg", generated);
         }
 #else
         cv::imshow("noise", Z);
-        cv::imshow("generated", generated);
+        cv::imshow("MobileStyleGan", generated);
 #endif
 
         if (cv::waitKey(100) == 27) {

@@ -75,11 +75,11 @@ int main(int argc, char** argv){
         // docker
         std::ifstream f("/.dockerenv");
         if(!f.good()){
-            cv::imshow("Face", result);
+            cv::imshow("FaceDetect", result);
             cv::waitKey();
         }
 #else
-        cv::imshow("Face", result);
+        cv::imshow("FaceDetect", result);
         cv::waitKey();
 #endif
 
@@ -97,7 +97,7 @@ int main(int argc, char** argv){
         while (cap.read(bgr)) {
             test_detect(face_detect_interpreter, bgr, result);
 //            writer << result;
-            cv::imshow("Face", result);
+            cv::imshow("FaceDetect", result);
             if (cv::waitKey(1) == 27) {
                 break;
             }

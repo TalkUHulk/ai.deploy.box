@@ -93,16 +93,16 @@ int main(int argc, char** argv){
         auto bgr = cv::imread(input_file);
         cv::Mat result;
         test_tddfav2(face_detect_interpreter, face_3ddfa_interpreter, bgr, result, dense);
-        cv::imwrite("Face3DDFAV2.jpg", result);
+        cv::imwrite("FaceDetectWith3DDFA.jpg", result);
 #if __linux__
         // docker
         std::ifstream f("/.dockerenv");
         if(!f.good()){
-            cv::imshow("3DDFAV2", result);
+            cv::imshow("FaceDetectWith3DDFA", result);
             cv::waitKey();
         }
 #else
-        cv::imshow("3DDFAV2", result);
+        cv::imshow("FaceDetectWith3DDFA", result);
         cv::waitKey();
 #endif
 
@@ -122,7 +122,7 @@ int main(int argc, char** argv){
         while (cap.read(bgr)) {
             test_tddfav2(face_detect_interpreter, face_3ddfa_interpreter, bgr, result, dense);
 //            writer << result;
-            cv::imshow("3DDFAV2", result);
+            cv::imshow("FaceDetectWith3DDFA", result);
             if (cv::waitKey(1) == 27) {
                 break;
             }
