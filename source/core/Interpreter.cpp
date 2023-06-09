@@ -12,7 +12,7 @@
 #include <preprocess/ImageInput.hpp>
 #include "utility/log.h"
 #include "utility/Utility.h"
-#include "utility/Logging.h"
+
 
 namespace AIDB {
 
