@@ -1,7 +1,6 @@
 #include "backend/openvino/OPVEngine.hpp"
 #include <iostream>
 
-
 namespace AIDB {
 
     void printInputAndOutputsInfo(const ov::Model& network) {
