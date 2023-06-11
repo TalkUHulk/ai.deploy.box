@@ -202,9 +202,12 @@ if(NOT ENGINE_NCNN_WASM)
         add_library(lib_opencv STATIC IMPORTED)
         set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../libs/android/opencv/native/libs/${ANDROID_ABI}/libopencv_java4.so)
 
+        add_library(libc++_shared STATIC IMPORTED)
+        set_target_properties(libc++_shared PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../libs/android/opencv/native/libs/${ANDROID_ABI}/libc++_shared.so)
+
         list(APPEND SOURCE_FILES aidb_jni.cpp)
         add_library(aidb SHARED ${SOURCE_FILES})
-        target_link_libraries(aidb lib_opencv ${LINK_LIBS} android -ljnigraphics)
+        target_link_libraries(aidb libc++_shared lib_opencv ${LINK_LIBS} android -ljnigraphics)
 
     else()
         set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM})
