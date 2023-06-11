@@ -63,7 +63,7 @@ namespace AIDB {
 
     StatusCode MNNEngine::init(const Parameter &param) {
         _model_name = param._model_name;
-        _net_cfg.type = MNN_FORWARD_VULKAN;//MNN_FORWARD_VULKAN;//MNN_FORWARD_CPU;//MNN_FORWARD_OPENCL;
+        _net_cfg.type = MNN_FORWARD_CPU;//MNN_FORWARD_VULKAN;//MNN_FORWARD_VULKAN;//MNN_FORWARD_CPU;//MNN_FORWARD_OPENCL;
         _net_cfg.numThread = param._numThread;
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
         _input_nodes = param._input_nodes;

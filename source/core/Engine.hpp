@@ -18,7 +18,7 @@ namespace AIDB {
         Engine() = default;
         virtual StatusCode init(const Parameter&) = 0;
         virtual StatusCode init(const Parameter&, const void *buffer_in1, const void* buffer_in2) = 0;
-        virtual ~Engine()= default;
+        virtual ~Engine(){};
         virtual void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) = 0;
 //        virtual void forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) = 0;
         std::vector<std::string> _output_node_name;

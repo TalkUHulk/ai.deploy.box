@@ -42,7 +42,7 @@ namespace AIDB {
         AIDBInput() = default;
         explicit AIDBInput(const YAML::Node& input_mode){};
         explicit AIDBInput(const std::string& input_str){};
-        virtual ~AIDBInput()= default;
+        virtual ~AIDBInput(){};
 #ifndef ENABLE_NCNN_WASM
         virtual void forward(const std::string &image_path, cv::Mat &blob) = 0;
         virtual void forward(const cv::Mat &image, cv::Mat &blob) = 0;
