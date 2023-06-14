@@ -202,7 +202,7 @@ Detail:
       - *in_node1
     output_nodes:
       - "output"
-      -
+
   # Hayao.onnx | Shinkai.onnx | Paprika.onnx
   AnimeGanV2: &animev2_detail
     encrypt: false
