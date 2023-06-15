@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(aidb)
+project(AiDB)
 SET(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 #add_definitions(-std=c++11 -g -O3 -pthread)
 #add_definitions(-std=c++11 -pthread)
@@ -10,17 +10,18 @@ set(CMAKE_CXX_STANDARD 11)
 
 # backend options
 option(ENGINE_MNN "Enable MNN" ON)
-option(ENGINE_ORT "Enable ONNXRuntime" ON)
-option(ENGINE_NCNN "Enable NCNN" ON)
-option(ENGINE_TNN "Enable TNN" ON)
+option(ENGINE_ORT "Enable ONNXRuntime" OFF)
+option(ENGINE_NCNN "Enable NCNN" OFF)
+option(ENGINE_TNN "Enable TNN" OFF)
 option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
-option(ENGINE_PPLite "Enable paddle-lite" ON)
+option(ENGINE_PPLite "Enable paddle-lite" OFF)
 option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
 option(BUILD_SAMPLE "Enable build sample" OFF)
-
+option(BUILD_PYTHON "Enable python api" OFF)
+option(OPENCV_HAS_FREETYPE "opencv-contrib complied with freetype or not. cv::putText can put chinese." OFF)
 
 message(STATUS ">>>>>>>>>>>>>")
-message(STATUS "AIDB BUILD INFO:")
+message(STATUS "AiDB BUILD INFO:")
 message(STATUS "\tMNN: ${ENGINE_MNN}")
 message(STATUS "\tONNXRuntime: ${ENGINE_ORT}")
 message(STATUS "\tNCNN: ${ENGINE_NCNN}")
@@ -29,7 +30,12 @@ message(STATUS "\tOpenVINO: ${ENGINE_OPV}")
 message(STATUS "\tPaddleLite: ${ENGINE_PPLite}")
 message(STATUS "\tWASM: ${ENGINE_NCNN_WASM}")
 message(STATUS "\tBuild Sample: ${BUILD_SAMPLE}")
+message(STATUS "\tBuild Python: ${BUILD_PYTHON}")
+message(STATUS "\tOPENCV_HAS_FREETYPE: ${OPENCV_HAS_FREETYPE}")
 
+add_definitions(-DOPENCV_HAS_FREETYPE)
+
+message("=========>>>> ${CMAKE_BINARY_DIR}")
 if(ENGINE_NCNN_WASM)
     if(NOT WASM_FEATURE)
         message(FATAL_ERROR "You must pass cmake option -DWASM_FEATURE and possible values are basic, simd, threads and simd-threads")
@@ -61,4 +67,8 @@ endif ()
 
 if(BUILD_SAMPLE)
     add_subdirectory(samples)
+endif ()
+
+if(BUILD_PYTHON)
+    add_subdirectory(python)
 endif ()

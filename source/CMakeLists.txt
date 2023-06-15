@@ -206,16 +206,16 @@ if(NOT ENGINE_NCNN_WASM)
         set_target_properties(libc++_shared PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../libs/android/opencv/native/libs/${ANDROID_ABI}/libc++_shared.so)
 
         list(APPEND SOURCE_FILES aidb_jni.cpp)
-        add_library(aidb SHARED ${SOURCE_FILES})
-        target_link_libraries(aidb libc++_shared lib_opencv ${LINK_LIBS} android -ljnigraphics)
+        add_library(AiDB SHARED ${SOURCE_FILES})
+        target_link_libraries(AiDB libc++_shared lib_opencv ${LINK_LIBS} android -ljnigraphics)
 
     else()
         set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM})
         link_directories(${LIB_PATH})
         find_package(OpenCV REQUIRED)
         include_directories(${OpenCV_INCLUDE_DIRS})
-        add_library(aidb SHARED ${SOURCE_FILES})
-        target_link_libraries(aidb ${OpenCV_LIBS} ${LINK_LIBS})
+        add_library(AiDB SHARED ${SOURCE_FILES})
+        target_link_libraries(AiDB ${OpenCV_LIBS} ${LINK_LIBS})
     endif()
 
 
@@ -242,8 +242,8 @@ else ()
     file(GLOB_RECURSE NCNN_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/backend/ncnn/*.cpp)
     list(APPEND SOURCE_FILES ${NCNN_SOURCE_FILES})
 
-    add_library(aidb SHARED ${SOURCE_FILES})
-    target_link_libraries(aidb ncnn)
+    add_library(AiDB SHARED ${SOURCE_FILES})
+    target_link_libraries(AiDB ncnn)
 endif ()
 
 #set(INCLUDE_FILES

@@ -19,7 +19,10 @@
 #include <chrono>
 #include <thread>
 
-#if !defined(ENABLE_NCNN_WASM) && !defined(__ANDROID__)
+//#if !defined(ENABLE_NCNN_WASM) && !defined(__ANDROID__)
+//#include <opencv2/freetype.hpp>
+//#endif
+#ifdef OPENCV_HAS_FREETYPE
 #include <opencv2/freetype.hpp>
 #endif
 
@@ -777,8 +780,6 @@ namespace AIDB {
                                         const std::vector<int> &output_shape) {
 
         cv::Mat generated_image(output_shape[2], output_shape[3], CV_8UC3);
-        std::cout << "@@###" << output_shape[2] << ";" << output_shape[3] << ";" << output_shape[1] << std::endl;
-
         auto generated_ptr = output.data();
         for(int h = 0; h < output_shape[2]; h++){
             for(int w = 0; w < output_shape[3]; w++){
@@ -1381,12 +1382,7 @@ namespace AIDB {
 
         std::vector<std::shared_ptr<OcrMeta>> boxes;
         BoxesFromBitmap(pred_map, bit_map, boxes);
-        std::cout << "boxes:" << boxes.size() << std::endl;
-
         FilterTagDetRes(boxes, ratio_h, ratio_w, srcimg, det_results);
-
-        std::cout << "filter_boxes:" << det_results.size() << std::endl;
-
     }
 
     float Utility::PPOCR::PolygonScoreAcc(const std::vector<cv::Point> &contour, const cv::Mat &pred) {
@@ -1708,7 +1704,7 @@ namespace AIDB {
         int thickness = -1;
         int linestyle = 8;
         int baseline = 0;
-#ifndef __ANDROID__
+#ifdef OPENCV_HAS_FREETYPE
         cv::Ptr<cv::freetype::FreeType2> ft2 = cv::freetype::createFreeType2();
         ft2->loadFontData(fontFileName,0);
 
