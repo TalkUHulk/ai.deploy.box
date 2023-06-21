@@ -2,7 +2,7 @@
  <img src="./doc/logo.png" align="middle" width = "240"/>
 <p align="center">
 
-<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a> <img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green"></a>
+<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a> <img src="https://img.shields.io/badge/Android-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green"></a>
 
 # Introduction
 
@@ -379,4 +379,101 @@ _Linux下，run前执行_  `source set_env.sh`
     * ONNX
     * MNN
     * OpenVINO
-    
+
+___
+
+## Pitfalls
+
+1. Android-rtti
+
+Q:
+```asm
+XXXX/3rdparty/yaml-cpp/depthguard.h:54:9: error: cannot use 'throw' with exceptions disabled
+
+In file included from XXXX/opencv/native/jni/include/opencv2/opencv.hpp:65:
+In file included from XXXX/opencv/native/jni/include/opencv2/flann.hpp:48:
+In file included from XXXX/opencv/native/jni/include/opencv2/flann/flann_base.hpp:41:
+In file included from XXXX/opencv/native/jni/include/opencv2/flann/params.h:35:
+XXXX/opencv/native/jni/include/opencv2/flann/any.h:60:63: error: use of typeid requires -frtti
+```
+A:
+app->build.gradle  add "-fexceptions"
+
+```asm
+externalNativeBuild {
+            ndkBuild {
+                cppFlags "-std=c++11", "-fexceptions"
+                arguments  "APP_OPTIM=release", "NDK_DEBUG=0"
+                abiFilters "arm64-v8a"
+            }
+        }
+```
+
+if complie with ncnn, disable rtti.
+
+```asm
+cmake -DCMAKE_TOOLCHAIN_FILE=../../android-ndk-r25c/build/cmake/android.toolchain.cmake -DANDROID_ABI="arm64-v8a"  -DANDROID_PLATFORM=android-24 -DNCNN_SHARED_LIB=ON  -DANDROID_ARM_NEON=ON -DNCNN_DISABLE_EXCEPTION=OFF -DNCNN_DISABLE_RTTI=OFF ..
+```
+
+reference: [issues/3231](https://github.com/Tencent/ncnn/issues/3231)
+
+
+2. Android-mnn
+
+Q:
+```asm
+I/MNNJNI: Can't Find type=3 backend, use 0 instead 
+```
+A:
+```asm
+java load so 时，显式调 System.load("libMNN_CL.so") 。在 CMakeLists.txt 里面让你的 so link libMNN_CL 貌似是不行的。
+init {
+            System.loadLibrary("aidb")
+            System.loadLibrary("MNN");
+            try {
+                System.loadLibrary("MNN_CL")
+                System.loadLibrary("MNN_Express")
+                System.loadLibrary("MNN_Vulkan")
+            } catch (ce: Throwable) {
+                Log.w("MNNJNI", "load MNN GPU so exception=%s", ce)
+            }
+            System.loadLibrary("mnncore")
+}
+```
+
+3. Android Studio
+
+Q:
+```asm
+Out of memory:Java heap space
+
+```
+
+A:
+```asm
+gradle.properties->org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
+```
+
+4. Android paddle-lite
+
+Q: because kernel for 'calib' is not supported by Paddle-Lite. 
+A: 使用带fp16标签的库
+
+Q: kernel for 'conv2d' is not supported by Paddle-lite. 
+A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
+
+5. Android
+
+Q:
+```asm
+dlopen failed: library “libc++_shared.so“ not found
+```
+
+A:
+
+cmakelist.txt
+```asm
+add_library(libc++_shared STATIC IMPORTED)
+set_target_properties(libc++_shared PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../libs/android/opencv/native/libs/${ANDROID_ABI}/libc++_shared.so)
+```
+
