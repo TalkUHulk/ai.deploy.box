@@ -53,7 +53,6 @@ namespace AIDB {
         AIDBInput* _ptr_input;
         Engine* _ptr_engine;
 
-
     };
 }
 #endif //AIENGINE_AIENGINEINTERPRETER_H

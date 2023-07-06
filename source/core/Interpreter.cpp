@@ -57,6 +57,8 @@ namespace AIDB {
         std::string config_path;
 
         spdlog::get(AIDB_DEBUG)->debug("backend:{}, model:{}", backend_lower, model_lower);
+
+
         if("onnx" == backend_lower){
 #ifdef ENABLE_ORT
             config_path = config_prefix + "onnx_config.yaml";

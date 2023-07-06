@@ -5,3 +5,4 @@ cmake-build-debug
 *.mp4
 logs/
 .DS_Store
+*.pb.*

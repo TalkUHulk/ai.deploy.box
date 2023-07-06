@@ -216,6 +216,18 @@ if(NOT ENGINE_NCNN_WASM)
         include_directories(${OpenCV_INCLUDE_DIRS})
         add_library(AiDB SHARED ${SOURCE_FILES})
         target_link_libraries(AiDB ${OpenCV_LIBS} ${LINK_LIBS})
+        if(C_API)
+#            find_package(Protobuf REQUIRED)
+#            include_directories(${Protobuf_INCLUDE_DIRS})
+#            include_directories(proto)
+#            add_library(AiDB_C SHARED ${SOURCE_FILES} c_api/aidb_c_api.cpp)
+#            target_link_libraries(AiDB_C ${OpenCV_LIBS} ${LINK_LIBS} ${Protobuf_LIBRARIES})
+            file(GLOB_RECURSE WRAPPER_FILES ${CMAKE_CURRENT_LIST_DIR}/server/wrapper/*.cpp)
+            file(GLOB_RECURSE SERVER_FILES ${CMAKE_CURRENT_LIST_DIR}/server/*.cpp ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/cpp-base64/base64.cpp)
+
+            add_library(AiDB_C SHARED ${SOURCE_FILES} ${WRAPPER_FILES} ${SERVER_FILES} c_api/aidb_c_api.cpp)
+            target_link_libraries(AiDB_C ${OpenCV_LIBS} ${LINK_LIBS})
+        endif()
     endif()
 
 

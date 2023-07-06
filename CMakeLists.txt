@@ -19,6 +19,7 @@ option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
 option(BUILD_SAMPLE "Enable build sample" OFF)
 option(BUILD_PYTHON "Enable python api" OFF)
 option(OPENCV_HAS_FREETYPE "opencv-contrib complied with freetype or not. cv::putText can put chinese." OFF)
+option(C_API "open c api" OFF)
 
 message(STATUS ">>>>>>>>>>>>>")
 message(STATUS "AiDB BUILD INFO:")

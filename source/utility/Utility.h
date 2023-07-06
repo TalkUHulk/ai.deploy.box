@@ -29,6 +29,7 @@ namespace AIDB{
 #define AIDB_WARNING "AIDB_WARNING"
 #define AIDB_ERROR "AIDB_ERROR"
 #define AIDB_CRITICAL "AIDB_CRITICAL"
+
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 
