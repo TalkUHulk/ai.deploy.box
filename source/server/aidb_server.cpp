@@ -28,6 +28,10 @@ namespace AiDBServer {
             return -1;
         }
 
+        if(_task_flow.find(flow_uuid) != _task_flow.end()){
+            spdlog::get(AIDB_DEBUG)->debug("task flow: [{}] has existed.", flow_uuid);
+            return -2;
+        }
         while (backend.size() != model.size()) {
             backend.push_back(backend[0]);
         }
