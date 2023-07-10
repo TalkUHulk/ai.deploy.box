@@ -32,6 +32,7 @@ message(STATUS "\tPaddleLite: ${ENGINE_PPLite}")
 message(STATUS "\tWASM: ${ENGINE_NCNN_WASM}")
 message(STATUS "\tBuild Sample: ${BUILD_SAMPLE}")
 message(STATUS "\tBuild Python: ${BUILD_PYTHON}")
+message(STATUS "\tBuild C_API: ${C_API}")
 message(STATUS "\tOPENCV_HAS_FREETYPE: ${OPENCV_HAS_FREETYPE}")
 
 add_definitions(-DOPENCV_HAS_FREETYPE)
