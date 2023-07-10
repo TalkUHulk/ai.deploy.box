@@ -170,7 +170,7 @@ func AiDBForward(A GoAiDB, flow_uuid string, image_path string) {
 }
 
 func main() {
-    imageRaw, err := readBinaryFile("./beckham.jpg")
+    imageRaw, err := readBinaryFile("../../doc/test/beckham.jpg")
     if err != nil {
         fmt.Println("read failed")
         return
