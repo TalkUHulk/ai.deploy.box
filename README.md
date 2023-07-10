@@ -19,6 +19,8 @@ _持续更新ing_
 
 * Run the Python demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gVKxkeIvgrnC56dVQOImyqQqVns-NtkR)
 
+* Run the Go demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hgV2Ieepjk5-YURQw_xpbTHrp2lORBfv?usp=sharing)
+
 
 |  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
 |  ----  | ----  |
