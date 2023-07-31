@@ -7,7 +7,7 @@ namespace AIDB {
 
 
     MNNParameter::MNNParameter(const YAML::Node& node): Parameter(node){
-
+        _backend_name = "mnn";
         _model_name = node["name"].as<std::string>();
         _model_path = node["model"].as<std::string>() + ".mnn";
         auto detail = node["detail"];

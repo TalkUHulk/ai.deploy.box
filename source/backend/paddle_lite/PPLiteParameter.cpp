@@ -8,7 +8,7 @@ namespace AIDB {
 
 
     PPLiteParameter::PPLiteParameter(const YAML::Node& node): Parameter(node){
-
+        _backend_name = "paddlelite";
         _model_name = node["name"].as<std::string>();
         _model_path = node["model"].as<std::string>() + ".nb";
 

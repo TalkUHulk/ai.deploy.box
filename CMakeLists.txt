@@ -35,9 +35,10 @@ message(STATUS "\tBuild Python: ${BUILD_PYTHON}")
 message(STATUS "\tBuild C_API: ${C_API}")
 message(STATUS "\tOPENCV_HAS_FREETYPE: ${OPENCV_HAS_FREETYPE}")
 
-add_definitions(-DOPENCV_HAS_FREETYPE)
+if(OPENCV_HAS_FREETYPE)
+    add_definitions(-DOPENCV_HAS_FREETYPE)
+endif()
 
-message("=========>>>> ${CMAKE_BINARY_DIR}")
 if(ENGINE_NCNN_WASM)
     if(NOT WASM_FEATURE)
         message(FATAL_ERROR "You must pass cmake option -DWASM_FEATURE and possible values are basic, simd, threads and simd-threads")

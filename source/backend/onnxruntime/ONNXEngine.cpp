@@ -79,6 +79,7 @@ namespace AIDB{
 
     StatusCode ONNXEngine::init(const Parameter &param){
         _model_name = param._model_name;
+        _backend_name = param._backend_name;
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
         _input_nodes = param._input_nodes;
 

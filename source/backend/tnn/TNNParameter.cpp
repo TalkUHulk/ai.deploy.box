@@ -9,6 +9,7 @@ namespace AIDB {
 
     TNNParameter::TNNParameter(const YAML::Node& node): Parameter(node){
 
+        _backend_name = "tnn";
         _model_name = node["name"].as<std::string>();
         _model_path = node["model"].as<std::string>() + ".tnnmodel";
         _param_path = node["model"].as<std::string>() + ".tnnproto";

@@ -89,6 +89,7 @@ namespace AIDB {
 
     StatusCode NCNNEngine::init(const Parameter &param) {
         _model_name = param._model_name;
+        _backend_name = param._backend_name;
 //        _opt.num_threads = param._numThread;
 //        _opt.blob_allocator = &_ncnn_blob_pool_allocator;
 //        _opt.workspace_allocator = &_ncnn_workspace_pool_allocator;

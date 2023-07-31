@@ -171,6 +171,7 @@ namespace AIDB {
             ptr_input = new ImageInput(input_node);
         }
 
+
         return new Interpreter(ptr_engine, ptr_input);
     }
 #ifdef ENABLE_NCNN_WASM
@@ -287,6 +288,14 @@ namespace AIDB {
     void Interpreter::set_roi(cv::Rect2f roi) {
         _ptr_input->set_roi(true);
         _ptr_input->set_roi(roi);
+    }
+
+    std::string Interpreter::which_model() {
+        return _ptr_engine->_model_name;
+    }
+
+    std::string Interpreter::which_backend() {
+        return _ptr_engine->_backend_name;
     }
 
 

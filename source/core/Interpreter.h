@@ -47,11 +47,16 @@ namespace AIDB {
         float scale_w() const;
         float scale_h() const;
         void set_roi(cv::Rect2f roi);
+
+        std::string which_model();
+        std::string which_backend();
+
     private:
         explicit Interpreter(Engine* engine);
         explicit Interpreter(Engine* engine, AIDBInput* input);
         AIDBInput* _ptr_input;
         Engine* _ptr_engine;
+
 
     };
 }

@@ -25,6 +25,7 @@ namespace AIDB {
         std::map<std::string, std::vector<int>> _input_nodes;  /*!< 输入节点信息*/
         bool _dynamic=false;
         std::string _model_name = "default";
+        std::string _backend_name = "default";
 
     };
 }

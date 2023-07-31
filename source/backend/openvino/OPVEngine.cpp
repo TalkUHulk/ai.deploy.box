@@ -87,7 +87,7 @@ namespace AIDB {
 
     StatusCode OPVEngine::init(const Parameter &param) {
         _model_name = param._model_name;
-
+        _backend_name = param._backend_name;
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
         _input_nodes = param._input_nodes;
 //        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
