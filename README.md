@@ -1,5 +1,5 @@
 <p align="center">
- <img src="./doc/logo.png" align="middle" width = "240"/>
+ <img src="./doc/logo.gif" align="middle"/>
 <p align="center">
 
 <img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a> <img src="https://img.shields.io/badge/Android-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green"></a>
