@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
+set(ALL_TARGETS "" CACHE INTERNAL "")
+
 project(AiDB)
 SET(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_STANDARD 14)
@@ -34,6 +36,8 @@ message(STATUS "\tBuild Sample: ${BUILD_SAMPLE}")
 message(STATUS "\tBuild Python: ${BUILD_PYTHON}")
 message(STATUS "\tBuild C_API: ${C_API}")
 message(STATUS "\tOPENCV_HAS_FREETYPE: ${OPENCV_HAS_FREETYPE}")
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/tools/aidbCommon.cmake")
 
 if(OPENCV_HAS_FREETYPE)
     add_definitions(-DOPENCV_HAS_FREETYPE)
@@ -79,4 +83,24 @@ endif ()
 if(BUILD_LUA)
     add_subdirectory(lua)
 endif ()
+
+
+
+add_custom_target(BUILD_SUCCESSFUL ALL
+        DEPENDS ${ALL_TARGETS}
+        COMMAND ${CMAKE_COMMAND} -E echo ""
+        COMMAND ${CMAKE_COMMAND} -E echo "=========================================================================="
+        COMMAND ${CMAKE_COMMAND} -E echo "                           Compile complete!                              "
+        COMMAND ${CMAKE_COMMAND} -E echo ""
+        COMMAND ${CMAKE_COMMAND} -E echo ""
+        COMMAND ${CMAKE_COMMAND} -E echo "███████╗███╗   ██╗     ██╗ ██████╗ ██╗   ██╗     █████╗ ██╗██████╗ ██████╗ "
+        COMMAND ${CMAKE_COMMAND} -E echo "██╔════╝████╗  ██║     ██║██╔═══██╗╚██╗ ██╔╝    ██╔══██╗██║██╔══██╗██╔══██╗"
+        COMMAND ${CMAKE_COMMAND} -E echo "█████╗  ██╔██╗ ██║     ██║██║   ██║ ╚████╔╝     ███████║██║██║  ██║██████╔╝"
+        COMMAND ${CMAKE_COMMAND} -E echo "██╔══╝  ██║╚██╗██║██   ██║██║   ██║  ╚██╔╝      ██╔══██║██║██║  ██║██╔══██╗"
+        COMMAND ${CMAKE_COMMAND} -E echo "███████╗██║ ╚████║╚█████╔╝╚██████╔╝   ██║       ██║  ██║██║██████╔╝██████╔╝"
+        COMMAND ${CMAKE_COMMAND} -E echo "╚══════╝╚═╝  ╚═══╝ ╚════╝  ╚═════╝    ╚═╝       ╚═╝  ╚═╝╚═╝╚═════╝ ╚═════╝ "
+        COMMAND ${CMAKE_COMMAND} -E echo "==========================================================================="
+        COMMAND ${CMAKE_COMMAND} -E echo ""
+        )
+
 

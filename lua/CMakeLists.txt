@@ -27,10 +27,19 @@ find_package(Lua REQUIRED)
 
 include_directories(${LUA_INCLUDE_DIR})
 
-add_library(AiDBLua SHARED ${SOURCE_FILES} wrapper.cpp wrapper.h)
-
+add_library(AiDBLua SHARED ${SOURCE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/wrapper.cpp)
 #target_link_libraries(AiDBLua ${OpenCV_LIBS} ${LINK_LIBS} liblua.5.3.dylib AiDB_C)
 target_link_libraries(AiDBLua ${OpenCV_LIBS} ${LINK_LIBS} ${LUA_LIBRARIES} AiDB_C)
+
+
+
+
+
+
+
+
+
+
 
 
 

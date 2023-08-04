@@ -1,0 +1,12 @@
+function(add_library NAME)
+    string(FIND ${NAME} "AiDB" pos)
+    if(pos GREATER -1)
+        set(ALL_TARGETS ${ALL_TARGETS} "${NAME}" CACHE INTERNAL "ALL_TARGETS")
+    endif()
+    _add_library(${NAME} ${ARGN})
+endfunction()
+
+function(add_executable NAME)
+    set(ALL_TARGETS ${ALL_TARGETS} "${NAME}" CACHE INTERNAL "ALL_TARGETS")
+    _add_executable(${NAME} ${ARGN})
+endfunction()
