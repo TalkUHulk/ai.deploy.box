@@ -223,6 +223,15 @@ namespace AIDB {
         _ptr_input->forward(bgr, blob);
         return blob;
     }
+
+    void Interpreter::push(const std::string &image_path){
+        assert(nullptr != _ptr_input);
+        auto bgr = cv::imread(image_path);
+        assert(!bgr.empty());
+        cv::Mat blob;
+        _ptr_input->forward(bgr, blob);
+    }
+
 #else
 //    void Interpreter::forward(const ncnn::Mat frame, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
 //        ENGINE_ASSERT(nullptr != _ptr_engine)

@@ -21,7 +21,7 @@ namespace AiDBServer {
 
     class AiDBServer {
     public:
-        AiDBServer() = default;
+        AiDBServer();
 
 //    explicit AiDBServer(const char* parameter);
         ~AiDBServer();

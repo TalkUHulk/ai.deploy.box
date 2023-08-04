@@ -17,9 +17,7 @@ namespace AiDBServer {
     }
 
     int AiDBServer::Register(const char *parameter) {
-        std::cout << "Register====>>" << std::string(parameter) << std::endl;
         auto input = json::parse(parameter);
-        std::cout << "parse====>>" << input << std::endl;
         auto model = input["model"];
         auto backend = input["backend"];
         auto flow_uuid = input["flow_uuid"];
@@ -70,7 +68,7 @@ namespace AiDBServer {
             std::string decoded = base64_decode(binary_image);
             std::vector<char> im_vec(decoded.begin(),decoded.end());
             auto image = cv::imdecode(im_vec, 1);
-            cv::imwrite("receive.jpg", image);
+//            cv::imwrite("receive.jpg", image);
 //            cv::Mat image = cv::imread(image_path);
             if (image.empty()) {
                 spdlog::get(AIDB_DEBUG)->error("AiDBServer read image failed");
@@ -93,6 +91,7 @@ namespace AiDBServer {
                 spdlog::get(AIDB_DEBUG)->error("size_in < {}", *size_out);
                 return -2;
             }
+
             strncpy(binary_result, str_aidb_result.data(), *size_out);
             binary_result[*size_out] = '\0';
 
@@ -101,6 +100,10 @@ namespace AiDBServer {
             spdlog::get(AIDB_DEBUG)->error("AiDBServer Forward: task flow:[{}] not exists.", str_flow_uuid);
             return -1;
         }
+    }
+
+    AiDBServer::AiDBServer() {
+        AIDB::aidb_log_init(AIDB_DEBUG, "debug");
     }
 }
 

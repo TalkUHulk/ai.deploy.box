@@ -34,6 +34,7 @@ namespace AIDB {
 #ifndef ENABLE_NCNN_WASM
         cv::Mat operator << (const cv::Mat &image);
         cv::Mat operator << (const std::string &image_path);
+        void push(const std::string &image_path);
 #else
 //        void forward(ncnn::Mat frame, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape);
 

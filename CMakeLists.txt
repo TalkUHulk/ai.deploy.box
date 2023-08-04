@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 14)
 #add_definitions(-std=c++11 -pthread)
 
 
-
 # backend options
 option(ENGINE_MNN "Enable MNN" ON)
 option(ENGINE_ORT "Enable ONNXRuntime" OFF)
@@ -18,6 +17,7 @@ option(ENGINE_PPLite "Enable paddle-lite" OFF)
 option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
 option(BUILD_SAMPLE "Enable build sample" OFF)
 option(BUILD_PYTHON "Enable python api" OFF)
+option(BUILD_LUA "Enable lua api" OFF)
 option(OPENCV_HAS_FREETYPE "opencv-contrib complied with freetype or not. cv::putText can put chinese." OFF)
 option(C_API "open c api" OFF)
 
@@ -75,3 +75,8 @@ endif ()
 if(BUILD_PYTHON)
     add_subdirectory(python)
 endif ()
+
+if(BUILD_LUA)
+    add_subdirectory(lua)
+endif ()
+
