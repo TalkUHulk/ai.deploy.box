@@ -33,6 +33,7 @@ class CMakeBuild(build_ext):
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + str(extdir.parent.absolute()),
             "-DCMAKE_BUILD_TYPE=" + config, "-DBUILD_PYTHON=ON",
             "-DBUILD_SAMPLE=OFF", "-DENGINE_NCNN_WASM=OFF",
+            "-DC_API=OFF", "-DBUILD_LUA=OFF", "-DOPENCV_HAS_FREETYPE=OFF",
             "-DENGINE_MNN=ON", "-DENGINE_ORT=ON", "-DENGINE_NCNN=ON",
             "-DENGINE_TNN=ON", "-DENGINE_OPV=ON", "-DENGINE_PPLite=ON"
         ]
