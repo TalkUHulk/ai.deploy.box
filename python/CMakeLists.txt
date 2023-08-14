@@ -18,7 +18,7 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/../source/core)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/../3rdparty)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/wrapper)
 
-set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM})
+set(LIB_PATH ${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/${CMAKE_HOST_SYSTEM_PROCESSOR})
 link_directories(${LIB_PATH})
 link_directories(${LIB_PATH}/tnn/)
 link_directories(${LIB_PATH}/paddlelite/)

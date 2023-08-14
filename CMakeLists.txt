@@ -11,13 +11,13 @@ set(CMAKE_CXX_STANDARD 14)
 
 # backend options
 option(ENGINE_MNN "Enable MNN" ON)
-option(ENGINE_ORT "Enable ONNXRuntime" OFF)
-option(ENGINE_NCNN "Enable NCNN" OFF)
-option(ENGINE_TNN "Enable TNN" OFF)
-option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
-option(ENGINE_PPLite "Enable paddle-lite" OFF)
+option(ENGINE_ORT "Enable ONNXRuntime" ON)
+option(ENGINE_NCNN "Enable NCNN" ON)
+option(ENGINE_TNN "Enable TNN" ON)
+option(ENGINE_OPV "Enable OpenVINO" ON) #Mac 与TNN冲突
+option(ENGINE_PPLite "Enable paddle-lite" ON)
 option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
-option(BUILD_SAMPLE "Enable build sample" OFF)
+option(BUILD_SAMPLE "Enable build sample" ON)
 option(BUILD_PYTHON "Enable python api" OFF)
 option(BUILD_LUA "Enable lua api" OFF)
 option(OPENCV_HAS_FREETYPE "opencv-contrib complied with freetype or not. cv::putText can put chinese." OFF)
@@ -61,6 +61,8 @@ else ()
 endif ()
 
 set(PLATFORM ${OS} CACHE INTERNAL "PlatformOS" )
+
+message("-- AiDB DEVICE INFO: CPU: ${CMAKE_HOST_SYSTEM_PROCESSOR} OS: ${OS}")
 
 add_subdirectory(source)
 

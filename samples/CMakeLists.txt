@@ -6,19 +6,19 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/utility)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../source/)
 
-link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/)
+link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/${CMAKE_HOST_SYSTEM_PROCESSOR}/)
 
 
 IF(ENGINE_TNN)
-    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/tnn/)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/${CMAKE_HOST_SYSTEM_PROCESSOR}/tnn/)
 ENDIF()
 
 IF(ENGINE_OPV)
-    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/openvino/intel64/)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/${CMAKE_HOST_SYSTEM_PROCESSOR}/openvino/)
 ENDIF()
 
 IF(ENGINE_PPLite)
-    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/paddlelite/)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/../libs/${PLATFORM}/${CMAKE_HOST_SYSTEM_PROCESSOR}/paddlelite/)
 ENDIF()
 
 file(GLOB_RECURSE SAMPLES_FILES ${CMAKE_CURRENT_LIST_DIR}/*.cpp)

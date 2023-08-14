@@ -641,7 +641,7 @@ Detail:
       inputformat: &format "NCHW"
 
     input_node1: &in_node1
-      input_name: "x"
+      input_name: "x2paddle_x"
       format: *format
       shape: *shape
 
@@ -677,7 +677,7 @@ Detail:
       inputformat: &format "NCHW"
 
     input_node1: &in_node1
-      input_name: "x"
+      input_name: "x2paddle_x"
       format: *format
       shape: *shape
     input_nodes:
@@ -712,7 +712,7 @@ Detail:
       inputformat: &format "NCHW"
 
     input_node1: &in_node1
-      input_name: "x"
+      input_name: "x2paddle_x"
       format: *format
       shape: *shape
     input_nodes:
