@@ -475,11 +475,23 @@ A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
 
 5. Android
 
+Q: How to deploy models in android with openvino.
+A:
+* step1
+  * build openvino library. Here are my compilation instructions:
+    ```asm
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=android-ndk-r25c/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=30 -DANDROID_STL=c++_shared  -DENABLE_SAMPLES=OFF  -DENABLE_OPENCV=OFF -DENABLE_CLDNN=OFF -DENABLE_VPU=OFF  -DENABLE_GNA=OFF -DENABLE_MYRIAD=OFF -DENABLE_TESTS=OFF  -DENABLE_GAPI_TESTS=OFF  -DENABLE_BEH_TESTS=OFF ..
+    ```
+* step2 
+  * Put openvino library(*.so) to assets.(plugin you need)
+
+* step3
+  * If your device is not root, put libc++.so and libc++_shared.so to assets.
+
 Q:
 ```asm
 dlopen failed: library “libc++_shared.so“ not found
 ```
-
 A:
 
 cmakelist.txt
@@ -487,4 +499,22 @@ cmakelist.txt
 add_library(libc++_shared STATIC IMPORTED)
 set_target_properties(libc++_shared PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../libs/android/opencv/native/libs/${ANDROID_ABI}/libc++_shared.so)
 ```
+
+
+Q:
+```asm
+java.lang.UnsatisfiedLinkError: dlopen failed: cannot locate symbol "__emutls_get_address" referenced by "/data/app/~~DMBfRqeqFvKzb9yUIkUZiQ==/com.hulk.aidb_demo-HrziaiyGs2adLTT-aQqemg==/lib/arm64/libopenvino_arm_cpu_plugin.so"...
+```
+
+A: Build openvino arm library, and put *.so in app/libs/${ANDROID_ABI}/. (need add `jniLibs.srcDirs = ['libs']` in build.gradle)
+
+Q:
+
+```asm
+library "/system/lib64/libc++.so" ("/system/lib64/libc++.so") needed or dlopened by "/apex/com.android.art/lib64/libnativeloader.so" is not accessible for the namespace: [name="classloader-namespace", ld_library_paths="", default_library_paths="/data/app/~~IWBQrjWXHt7o71mstUGRHA==/com.hulk.aidb_demo-cfq3aSk8DN62UDtoKV4Vfg==/lib/arm64:/data/app/~~IWBQrjWXHt7o71mstUGRHA==/com.hulk.aidb_demo-cfq3aSk8DN62UDtoKV4Vfg==/base.apk!/lib/arm64-v8a", permitted_paths="/data:/mnt/expand:/data/data/com.hulk.aidb_demo"]
+```
+
+
+A: Put libc++.so in android studio app/libs/${ANDROID_ABI}/. (need add `jniLibs.srcDirs = ['libs']` in build.gradle) 
+
 
