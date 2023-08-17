@@ -473,9 +473,10 @@ A: 使用带fp16标签的库
 Q: kernel for 'conv2d' is not supported by Paddle-lite. 
 A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
 
-5. Android
+5. Android OpenVINO
 
 Q: How to deploy models in android with openvino.
+
 A:
 * step1
   * build openvino library. Here are my compilation instructions:
