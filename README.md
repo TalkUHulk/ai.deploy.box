@@ -475,7 +475,7 @@ A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
 
 5. Android OpenVINO
 
-Q: How to deploy models in android with openvino.
+Q: How to deploy models in android with openvino([reference](https://github.com/openvinotoolkit/openvino/issues/15006)).
 
 A:
 * step1
@@ -488,6 +488,8 @@ A:
 
 * step3
   * If your device is not root, put libc++.so and libc++_shared.so to assets.
+
+
 
 Q:
 ```asm
