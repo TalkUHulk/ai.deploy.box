@@ -289,9 +289,9 @@ Java_com_hulk_aidb_1demo_ProcessActivity_aidbForward(
         g_interpreter->forward((float*)blob.data, g_interpreter->width(), g_interpreter->height(), g_interpreter->channel(), outputs, outputs_shape);
         std::vector<std::shared_ptr<AIDB::ObjectMeta>> object;
         auto post_process = AIDB::Utility::YoloX(g_interpreter->width(), 0.25, 0.45, {8, 16, 32});
-        post_process(outputs[0], outputs_shape[0], object, g_interpreter->width(), g_interpreter->height(), g_interpreter->scale_h());
+        post_process(outputs[0], outputs_shape[0], object, frame.cols, frame.rows, g_interpreter->scale_h());
 
-        LOGD("@@@@@@ forward", "yolox object num:%lu", object.size());
+//        LOGD("@@@@@@ forward", "yolox object num:%lu", object.size());
 
         jmethodID jConstructor = env->GetMethodID(jAIDBMetaClass, "<init>", "(II)V");
         jAIDBMetaObj = env->NewObject(jAIDBMetaClass, jConstructor, (int)object.size(), 1);
@@ -773,7 +773,7 @@ Java_com_hulk_aidb_1demo_CaptureActivity_aidbForward(
         g_interpreter->forward((float*)blob.data, g_interpreter->width(), g_interpreter->height(), g_interpreter->channel(), outputs, outputs_shape);
         std::vector<std::shared_ptr<AIDB::ObjectMeta>> object;
         auto post_process = AIDB::Utility::YoloX(g_interpreter->width(), 0.25, 0.45, {8, 16, 32});
-        post_process(outputs[0], outputs_shape[0], object, g_interpreter->width(), g_interpreter->height(), g_interpreter->scale_h());
+        post_process(outputs[0], outputs_shape[0], object, frame.cols, frame.rows, g_interpreter->scale_h());
 
         jmethodID jConstructor = env->GetMethodID(jAIDBMetaClass, "<init>", "(II)V");
         jAIDBMetaObj = env->NewObject(jAIDBMetaClass, jConstructor, (int)object.size(), 1);
