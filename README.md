@@ -1,8 +1,9 @@
+English | <a href="README_cn.md">简体中文</a>
+
 <p align="center">
  <img src="./doc/logo.gif" align="middle" width="320px"/>
 <p align="center">
 
-English | <a href="README_cn.md">简体中文</a>
 
 <div align='center'>
 <img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green">
