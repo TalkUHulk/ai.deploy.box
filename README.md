@@ -86,13 +86,29 @@
 
 ## Contents 📖💡
 
-* [Features](#ai.deploy.box-Features)
-* [Demo](#ai.deploy.box-Demo)
-* [Demo Repo](#ai.deploy.box-Demo-Repo)
-* [FrameWork](#ai.deploy.box-FrameWork)
-* [Quick Start](#ai.deploy.box-Quick-Start)
-* [Sample Usage](#ai.deploy.box-Sample-Usage)
-* [Pitfalls](#ai.deploy.box-Pitfalls)
+- [Features](#features)
+- [Demo](#demo)
+- [Demo Repo](#demo-repo)
+- [FrameWork](#framework)
+- [Quick Start](#quick-start)
+  - [Environment](#environment)
+  - [Build](#build)
+  - [Models](#models)
+  - [Usage](#usage)
+- [Sample Usage](#sample-usage)
+  - [Face Detect](#face-detect)
+  - [Face Landmark](#face-landmark)
+  - [Face 3D](#usage)
+  - [Face Parsing](#usage)
+  - [OCR](#ocr)
+  - [YoloX](#yolox)
+  - [YoloV7](#yolov7)
+  - [YoloV8](#yolov8)
+  - [MobileVit](#mobilevit)
+  - [MoveNet](#movenet)
+  - [MobileStyleGan](#mobilestylegan)
+  - [AnimeGan](#animegan)
+- [Pitfalls](#pitfalls)
 
 
 ## 1. FrameWork
@@ -205,7 +221,7 @@ Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipC
 
 Example: use scrfd detect face by mnn:
 
-```asm
+```c++
 #include <opencv2/opencv.hpp>
 #include "Interpreter.h"
 #include "utility/Utility.h"
@@ -235,7 +251,11 @@ AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins
 
 In linux, run `source set_env.sh` before test.
 
+
 ### Face Detect
+
+<details>
+<summary>Face Detect</summary>
 
 ```asm
 ./build/samples/FaceDetect model_name backend type inputfile
@@ -259,7 +279,13 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
-### Face landmark
+</details>
+
+### Face Landmark
+
+<details>
+<summary>Face landmark</summary>
+
 ```asm
 ./build/samples/FaceDetectWithLandmark model_name backend pfpld backend type inputfile
 ```
@@ -283,7 +309,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### Face 3D
+
+<details>
+<summary>Face 3D</summary>
 
 ```asm
 ./build/samples/FaceDetectWith3DDFA det_model_name backend tddfa_model_name backend type inputfile
@@ -314,7 +345,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### Face Parsing
+
+<details>
+<summary>Face Parsing</summary>
 
 ```asm
 ./build/samples/FaceParsing bisenet backend type inputfile
@@ -334,7 +370,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### OCR
+
+<details>
+<summary>Ocr</summary>
 
 ```asm
 ./build/samples/PPOcr ppocr_det det_backend ppocr_cls cls_backend ppocr_ret rec_backend  type inputfile
@@ -353,7 +394,13 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### YoloX
+
+<details>
+<summary>YoloX</summary>
+
 ```asm
 ./build/samples/YoloX model_name backend type inputfile
 ```
@@ -381,7 +428,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### YoloV7
+
+<details>
+<summary>YoloV7</summary>
 
 ```asm
 ./build/samples/YoloV7 model_name backend type inputfile
@@ -411,7 +463,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### YoloV8
+
+<details>
+<summary>YoloV8</summary>
 
 ```asm
 ./build/samples/YoloV8 model_name backend type inputfile
@@ -437,7 +494,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### MobileVit
+
+<details>
+<summary>MobileVit</summary>
 
 ```asm
 ./build/samples/MobileViT model_name backend inputfile
@@ -451,9 +513,14 @@ In linux, run `source set_env.sh` before test.
     * ONNX
     * MNN
     * OpenVINO
+
+</details>
     
-    
+
 ### MoveNet
+
+<details>
+<summary>MoveNet</summary>
 
 ```asm
 ./build/samples/Movenet movenet backend type inputfile
@@ -472,7 +539,12 @@ In linux, run `source set_env.sh` before test.
 
 - inputfile: 0 is webcam
 
+</details>
+
 ### MobileStyleGan
+
+<details>
+<summary>MobileStyleGan</summary>
 
 ```asm
 ./build/samples/MobileStyleGan mobilestylegan_mappingnetwork map_backend mobilestylegan_synthesisnetwork syn_backend
@@ -483,8 +555,12 @@ In linux, run `source set_env.sh` before test.
     * MNN
     * OpenVINO
 
+</details>
     
 ### AnimeGan
+
+<details>
+<summary>AnimeGan</summary>
 
 ```asm
 ./build/samples/AnimeGan model_name backend 0 inputfile
@@ -505,7 +581,8 @@ In linux, run `source set_env.sh` before test.
     * MNN
     * OpenVINO
 
-___
+</details>
+
 
 ## 4. Pitfalls
 
