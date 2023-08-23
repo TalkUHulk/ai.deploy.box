@@ -254,6 +254,8 @@ AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins
 
 In linux, run `source set_env.sh` before test.
 
+<details>
+<summary>Sample Usage</summary>
 
 ### Face Detect
 
@@ -586,11 +588,13 @@ In linux, run `source set_env.sh` before test.
 
 </details>
 
+</details>
+
 
 ## Pitfalls
 
 <details>
-<summary>AnimeGan</summary>
+<summary>Pitfalls</summary>
 
 1. Android-rtti
 
