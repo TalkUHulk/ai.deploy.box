@@ -2,16 +2,56 @@
  <img src="./doc/logo.gif" align="middle"/>
 <p align="center">
 
-<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green"></a>  <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Win64-x-red"></a> <img src="https://img.shields.io/badge/Android-%E2%9C%93-green"></a> <img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green"></a>
+<div align='center'>
+<img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green">
+<img src="https://img.shields.io/badge/Linux-%E2%9C%93-green">
+<img src="https://img.shields.io/badge/Win64-x-red">
+<img src="https://img.shields.io/badge/Android-%E2%9C%93-green">
+<img src="https://img.shields.io/badge/RasperryPi-%E2%9C%93-green">
+<img src="https://img.shields.io/badge/Webassembly-%E2%9C%93-green">
+</div>   
 
-# Introduction
+<div align='center'>
+<img src="https://img.shields.io/badge/Onnx-%E2%9C%93-blue">
+<img src="https://img.shields.io/badge/MNN-%E2%9C%93-blue">
+<img src="https://img.shields.io/badge/NCNN-%E2%9C%93-blue">
+<img src="https://img.shields.io/badge/TNN-%E2%9C%93-blue">
+<img src="https://img.shields.io/badge/PaddleLite-%E2%9C%93-blue">
+<img src="https://img.shields.io/badge/OpenVINO-%E2%9C%93-blue">
+</div>   
 
-AIDB的目的是使用c++快速AI模型，集成了目前市面上比较主流的几个c++部署框架，包括ONNX、MNN、NCNN、TNN、Paddle和OpenVINO。将几个框架抽象成统一的接口，通过配置文件可以方便调用不同框架和模型。
-并且提供了很多预训练模型供调用测试，涉及目标检测、分类和生成模型。
+<div align='center'>
+<img src="https://img.shields.io/badge/C-%E2%9C%93-orange">
+<img src="https://img.shields.io/badge/C++-%E2%9C%93-orange">
+<img src="https://img.shields.io/badge/Python-%E2%9C%93-orange">
+<img src="https://img.shields.io/badge/Lua-%E2%9C%93-orange">
+<img src="https://img.shields.io/badge/Go-%E2%9C%93-orange">
+</div>   
 
-_持续更新ing_
+📌**AiDB** : A toolbox for deep learning model deployment using C++. Abstract mainstream deep learning inference frameworks into unified interfaces, including ONNXRUNTIME, MNN, NCNN, TNN, PaddleLite, and OpenVINO. Provide deployment demo for multiple scenarios and languages. This project is not only used to record learning, but also a summary of my work over the past few years. If this project inspires you or helps you, welcome ⭐Star⭐ to support me,  which is the driving force for me to keep updating! 🍔
 
-# FrameWork
+<p align="center">
+ <img src="./doc/entry/android_front_base.gif"  width="128px"/>
+ <img src="./doc/entry/android_front_dense.gif" width="128px"/>
+ <img src="./doc/entry/android_ocr.gif"         width="128px"/>
+ <img src="./doc/entry/android_yolox.gif"       height="228px"/>
+<br>
+ <img src="./doc/entry/wasm_pc.gif" height="185" width="320px"/>
+ <img src="./doc/entry/rasperry_yolox.gif"  height="185" width="320px"/>
+ <img src="./doc/entry/Qt_face.gif" height="185" width="320px"/>
+ <img src="./doc/entry/Qt_ocr.gif"  height="185" width="320px"/>
+<p align="center">
+
+
+## Features 🍉🍉
+
+* **rich backend:** integrating mainstream AI inference frameworks, including OnnxRuntime, MNN, NCNN, TNN, PaddleLite, and OpenVINO;
+* **user friendly:** abstracting all inference frameworks into a unified interface and selecting them through configuration files for ease of use;
+* **multiple scenarios:** support Linux、MacOS、Android(Win64 coming soon、IOS--poverty has limited my work)，provide [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) and minimal server deployment demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) and [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
+* **multiple languages:** provide call instances for Python, Lua, and Go;
+
+
+## FrameWork
 
 <p align="center">
  <img src="./doc/arch.png" align="middle"/>
