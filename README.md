@@ -36,11 +36,11 @@
  <img src="./doc/entry/android_ocr.gif"         width="128px"/>
  <img src="./doc/entry/android_yolox.gif"       height="228px"/>
 <br>
- <img src="./doc/entry/wasm_pc.gif"        height="185px" width="256px"/>
- <img src="./doc/entry/rasperry_yolox.gif" height="185px" width="256px"/>
+ <img src="./doc/entry/wasm_pc.gif"        height="185" width="256px"/>
+ <img src="./doc/entry/rasperry_yolox.gif" height="185" width="256px"/>
 <br>
- <img src="./doc/entry/Qt_face.gif"  width="256px"/>
- <img src="./doc/entry/Qt_ocr.gif"   width="256px"/>
+ <img src="./doc/entry/Qt_face.gif" height="185" width="256px"/>
+ <img src="./doc/entry/Qt_ocr.gif"  height="185" width="256px"/>
 <p align="center">
 
 
