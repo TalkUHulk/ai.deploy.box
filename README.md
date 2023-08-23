@@ -26,7 +26,9 @@
 <img src="https://img.shields.io/badge/Python-%E2%9C%93-orange">
 <img src="https://img.shields.io/badge/Lua-%E2%9C%93-orange">
 <img src="https://img.shields.io/badge/Go-%E2%9C%93-orange">
-</div>   
+</div>
+
+
 
 📌**AiDB** : A toolbox for deep learning model deployment using C++. Abstract mainstream deep learning inference frameworks into unified interfaces, including ONNXRUNTIME, MNN, NCNN, TNN, PaddleLite, and OpenVINO. Provide deployment demo for multiple scenarios and languages. This project is not only used to record learning, but also a summary of my work over the past few years. If this project inspires you or helps you, welcome ⭐Star⭐ to support me,  which is the driving force for me to keep updating! 🍔
 
@@ -43,6 +45,10 @@
  <img src="./doc/entry/Qt_ocr.gif"  height="185" width="256px"/>
 <p align="center">
 
+|  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
+|  ----  | ----  |
+| <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-webcam-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
+
 
 ## Features 🍉🍉
 
@@ -51,15 +57,7 @@
 * **multiple scenarios:** support Linux、MacOS、Android(Win64 coming soon、IOS--poverty has limited my work)，provide [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) and minimal server deployment demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) and [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
 * **multiple languages:** provide call instances for Python, Lua, and Go;
 
-
-## FrameWork
-
-<p align="center">
- <img src="./doc/arch.png" align="middle"/>
-<p align="center">
-
-
-# Demo
+## Demo
 
 * Try out the web demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
 
@@ -71,19 +69,89 @@
 
 * Run the Lua demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QuiJAutYAdn0MIOhGIk9JPPUwiVuWCFB?usp=drive_link)
 
+## Demo Repo
 
-|  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
-|  ----  | ----  |
-| <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-webcam-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
+* [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo)
+
+* [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 
+
+* [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) 
+
+* [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo)
+
+* [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) 
+
+* [Webassembly](https://github.com/TalkUHulk/aidb-webassembly-demo)
 
 
+## Contents 📖💡
 
-# Models
+* [Features](#ai.deploy.box-Features)
+* [Demo](#ai.deploy.box-Demo)
+* [Demo Repo](#ai.deploy.box-Demo-Repo)
+* [FrameWork](#ai.deploy.box-FrameWork)
+* [Quick Start](#ai.deploy.box-Quick-Start)
+* [Sample Usage](#ai.deploy.box-Sample-Usage)
+* [Pitfalls](#ai.deploy.box-Pitfalls)
+
+
+## 1. FrameWork
+
+<p align="center">
+ <img src="./doc/arch.png" align="middle"/>
+<p align="center">
+
+There are two modes available, S mode(C api) and H mode(C++ api)
+
+<div align='center'>
+ <img src="./doc/S-mode.gif" height="185" />
+ <img src="./doc/H-mode.gif"  height="185" />
+</div>
+
+## 2. Quick Start ⚡⚡
+
+### environment
+
+<details>
+<summary>Recommend using Docker</summary>
+
+```java
+docker pull mister5ive/ai.deploy.box
+```
+</details>
+
+
+### Build
+
+
+```asm
+git clone https://github.com/TalkUHulk/ai.deploy.box.git
+cd ai.deploy.box.git
+mkdir build && cd build
+cmake .. -DC_API={ON/OFF} -DBUILD_SAMPLE={ON/OFF} -DBUILD_PYTHON={ON/OFF} -DBUILD_LUA={ON/OFF} -DENGINE_NCNN_WASM={ON/OFF} -DOPENCV_HAS_FREETYPE={ON/OFF} -DENGINE_MNN={ON/OFF} -DENGINE_ORT={ON/OFF} -DENGINE_NCNN={ON/OFF} -DENGINE_TNN={ON/OFF} -DENGINE_OPV={ON/OFF} -DENGINE_PPLite={ON/OFF}
+make -j8
+```
+
+* **C_API**: compile C library;
+* **BUILD_PYTHON**: compile Python api;
+* **BUILD_LUA**: compile Lua api;
+* **OPENCV_HAS_FREETYPE**: opencv-contrib complied with freetype or not. cv::putText can put chinese;
+* **BUILD_SAMPLE**: compile sample;
+* **ENGINE_NCNN_WASM**: compile sample;
+* **ENGINE_MNN**: enable mnn;
+* **ENGINE_ORT**: enable onnxruntim;
+* **ENGINE_NCNN**: enable ncnn;
+* **ENGINE_TNN**: enable tnn;
+* **ENGINE_OPV**: enable openvino;
+* **ENGINE_PPLite**: enable paddle-lite;
+
+
+### Models
 
 Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipCnOBGXEJzGzPU) | [Baidu: 92e8](https://pan.baidu.com/s/1ALxl085aMD3NEujAQDES8A?pwd=92e8)
 
-## Model List
-
+<details>
+<summary>Model List</summary>
 
 | Demo                                                                                                                                       | Model name             | Model Type         | Pretrained From                                                             | ONNX                                                                                                                                                       | MNN                                                                                                                                                         | NCNN                                                                                                                                     | OpenVINO                                                                                                                                 | TNN                                                                                                                                      |  Paddle Lite                                                                                                                                                |
 | :----------------------------------------------------------------------------------------------------------------------------------------: | :--------------------: | :----------------: | :-------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
@@ -130,37 +198,42 @@ Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipC
 | ⬆️                                                                                                                                         | ANIME_CELEBA_DYN       | Gan                | [AnimeGANv2](https://github.com/TachibanaYoshino/AnimeGANv2)                | [MEGA](https://mega.nz/file/gStnRCQL#D2jA9OG1Yfyoreazf2MmVuCbATrVRqfBBVpHi_oH-po) & [Baidu[2xa6]](https://pan.baidu.com/s/1QQ3vy3DrRsnBMzt_LI-O_g?pwd=2xa6)| [MEGA](https://mega.nz/file/hG1V3ACD#opAyBkm2iKFSMb8Bwtle2rbTy7fp6jruDOdS10KfAO4) & [Baidu[niqg]](https://pan.baidu.com/s/1Wam6Aq548ug4X9lMNU6y_A?pwd=niqg) | ❎                                                                                                                                       | [MEGA](https://mega.nz/folder/9O8mDTzC#Ile7mso4l2lAgrIvHAgubw) & [Baidu[q8uv]](https://pan.baidu.com/s/1D9WDKsrWPbYmw020cKsgBA?pwd=q8uv) | ❎                                                                                                                                        | ❎                                                                                                                                                           | 
 | <p align="center"> <img src="./doc/demo/mobilestylegan_small.gif" align="middle" width = "240"/> <p align="center">                        | MOBILE_STYLEGAN        | Gan                | [MobileStyleGAN.pytorch](https://github.com/bes-dev/MobileStyleGAN.pytorch) | [MEGA](https://mega.nz/folder/xbMRlR6T#I5KxWkkQebCqc7j2GfOxkw)                    & [Baidu[d5dk]](https://pan.baidu.com/s/1fWQ1a8wgp8ofCCKfyOG9Aw?pwd=d5dk)| [MEGA](https://mega.nz/folder/UbNnjIJb#AuScaW-mRda4r60moYtMBA)                    & [Baidu[tcic]](https://pan.baidu.com/s/1R_UcNTM8720DN-c5CsHZhg?pwd=tcic) | ❎                                                                                                                                       | [MEGA](https://mega.nz/folder/Qf0QlbzR#3TbLMAH_WKoBbzU3cZskEw) & [Baidu[n79w]](https://pan.baidu.com/s/1bmOkCBz1NzoKDdnt9CTCuw?pwd=n79w) | ❎                                                                                                                                        | ❎                                                                                                                                                           |
 
-
-# 📖 Tutorials
-
-## Build and Test
-
-### Docker
-
-```asm
-docker pull mister5ive/ai.deploy.box
-```
-
-or 你自己的环境
-
-### Build
-
-### Webassembly
-
-Refer to [aidb-webassembly-demo](https://github.com/TalkUHulk/aidb-webassembly-demo)
+</details>
 
 
-### Linux/MacOS
+### Usage
+
+Example: use scrfd detect face by mnn:
 
 ```asm
-mkdir build && cd build
-cmake .. -DENGINE_MNN={ON/OFF} -DENGINE_ORT={ON/OFF} -DENGINE_NCNN={ON/OFF} -DENGINE_TNN={ON/OFF} -DENGINE_OPV={ON/OFF} -DENGINE_PPLite={ON/OFF}
-make -j8
+#include <opencv2/opencv.hpp>
+#include "Interpreter.h"
+#include "utility/Utility.h"
+
+auto interpreter = AIDB::Interpreter::createInstance("scrfd_500m_kps", "mnn");
+
+auto bgr = cv::imread("./doc/test/face.jpg");
+
+cv::Mat blob = *det_ins << bgr;
+
+std::vector<std::vector<float>> outputs;
+
+std::vector<std::vector<int>> outputs_shape;
+
+det_ins->forward((float*)blob.data, det_ins->width(), det_ins->height(), det_ins->channel(), outputs, outputs_shape);
+
+std::vector<std::shared_ptr<AIDB::FaceMeta>> face_metas;
+
+assert(face_detect_input->scale_h() == face_detect_input->scale_w());
+
+AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins->height(), det_ins->scale_h());
+
 ```
 
-## Run
 
-_Linux下，run前执行_  `source set_env.sh`
+## 3. Sample Usage
+
+In linux, run `source set_env.sh` before test.
 
 ### Face Detect
 
@@ -434,7 +507,7 @@ _Linux下，run前执行_  `source set_env.sh`
 
 ___
 
-## Pitfalls
+## 4. Pitfalls
 
 1. Android-rtti
 
