@@ -44,12 +44,12 @@
  <img src="./doc/entry/Qt_ocr.gif"  height="185" width="256px"/>
 <p align="center">
 
-|  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
+|  aidb-webassembly-摄像头-demo   | aidb-webassembly-capture-demo  |
 |  ----  | ----  |
-| <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-webcam-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
+| <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-摄像头-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
 
 
-## Features 🍉🍉
+## 主要特点 🍉🍉
 
 * **涵盖所有主流推理框架:** 集成了目前主流的推理框架，包括OnnxRuntime、MNN、NCNN、TNN、PaddleLite和OpenVINO；
 * **使用友好:** 将所有推理框架抽象成统一的接口，通过配置文件选择，使用方便；
@@ -59,17 +59,17 @@
 
 ## Demo
 
-* Try out the web demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
+* 网页 Demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
 
-* Run the C++ demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1XgYhHZONHVcJN9KgtIER0zi9RZXJyRvj)
+* Google Colab上展示C++调用: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1XgYhHZONHVcJN9KgtIER0zi9RZXJyRvj)
 
-* Run the Python demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gVKxkeIvgrnC56dVQOImyqQqVns-NtkR)
+* Google Colab上展示Python调用: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gVKxkeIvgrnC56dVQOImyqQqVns-NtkR)
 
-* Run the Go demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/15DTMnueAv2Y3UMk7lhXMMN_VVUCBA0qh?usp=drive_link)
+* Google Colab上展示Go调用: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/15DTMnueAv2Y3UMk7lhXMMN_VVUCBA0qh?usp=drive_link)
 
-* Run the Lua demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QuiJAutYAdn0MIOhGIk9JPPUwiVuWCFB?usp=drive_link)
+* Google Colab上展示Lua调用: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QuiJAutYAdn0MIOhGIk9JPPUwiVuWCFB?usp=drive_link)
 
-## Demo Repo
+## Demo 仓库
 
 * [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo)
 
@@ -84,22 +84,22 @@
 * [Webassembly](https://github.com/TalkUHulk/aidb-webassembly-demo)
 
 
-## Contents 📖💡
+## 目录 📖💡
 
-- [Features](#features)
+- [主要特点](#主要特点)
 - [Demo](#demo)
-- [Demo Repo](#demo-repo)
-- [FrameWork](#framework)
-- [Quick Start](#quick-start)
-  - [Environment](#environment)
+- [Demo 仓库](#demo-仓库)
+- [框架](#框架)
+- [快速使用](#快速使用)
+  - [环境](#环境)
   - [Build](#build)
-  - [Models](#models)
-  - [Usage](#usage)
-- [Sample Usage](#sample-usage)
-  - [Face Detect](#face-detect)
-  - [Face Landmark](#face-landmark)
-  - [Face 3D](#usage)
-  - [Face Parsing](#usage)
+  - [模型权重](#模型权重)
+  - [使用](#使用)
+- [Sample使用](#sample-使用)
+  - [人脸检测](#人脸检测)
+  - [人脸关键点](#人脸关键点)
+  - [人脸对齐](#人脸对齐)
+  - [人脸解析](#人脸解析)
   - [OCR](#ocr)
   - [YoloX](#yolox)
   - [YoloV7](#yolov7)
@@ -108,13 +108,14 @@
   - [MoveNet](#movenet)
   - [MobileStyleGan](#mobilestylegan)
   - [AnimeGan](#animegan)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-  - [Contributors](#contributors)
-- [Pitfalls](#pitfalls)
+- [踩坑](#踩坑)
+- [维护人员](#维护人员)
+- [贡献](#贡献)
+  - [助力者](#助力者)
+- [许可](#许可)
 
 
-## FrameWork
+## 框架
 
 <p align="center">
  <img src="./doc/arch.png" align="middle"/>
@@ -127,12 +128,12 @@ There are two modes available, S mode(C api) and H mode(C++ api)
  <img src="./doc/H-mode.gif"  height="185" />
 </div>
 
-## Quick Start ⚡⚡
+## 快速使用 ⚡⚡
 
-### environment
+### 环境
 
 <details>
-<summary>Recommend using Docker</summary>
+<summary>推荐使用docker</summary>
 
 ```java
 docker pull mister5ive/ai.deploy.box
@@ -165,7 +166,7 @@ make -j8
 * **ENGINE_PPLite**: enable paddle-lite;
 
 
-### Models
+### 模型权重
 
 Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipCnOBGXEJzGzPU) | [Baidu: 92e8](https://pan.baidu.com/s/1ALxl085aMD3NEujAQDES8A?pwd=92e8)
 
@@ -220,9 +221,9 @@ Model Lite: [MEGA](https://mega.nz/file/VLEmiDwL#FsFyu6b6QuY5F3rWeNQYHWlBGsclipC
 </details>
 
 
-### Usage
+### 使用
 
-Example: use scrfd detect face by mnn:
+例: 模型scrfd, 后端框架mnn，做人脸检测:
 
 ```c++
 #include <opencv2/opencv.hpp>
@@ -250,17 +251,17 @@ AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins
 ```
 
 
-## Sample Usage
+## Sample 使用
 
 In linux, run `source set_env.sh` before test.
 
 <details>
 <summary>Sample Usage</summary>
 
-### Face Detect
+### 人脸检测
 
 <details>
-<summary>Face Detect</summary>
+<summary>人脸检测</summary>
 
 ```asm
 ./build/samples/FaceDetect model_name backend type inputfile
@@ -279,17 +280,17 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
-### Face Landmark
+### 人脸关键点
 
 <details>
-<summary>Face landmark</summary>
+<summary>人脸关键点</summary>
 
 ```asm
 ./build/samples/FaceDetectWithLandmark model_name backend pfpld backend type inputfile
@@ -309,17 +310,17 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
-### Face 3D
+### 人脸对齐
 
 <details>
-<summary>Face 3D</summary>
+<summary>人脸对齐</summary>
 
 ```asm
 ./build/samples/FaceDetectWith3DDFA det_model_name backend tddfa_model_name backend type inputfile
@@ -345,17 +346,17 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
-### Face Parsing
+### 人脸解析
 
 <details>
-<summary>Face Parsing</summary>
+<summary>人脸解析</summary>
 
 ```asm
 ./build/samples/FaceParsing bisenet backend type inputfile
@@ -370,10 +371,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -394,10 +395,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -428,10 +429,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -463,10 +464,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -494,10 +495,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -539,10 +540,10 @@ In linux, run `source set_env.sh` before test.
   * PaddleLite
 
 - type
-  * 0 - image
-  * 1 - video
+  * 0 - 图片
+  * 1 - 视频
 
-- inputfile: 0 is webcam
+- inputfile: 0 is 摄像头
 
 </details>
 
@@ -591,10 +592,10 @@ In linux, run `source set_env.sh` before test.
 </details>
 
 
-## Pitfalls
+## 踩坑
 
 <details>
-<summary>Pitfalls</summary>
+<summary>踩坑</summary>
 
 1. Android-rtti
 
@@ -723,22 +724,22 @@ A: Put libc++.so in android studio app/libs/${ANDROID_ABI}/. (need add `jniLibs.
 
 </details>
 
-## Maintainers
+## 维护人员
 
 [@TalkUHulk](https://github.com/TalkUHulk).
 
-## Contributing
+## 贡献
 
 Feel free to dive in! [Open an issue](https://github.com/TalkUHulk/ai.deploy.box/issues/new) or submit PRs.
 
 AiDB follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
-### Contributors
+### 助力者
 
 This project exists thanks to all the people who contribute.
 <a href="https://github.com/TalkUHulk/ai.deploy.box/graphs/contributors"><img src="https://opencollective.com/aideploybox/contributors.svg?width=890&button=false" /></a>
 
 
-## License
+## 许可
 
 [MIT](LICENSE) © Hulk Wang
