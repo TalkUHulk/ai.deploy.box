@@ -2,8 +2,6 @@
  <img src="./doc/logo.gif" align="middle" width="320px"/>
 <p align="center">
 
-English | <a href="README_cn.md">简体中文</a>
-
 <div align='center'>
 <img src="https://img.shields.io/badge/MacOS-%E2%9C%93-green">
 <img src="https://img.shields.io/badge/Linux-%E2%9C%93-green">
@@ -30,9 +28,8 @@ English | <a href="README_cn.md">简体中文</a>
 <img src="https://img.shields.io/badge/Go-%E2%9C%93-orange">
 </div>
 
+📌**AiDB** : 一个使用C++完成的深度学习模型部署工具箱。将主流深度学习推理框架抽象成统一接口，包括ONNXRUNTIME、MNN、NCNN、TNN、PaddleLite和OpenVINO。提供多种场景、语言的部署Demo。这个项目不仅仅用来记录学习，同时也是对个人几年工作的一个汇总。如果这个项目对您有所启发，或是帮助，欢迎⭐Star支持⭐，这是我持续更新的动力！🍔
 
-
-📌**AiDB** : A toolbox for deep learning model deployment using C++. Abstract mainstream deep learning inference frameworks into unified interfaces, including ONNXRUNTIME, MNN, NCNN, TNN, PaddleLite, and OpenVINO. Provide deployment demo for multiple scenarios and languages. This project is not only used to record learning, but also a summary of my work over the past few years. If this project inspires you or helps you, welcome ⭐Star⭐ to support me,  which is the driving force for me to keep updating! 🍔
 
 <p align="center">
  <img src="./doc/entry/android_front_base.gif"  width="128px"/>
@@ -54,10 +51,11 @@ English | <a href="README_cn.md">简体中文</a>
 
 ## Features 🍉🍉
 
-* **rich backend:** integrating mainstream AI inference frameworks, including OnnxRuntime, MNN, NCNN, TNN, PaddleLite, and OpenVINO;
-* **user friendly:** abstracting all inference frameworks into a unified interface and selecting them through configuration files for ease of use;
-* **multiple scenarios:** support Linux、MacOS、Android(Win64 coming soon、IOS--poverty has limited my work)，provide [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) and minimal server deployment demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) and [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
-* **multiple languages:** provide call instances for Python, Lua, and Go;
+* **涵盖所有主流推理框架:** 集成了目前主流的推理框架，包括OnnxRuntime、MNN、NCNN、TNN、PaddleLite和OpenVINO；
+* **使用友好:** 将所有推理框架抽象成统一的接口，通过配置文件选择，使用方便；
+* **多种场景:** 支持Linux、MacOS、Android(Win64占坑，最近一直犯懒、IOS--贫穷限制了我的工作)，提供了[桌面Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) 以及极简的服务端部署Demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) 和 [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
+* **多种语言:** 提供Python、Lua、Go的调用实例；
+
 
 ## Demo
 
@@ -75,13 +73,13 @@ English | <a href="README_cn.md">简体中文</a>
 
 * [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo)
 
-* [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 
+* [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo)
 
-* [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) 
+* [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo)
 
 * [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo)
 
-* [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) 
+* [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo)
 
 * [Webassembly](https://github.com/TalkUHulk/aidb-webassembly-demo)
 
@@ -268,21 +266,21 @@ In linux, run `source set_env.sh` before test.
 ./build/samples/FaceDetect model_name backend type inputfile
 ```
 - model_name
-   * scrfd_10g_kps
-   * scrfd_2.5g_kps
-   * scrfd_500m_kps
-    
+  * scrfd_10g_kps
+  * scrfd_2.5g_kps
+  * scrfd_500m_kps
+
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
-    
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
+
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -298,21 +296,21 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - model_name
-    * scrfd_10g_kps
-    * scrfd_2.5g_kps
-    * scrfd_500m_kps
+  * scrfd_10g_kps
+  * scrfd_2.5g_kps
+  * scrfd_500m_kps
 
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -328,27 +326,27 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - det_backend
-    * scrfd_10g_kps
-    * scrfd_2.5g_kps
-    * scrfd_500m_kps
+  * scrfd_10g_kps
+  * scrfd_2.5g_kps
+  * scrfd_500m_kps
 
 - tddfa_model_name
-    * 3ddfa_mb1_bfm_base
-    * 3ddfa_mb1_bfm_dense
-    * 3ddfa_mb05_bfm_base
-    * 3ddfa_mb05_bfm_dense
-    
+  * 3ddfa_mb1_bfm_base
+  * 3ddfa_mb1_bfm_dense
+  * 3ddfa_mb05_bfm_base
+  * 3ddfa_mb05_bfm_dense
+
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -364,16 +362,16 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -389,15 +387,15 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - det_backend/cls_backend/rec_backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -413,25 +411,25 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - model_name
-    * yolox_tiny
-    * yolox_nano
-    * yolox_s   
-    * yolox_m
-    * yolox_l
-    * yolox_x
-    * yolox_darknet
-    
+  * yolox_tiny
+  * yolox_nano
+  * yolox_s
+  * yolox_m
+  * yolox_l
+  * yolox_x
+  * yolox_darknet
+
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -447,26 +445,26 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - model_name
-    * yolov7_tiny
-    * yolov7_tiny_grid
-    * yolov7
-    * yolov7_grid
-    * yolov7x
-    * yolov7x_grid
-    * yolov7_d6_grid
-    * yolov7_e6_grid
+  * yolov7_tiny
+  * yolov7_tiny_grid
+  * yolov7
+  * yolov7_grid
+  * yolov7x
+  * yolov7x_grid
+  * yolov7_d6_grid
+  * yolov7_e6_grid
 
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -481,23 +479,23 @@ In linux, run `source set_env.sh` before test.
 ./build/samples/YoloV8 model_name backend type inputfile
 ```
 - model_name
-    * yolov8n  
-    * yolov8s
-    * yolov8m
-    * yolov8l
-    * yolov8x
-    
+  * yolov8n
+  * yolov8s
+  * yolov8m
+  * yolov8l
+  * yolov8x
+
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -513,16 +511,16 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - model_name
-    * mobilevit_xxs
-    * mobilevit_s
+  * mobilevit_xxs
+  * mobilevit_s
 
 - backend
-    * ONNX
-    * MNN
-    * OpenVINO
+  * ONNX
+  * MNN
+  * OpenVINO
 
 </details>
-    
+
 
 ### MoveNet
 
@@ -533,16 +531,16 @@ In linux, run `source set_env.sh` before test.
 ./build/samples/Movenet movenet backend type inputfile
 ```
 - backend
-    * ONNX
-    * MNN
-    * NCNN
-    * OpenVINO
-    * TNN
-    * PaddleLite
+  * ONNX
+  * MNN
+  * NCNN
+  * OpenVINO
+  * TNN
+  * PaddleLite
 
 - type
-    * 0 - image
-    * 1 - video
+  * 0 - image
+  * 1 - video
 
 - inputfile: 0 is webcam
 
@@ -558,12 +556,12 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - map_backend/syn_backend
-    * ONNX
-    * MNN
-    * OpenVINO
+  * ONNX
+  * MNN
+  * OpenVINO
 
 </details>
-    
+
 ### AnimeGan
 
 <details>
@@ -574,19 +572,19 @@ In linux, run `source set_env.sh` before test.
 ```
 
 - model_name
-    * animeganv2_celeba_distill
-    * animeganv2_celeba_distill_dynamic
-    * animeganv2_face_paint_v1
-    * animeganv2_face_paint_v1_dynamic
-    * animeganv2_face_paint_v2
-    * animeganv2_face_paint_v2_dynamic
-    * animeganv2_paprika
-    * animeganv2_paprika_dynamic
+  * animeganv2_celeba_distill
+  * animeganv2_celeba_distill_dynamic
+  * animeganv2_face_paint_v1
+  * animeganv2_face_paint_v1_dynamic
+  * animeganv2_face_paint_v2
+  * animeganv2_face_paint_v2_dynamic
+  * animeganv2_paprika
+  * animeganv2_paprika_dynamic
 
 - backend
-    * ONNX
-    * MNN
-    * OpenVINO
+  * ONNX
+  * MNN
+  * OpenVINO
 
 </details>
 
@@ -670,10 +668,10 @@ gradle.properties->org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
 
 4. Android paddle-lite
 
-Q: because kernel for 'calib' is not supported by Paddle-Lite. 
+Q: because kernel for 'calib' is not supported by Paddle-Lite.
 A: 使用带fp16标签的库
 
-Q: kernel for 'conv2d' is not supported by Paddle-lite. 
+Q: kernel for 'conv2d' is not supported by Paddle-lite.
 A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
 
 5. Android OpenVINO
@@ -686,7 +684,7 @@ A:
     ```asm
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=android-ndk-r25c/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=30 -DANDROID_STL=c++_shared  -DENABLE_SAMPLES=OFF  -DENABLE_OPENCV=OFF -DENABLE_CLDNN=OFF -DENABLE_VPU=OFF  -DENABLE_GNA=OFF -DENABLE_MYRIAD=OFF -DENABLE_TESTS=OFF  -DENABLE_GAPI_TESTS=OFF  -DENABLE_BEH_TESTS=OFF ..
     ```
-* step2 
+* step2
   * Put openvino library(*.so) to assets.(plugin you need)
 
 * step3
@@ -721,7 +719,7 @@ library "/system/lib64/libc++.so" ("/system/lib64/libc++.so") needed or dlopened
 ```
 
 
-A: Put libc++.so in android studio app/libs/${ANDROID_ABI}/. (need add `jniLibs.srcDirs = ['libs']` in build.gradle) 
+A: Put libc++.so in android studio app/libs/${ANDROID_ABI}/. (need add `jniLibs.srcDirs = ['libs']` in build.gradle)
 
 </details>
 
