@@ -121,7 +121,7 @@
  <img src="./doc/arch.png" align="middle"/>
 <p align="center">
 
-There are two modes available, S mode(C api) and H mode(C++ api)
+设计了两种模型，S-mode和H-mode，即C api和c++ api. S-mode比较灵活，可以随意注册，然后根据任务id调用，其中Go zeros和Qt demo使用了这种模式；H-mode，直白点说就是写死了，Android demo使用了这种模式。
 
 <div align='center'>
  <img src="./doc/S-mode.gif" height="185" />
@@ -253,7 +253,7 @@ AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins
 
 ## Sample 使用
 
-In linux, run `source set_env.sh` before test.
+linux上, 在运行sample前，先执行`source set_env.sh`.
 
 <details>
 <summary>Sample Usage</summary>
