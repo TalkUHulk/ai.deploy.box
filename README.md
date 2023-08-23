@@ -108,10 +108,13 @@
   - [MoveNet](#movenet)
   - [MobileStyleGan](#mobilestylegan)
   - [AnimeGan](#animegan)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+  - [Contributors](#contributors)
 - [Pitfalls](#pitfalls)
 
 
-## 1. FrameWork
+## FrameWork
 
 <p align="center">
  <img src="./doc/arch.png" align="middle"/>
@@ -124,7 +127,7 @@ There are two modes available, S mode(C api) and H mode(C++ api)
  <img src="./doc/H-mode.gif"  height="185" />
 </div>
 
-## 2. Quick Start ⚡⚡
+## Quick Start ⚡⚡
 
 ### environment
 
@@ -247,7 +250,7 @@ AIDB::Utility::scrfd_post_process(outputs, face_metas, det_ins->width(), det_ins
 ```
 
 
-## 3. Sample Usage
+## Sample Usage
 
 In linux, run `source set_env.sh` before test.
 
@@ -584,7 +587,10 @@ In linux, run `source set_env.sh` before test.
 </details>
 
 
-## 4. Pitfalls
+## Pitfalls
+
+<details>
+<summary>AnimeGan</summary>
 
 1. Android-rtti
 
@@ -711,4 +717,24 @@ library "/system/lib64/libc++.so" ("/system/lib64/libc++.so") needed or dlopened
 
 A: Put libc++.so in android studio app/libs/${ANDROID_ABI}/. (need add `jniLibs.srcDirs = ['libs']` in build.gradle) 
 
+</details>
 
+## Maintainers
+
+[@TalkUHulk](https://github.com/TalkUHulk).
+
+## Contributing
+
+Feel free to dive in! [Open an issue](https://github.com/TalkUHulk/ai.deploy.box/issues/new) or submit PRs.
+
+AiDB follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+
+### Contributors
+
+This project exists thanks to all the people who contribute.
+<a href="https://github.com/TalkUHulk/ai.deploy.box/graphs/contributors"><img src="https://opencollective.com/aideploybox/contributors.svg?width=890&button=false" /></a>
+
+
+## License
+
+[MIT](LICENSE) © Hulk Wang
