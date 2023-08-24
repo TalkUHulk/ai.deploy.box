@@ -60,7 +60,7 @@ English | <a href="README_cn.md">简体中文</a>
 * **multiple scenarios:** support Linux、MacOS、Android(Win64 coming soon、IOS--poverty has limited my work)，provide [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) and minimal server deployment demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) and [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
 * **multiple languages:** provide call instances for Python, Lua, and Go;
 
-## Demo
+## Demo 🍓🍓
 
 * Try out the web demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
 
@@ -72,7 +72,7 @@ English | <a href="README_cn.md">简体中文</a>
 
 * Run the Lua demo on Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QuiJAutYAdn0MIOhGIk9JPPUwiVuWCFB?usp=drive_link)
 
-## Demo Repo
+## Demo Repo  🍇🍇
 
 * [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo)
 
@@ -118,7 +118,7 @@ English | <a href="README_cn.md">简体中文</a>
 - [LICENSE](#license)
 
 
-## FrameWork
+## FrameWork 📝 📝
 
 <p align="center">
  <img src="./doc/arch.png" align="middle"/>
@@ -595,7 +595,7 @@ In linux, run `source set_env.sh` before test.
 </details>
 
 
-## Pitfalls
+## Pitfalls 🐱 🐶 🐭 🐹 🐰 🐺 🐸 🐯 🐨 🐻 🐷
 
 <details>
 <summary>Pitfalls</summary>

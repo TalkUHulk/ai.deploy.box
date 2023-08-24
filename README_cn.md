@@ -57,7 +57,7 @@
 * **多种语言:** 提供Python、Lua、Go的调用实例；
 
 
-## Demo
+## Demo 🍓🍓
 
 * 网页 Demo: [![Webassembly Demo](https://img.shields.io/badge/%F0%9F%90%B6Webassembly-Demo-blue)](https://www.hulk.show/aidb-webassembly-demo/)
 
@@ -69,7 +69,7 @@
 
 * Google Colab上展示Lua调用: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QuiJAutYAdn0MIOhGIk9JPPUwiVuWCFB?usp=drive_link)
 
-## Demo 仓库
+## Demo 仓库 🍇🍇
 
 * [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo)
 
@@ -115,7 +115,7 @@
 - [许可](#许可)
 
 
-## 框架
+## 框架 📝 📝
 
 <p align="center">
  <img src="./doc/arch.png" align="middle"/>
@@ -592,7 +592,7 @@ linux上, 在运行sample前，先执行`source set_env.sh`.
 </details>
 
 
-## 踩坑
+## 踩坑 🐱 🐶 🐭 🐹 🐰 🐺 🐸 🐯 🐨 🐻 🐷
 
 <details>
 <summary>踩坑</summary>
