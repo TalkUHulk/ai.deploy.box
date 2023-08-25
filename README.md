@@ -58,7 +58,7 @@ English | <a href="README_cn.md">简体中文</a>
 * **rich backend:** integrating mainstream AI inference frameworks, including OnnxRuntime, MNN, NCNN, TNN, PaddleLite, and OpenVINO;
 * **user friendly:** abstracting all inference frameworks into a unified interface and selecting them through configuration files for ease of use;
 * **multiple scenarios:** support Linux、MacOS、Android(Win64 coming soon、IOS--poverty has limited my work)，provide [PC Demo(Qt)](https://github.com/TalkUHulk/aidb_qt_demo) 、 [Android Demo(Kotlin)](https://github.com/TalkUHulk/aidb_android_demo) 、 [Lua Demo](https://github.com/TalkUHulk/aidb_lua_demo) and minimal server deployment demo( [Go Zeros](https://github.com/TalkUHulk/aidb_go_demo) and [Python FastAPI](https://github.com/TalkUHulk/aidb_python_demo) )
-* **multiple languages:** provide call instances for Python, Lua, and Go;
+* **multiple languages:** provide calling instances for Python, Lua, and Go;
 
 ## Demo 🍓🍓
 
