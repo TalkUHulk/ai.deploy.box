@@ -134,15 +134,23 @@
 
 <details>
 <summary>推荐使用docker</summary>
-
 ```java
 docker pull mister5ive/ai.deploy.box
 ```
 </details>
 
-
 ### Build
 
+#### Docker(推荐)
+
+```asm
+git lfs clone https://github.com/TalkUHulk/ai.deploy.box.git
+cd ai.deploy.box.git
+docker build -t aidb-dev .
+docker run -it --name aidb-test aidb-dev
+```
+
+#### 源码编译
 
 ```asm
 git clone https://github.com/TalkUHulk/ai.deploy.box.git
@@ -674,7 +682,6 @@ A: 使用带fp16标签的库
 
 Q: kernel for 'conv2d' is not supported by Paddle-lite.
 A: 转模型--valid_targets =arm, 打开fp16，opt\lib版本对应
-
 5. Android OpenVINO
 
 Q: How to deploy models in android with openvino([reference](https://github.com/openvinotoolkit/openvino/issues/15006)).

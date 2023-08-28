@@ -146,6 +146,16 @@ docker pull mister5ive/ai.deploy.box
 
 ### Build
 
+#### Docker(recommend)
+
+```asm
+git lfs clone https://github.com/TalkUHulk/ai.deploy.box.git
+cd ai.deploy.box.git
+docker build -t aidb-dev .
+docker run -it --name aidb-test aidb-dev
+```
+
+#### From Source code
 
 ```asm
 git lfs clone https://github.com/TalkUHulk/ai.deploy.box.git
