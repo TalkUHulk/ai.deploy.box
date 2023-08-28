@@ -148,7 +148,7 @@ docker pull mister5ive/ai.deploy.box
 
 
 ```asm
-git clone https://github.com/TalkUHulk/ai.deploy.box.git
+git lfs clone https://github.com/TalkUHulk/ai.deploy.box.git
 cd ai.deploy.box.git
 mkdir build && cd build
 cmake .. -DC_API={ON/OFF} -DBUILD_SAMPLE={ON/OFF} -DBUILD_PYTHON={ON/OFF} -DBUILD_LUA={ON/OFF} -DENGINE_NCNN_WASM={ON/OFF} -DOPENCV_HAS_FREETYPE={ON/OFF} -DENGINE_MNN={ON/OFF} -DENGINE_ORT={ON/OFF} -DENGINE_NCNN={ON/OFF} -DENGINE_TNN={ON/OFF} -DENGINE_OPV={ON/OFF} -DENGINE_PPLite={ON/OFF}
