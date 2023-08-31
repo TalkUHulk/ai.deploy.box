@@ -155,7 +155,7 @@ docker build -t aidb-dev .
 docker run -it --name aidb-test aidb-dev
 ```
 
-#### From Source code
+#### Build from source code
 
 ```asm
 git lfs clone https://github.com/TalkUHulk/ai.deploy.box.git
