@@ -16,7 +16,7 @@ namespace AIDB{
 
         ~ONNXEngine() override;
         void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
-
+        void forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
     private:
         Ort::Env _env;
         Ort::SessionOptions _session_options;

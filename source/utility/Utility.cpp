@@ -1028,6 +1028,49 @@ namespace AIDB {
 
     }
 
+    void Utility::mobile_sam_post_process(const std::vector<float> &output,
+                                          const cv::Mat &source,
+                                          cv::Mat &result,
+                                          float scale,
+                                          const cv::Scalar &color,
+                                          float alpha) {
+        cv::Mat Mask(256, 256, CV_32FC1, (void*)output.data());
+
+        cv::resize(Mask, Mask, cv::Size(1024, 1024));
+        cv::Mat m_roi = Mask(cv::Range(0, source.rows * scale),
+                             cv::Range(0, source.cols * scale));
+        cv::resize(m_roi, m_roi, cv::Size(source.cols, source.rows));
+
+        cv::Mat binary;
+        cv::threshold(m_roi, binary, 0.0, 1.0, cv::THRESH_BINARY);
+
+        std::vector<cv::Mat> mv;
+
+        cv:: Mat b = binary * color[0];
+        cv:: Mat g = binary * color[1];
+        cv:: Mat r = binary * color[2];
+        mv.push_back(b);
+        mv.push_back(g);
+        mv.push_back(r);
+
+        cv::merge(mv,Mask);
+
+        Mask.convertTo(Mask, CV_8U);
+
+        cv::Mat _result1;
+        binary = (binary * 255);
+        binary.convertTo(binary, CV_8U);
+
+        cv::bitwise_and(source, source, _result1, binary);
+
+        cv::Mat _result2;
+
+        cv::bitwise_and(source, source, _result2, 255 - binary);
+
+        result = _result2 + 0.5 * _result1 + 0.5 * Mask;
+
+    }
+
 
     // MoveNet
     int Utility::MoveNetUtility::line_map[20][2] = {{2,  1}, {2, 4}, {1, 3}, {4, 0}, {0, 3},

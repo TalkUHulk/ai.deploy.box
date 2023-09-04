@@ -204,6 +204,11 @@ namespace AIDB {
         _ptr_engine->forward(frame, frame_width, frame_height, frame_channel, outputs, outputs_shape);
     }
 
+    void Interpreter::forward(const std::vector<void*> &inputs, const std::vector<std::vector<int>> &input_shapes, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
+        ENGINE_ASSERT(nullptr != _ptr_engine)
+        _ptr_engine->forward(inputs, input_shapes, outputs, outputs_shape);
+    }
+
 #ifndef ENABLE_NCNN_WASM
 
 

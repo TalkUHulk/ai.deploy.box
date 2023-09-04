@@ -147,5 +147,54 @@ namespace AIDB {
     StatusCode MNNEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
         return NOT_IMPLEMENT;
     }
+
+    void MNNEngine::forward(std::vector<const void*> input, int frame_width, int frame_height, int frame_channel,
+                            std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+
+//        assert(input.size() == _input_nodes.size());
+//
+//        for (int i = 0; i < _input_nodes.size(); ++i) {
+////        for (auto & _input_node : _input_nodes) {
+//            auto _input_node = _input_nodes[i];
+//            MNN::Tensor *input_tensor = _input_node.first.empty()? get_input_tensor(): get_input_tensor(_input_node.first.c_str());
+//            if(_dynamic){
+//
+//                std::vector<int> input_dim(_input_node.second.begin(), _input_node.second.end());
+//                for(auto &dim: input_dim){
+//                    if(dim == -1) dim = frame_height;
+//                    if(dim == -2) dim = frame_width;
+//                }
+//                _mnn_net->resizeTensor(input_tensor, input_dim);
+//                _mnn_net->resizeSession(_mnn_session);
+//            }
+//
+//            auto nhwc_Tensor = MNN::Tensor::create<float>(input_tensor->shape(), nullptr, MNN::Tensor::CAFFE);
+//            auto nchw_data   = nhwc_Tensor->host<float>();
+//            auto nchw_size   = nhwc_Tensor->size();
+//            ::memcpy(nchw_data, frame, nchw_size);
+//            input_tensor->copyFromHostTensor(nhwc_Tensor);
+//
+//
+//        }
+//
+//        _mnn_net->runSession(_mnn_session);
+//
+//        outputs.resize(_output_node_name.size());
+//        outputs_shape.resize(_output_node_name.size());
+//
+//        for(const auto& name: _output_node_name){
+//            int index = &name - &_output_node_name[0];
+//            std::shared_ptr<MNN::Tensor> tensor = get_output_by_name(name.c_str());
+//            for(auto dim: tensor->shape()){
+////                std::cout << dim << ",";
+//                outputs_shape[index].push_back(dim);
+//            }
+////
+////            std::cout << "\n";
+//            outputs[index].resize(tensor->size());
+//            ::memcpy(outputs[index].data(), tensor->host<float>(), tensor->size());
+//        }
+
+    }
 }
 

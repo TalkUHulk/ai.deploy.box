@@ -1,4 +1,5 @@
 #include "backend/onnxruntime/ONNXEngine.hpp"
+#include <numeric>
 
 namespace AIDB{
 
@@ -80,6 +81,7 @@ namespace AIDB{
     StatusCode ONNXEngine::init(const Parameter &param){
         _model_name = param._model_name;
         _backend_name = param._backend_name;
+        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
         _input_nodes = param._input_nodes;
 
@@ -103,6 +105,82 @@ namespace AIDB{
 
     StatusCode ONNXEngine::init(const Parameter &, const void *buffer_in1, const void *buffer_in2) {
         return NOT_IMPLEMENT;
+    }
+
+    void ONNXEngine::forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape,
+                             std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+
+        assert(_input_nodes.size() == input.size() && input_shape.size() == input.size());
+
+        Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtAllocatorType::OrtArenaAllocator, OrtMemType::OrtMemTypeDefault);
+
+        std::vector<Ort::Value> ort_inputs;
+
+        std::vector<char*> input_node_names;
+        for(int i = 0; i < _input_node_name.size(); i++){
+//        for (auto & _input_node : _input_nodes) {
+            auto _input_node = _input_nodes[_input_node_name[i]];
+            std::vector<int64_t> input_dim(_input_node.begin(), _input_node.end());
+
+            for(int d = 0; d < input_dim.size(); d++){
+                if(-1 == input_dim[d]){
+                    input_dim[d] = input_shape[i][d];
+                }
+            }
+
+            Ort::Value input_tensor = Ort::Value::CreateTensor(memory_info,
+                                                               (void *) input[i],
+                                                               std::accumulate(
+                                                                       input_shape[i].begin(),
+                                                                       input_shape[i].end(),
+                                                                       1,
+                                                                       std::multiplies<int>()
+                                                                       ) * sizeof(float),
+                                                               input_dim.data(),
+                                                               input_dim.size(), ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT);
+            ort_inputs.push_back(std::move(input_tensor));
+            input_node_names.push_back(const_cast<char*>(_input_node_name[i].c_str()));
+        }
+
+        std::vector<Ort::Value> ort_outputs;
+        std::vector<char*> output_node_names;
+
+        for(const auto& name: _output_node_name){
+            output_node_names.push_back(const_cast<char*>(name.c_str()));
+
+        }
+
+        ort_outputs = _session->Run(Ort::RunOptions{nullptr},
+                                    input_node_names.data(),
+                                    ort_inputs.data(),
+                                    ort_inputs.size(),
+                                    output_node_names.data(),
+                                    output_node_names.size());
+
+        outputs.clear();
+        outputs.resize(_output_node_name.size());
+        outputs_shape.clear();
+        outputs_shape.resize(_output_node_name.size());
+
+        for (auto &ort_output: ort_outputs){
+            auto index = &ort_output - &ort_outputs[0];
+            auto info = ort_output.GetTensorTypeAndShapeInfo();
+            auto output_len = info.GetElementCount();
+            auto dim_count = info.GetDimensionsCount();
+            std::vector<int64_t> dims(dim_count, 1);
+            info.GetDimensions(dims.data(), info.GetDimensionsCount());
+
+            for (int cc = 0; cc < dim_count; cc++){
+                outputs_shape[index].push_back(int(dims[cc]));
+                std::cout << "@@" << dims[cc];
+            }
+            std::cout << "\n";
+            ort_output.GetTensorData<float>();
+            outputs[index].resize(output_len);
+            ::memcpy(outputs[index].data(), ort_output.GetTensorData<float>(), sizeof(float)*output_len);
+
+        }
+
     }
 
 //    StatusCode ONNXEngine::init(const Parameter &param, const uint8_t *buffer_in, size_t buffer_size_in){

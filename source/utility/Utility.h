@@ -70,7 +70,12 @@ namespace AIDB{
             static void draw_objects(const cv::Mat& src, cv::Mat &dst, const std::vector<std::shared_ptr<ObjectMeta>>& objects);
         };
 
-
+        static void mobile_sam_post_process(const std::vector<float> &output,
+                                            const cv::Mat &source,
+                                            cv::Mat &result,
+                                            float scale,
+                                            const cv::Scalar &color,
+                                            float alpha=0.5);
         static void scrfd_post_process(const std::vector<std::vector<float>> &outputs, std::vector<std::shared_ptr<FaceMeta>> &face_metas, int target_w, int target_h, float det_scale, float nms_thresh=0.4);
 
         static void pfpld_post_process(const std::vector<std::vector<float>> &outputs, const std::shared_ptr<FaceMeta> scale_face_metas, std::shared_ptr<FaceMeta> dst_face_metas, int pts_num=98);

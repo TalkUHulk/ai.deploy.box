@@ -34,6 +34,7 @@ namespace AIDB {
         // To Do
         // 有些模型可能有多个输入输出节点，后续再修改
         std::map<std::string, std::vector<int>> _input_nodes;  /*!< 输入节点信息 {name: shape}*/
+        std::vector<std::string> _input_node_name{};  /*!< 输入节点名称*/
         std::vector<std::string> _output_node_name{};  /*!< 输出节点名称*/
         std::string _model_name{};  /*!< 模型名称*/
         std::string _backend_name{};  /*!< 模型名称*/

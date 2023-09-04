@@ -30,6 +30,7 @@ namespace AIDB {
         static void releaseInstance(Interpreter* ins);
         ~Interpreter();
         void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape);
+        void forward(const std::vector<void*> &inputs, const std::vector<std::vector<int>> &input_shapes, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape);
 
 #ifndef ENABLE_NCNN_WASM
         cv::Mat operator << (const cv::Mat &image);

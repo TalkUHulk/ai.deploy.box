@@ -151,5 +151,10 @@ namespace AIDB {
         return NO_ERROR;
     }
 
+    void NCNNEngine::forward(std::vector<const void *> input, int frame_width, int frame_height, int frame_channel,
+                             std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
+
+    }
+
 }
 

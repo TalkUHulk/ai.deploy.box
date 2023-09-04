@@ -20,8 +20,10 @@ namespace AIDB {
         virtual StatusCode init(const Parameter&, const void *buffer_in1, const void* buffer_in2) = 0;
         virtual ~Engine(){};
         virtual void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) = 0;
+        virtual void forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) = 0;
 //        virtual void forward(const float *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) = 0;
         std::vector<std::string> _output_node_name;
+        std::vector<std::string> _input_node_name;
         std::map<std::string, std::vector<int>> _input_nodes;  /*!< 输入节点信息*/
         bool _dynamic=false;
         std::string _model_name = "default";
