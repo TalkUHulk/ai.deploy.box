@@ -15,7 +15,7 @@ namespace AIDB{
         StatusCode init(const Parameter&, const void *buffer_in1, const void* buffer_in2) override;
         ~PPLiteEngine() override;
         void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
-        void forward(std::vector<const void*> input, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
+        void forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
 //        void preprocess(unsigned char *frame, int frame_width, int frame_height) override;
 //        void postprecess() override;
     private:

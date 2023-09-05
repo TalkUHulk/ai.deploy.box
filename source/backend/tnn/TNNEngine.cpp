@@ -111,6 +111,7 @@ namespace AIDB {
     StatusCode TNNEngine::init(const Parameter &param) {
         _model_name = param._model_name;
         _backend_name = param._backend_name;
+        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
         _input_nodes = param._input_nodes;
 //        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
@@ -299,10 +300,70 @@ namespace AIDB {
         return NOT_IMPLEMENT;
     }
 
-    void TNNEngine::forward(std::vector<const void *> input, int frame_width, int frame_height, int frame_channel,
+    void TNNEngine::forward(const std::vector<void *> &input, const std::vector<std::vector<int>> &input_shape,
                             std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
+        assert(_input_nodes.size() == input.size() && input_shape.size() == input.size());
+
+        std::vector<char*> input_node_names;
+        for(int i = 0; i < _input_node_name.size(); i++){
+//        for (auto & _input_node : _input_nodes) {
+            auto _input_node = _input_nodes[_input_node_name[i]];
+            std::vector<int> input_dim(_input_node.begin(), _input_node.end());
+
+            if(_dynamic) {
+
+                for(int d = 0; d < input_dim.size(); d++){
+                    if(-1 == input_dim[d]){
+                        input_dim[d] = input_shape[i][d];
+                    }
+                }
+                _instance->Reshape({{_input_node_name[i], input_dim}});
+            }
+            auto input_mat = std::make_shared<tnn::Mat>(_input_device_type, tnn::NCHW_FLOAT,
+                                                        input_dim, (void *) input[i]);
+            auto input_cvt_param = TNN_NS::MatConvertParam();
+            auto status_in = _instance->SetInputMat(input_mat, input_cvt_param, _input_node_name[i]);
+            if (status_in != tnn::TNN_OK) {
+                std::cout << status_in.description().c_str() << "\n";
+                throw std::runtime_error("SetInputMat Error");
+            }
+        }
+
+
+        auto status = _instance->Forward();
+
+        if (status != tnn::TNN_OK){
+            std::cout << status.description().c_str() << "\n";
+            throw std::runtime_error("Forward Error");
+        }
+
+        outputs.resize(_output_node_name.size());
+        outputs_shape.resize(_output_node_name.size());
+        for(const auto& name: _output_node_name){
+            int index = &name - &_output_node_name[0];
+
+            tnn::MatConvertParam cvt_param;
+            std::shared_ptr<tnn::Mat> output_mat;
+            auto status_out = _instance->GetOutputMat(output_mat, cvt_param, name, _output_device_type);
+
+            if (status_out != tnn::TNN_OK){
+                std::cout << status_out.description().c_str() << "\n";
+                throw std::runtime_error("GetOutputMat Error");
+            }
+            auto output_dims = output_mat->GetDims();
+
+            for(auto dim: output_dims){
+                outputs_shape[index].push_back(dim);
+//                std::cout << dim << "、";
+            }
+            int output_len = std::accumulate(outputs_shape[index].begin(), outputs_shape[index].end(), 1, std::multiplies<int>());
+//            std::cout << "\n";
+            outputs[index].resize(output_len);
+            ::memcpy(outputs[index].data(), output_mat->GetData(), output_len * sizeof(float));
+        }
     }
+
 
 
 }
