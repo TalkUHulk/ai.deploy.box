@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 
 # backend options
-option(ENGINE_MNN "Enable MNN" OFF)
+option(ENGINE_MNN "Enable MNN" ON)
 option(ENGINE_ORT "Enable ONNXRuntime" ON)
 option(ENGINE_NCNN "Enable NCNN" OFF)
 option(ENGINE_TNN "Enable TNN" OFF)

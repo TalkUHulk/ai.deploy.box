@@ -21,7 +21,7 @@ namespace AIDB{
         StatusCode init(const Parameter&, const void *buffer_in1, const void* buffer_in2) override;
         ~MNNEngine() override;
         void forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
-        void forward(std::vector<const void*> input, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
+        void forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) override;
     private:
         void reshape_input(const std::vector<int>&);
         std::shared_ptr<MNN::Tensor> get_output_by_name(const char *name);

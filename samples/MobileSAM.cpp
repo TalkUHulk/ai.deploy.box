@@ -46,8 +46,9 @@ int main(int argc, char** argv){
     encoder_interpreter->forward((float*)blob.data, encoder_interpreter->width(), encoder_interpreter->height(), encoder_interpreter->channel(), outputs, outputs_shape);
 
     std::vector<void *> input;
-    std::vector<float> coords{400, 400, 100, 500}; // 1xNx2
-    std::vector<float> labels{1, 1}; // 1xN
+    // MNN freeze 3 points, dynamic inputs reshape error.
+    std::vector<float> coords{400, 400, 100, 500, 250, 250}; // 1xNx2
+    std::vector<float> labels{1, 1, 1}; // 1xN
     std::vector<float> mask_input(256 * 256, 0);
     std::vector<int64_t> input_dim_has{1};
 
@@ -61,8 +62,8 @@ int main(int argc, char** argv){
 
     std::vector<std::vector<int>> input_shape;
     input_shape.push_back({1, 256, 64, 64});
-    input_shape.push_back({1, 2, 2});
-    input_shape.push_back({1, 2});
+    input_shape.push_back({1, 3, 2});
+    input_shape.push_back({1, 3});
     input_shape.push_back({1, 1, 256, 256});
     input_shape.push_back({1});
 

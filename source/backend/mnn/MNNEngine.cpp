@@ -67,6 +67,7 @@ namespace AIDB {
         _net_cfg.type = MNN_FORWARD_CPU;//MNN_FORWARD_VULKAN;//MNN_FORWARD_VULKAN;//MNN_FORWARD_CPU;//MNN_FORWARD_OPENCL;
         _net_cfg.numThread = param._numThread;
         _output_node_name.assign(param._output_node_name.begin(), param._output_node_name.end());
+        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
         _input_nodes = param._input_nodes;
         _dynamic = param._dynamic;
 //        _input_node_name.assign(param._input_node_name.begin(), param._input_node_name.end());
@@ -148,52 +149,53 @@ namespace AIDB {
         return NOT_IMPLEMENT;
     }
 
-    void MNNEngine::forward(std::vector<const void*> input, int frame_width, int frame_height, int frame_channel,
+    void MNNEngine::forward(const std::vector<void*> &input, const std::vector<std::vector<int>> &input_shape,
                             std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
-//        assert(input.size() == _input_nodes.size());
-//
-//        for (int i = 0; i < _input_nodes.size(); ++i) {
-////        for (auto & _input_node : _input_nodes) {
-//            auto _input_node = _input_nodes[i];
-//            MNN::Tensor *input_tensor = _input_node.first.empty()? get_input_tensor(): get_input_tensor(_input_node.first.c_str());
-//            if(_dynamic){
-//
-//                std::vector<int> input_dim(_input_node.second.begin(), _input_node.second.end());
-//                for(auto &dim: input_dim){
-//                    if(dim == -1) dim = frame_height;
-//                    if(dim == -2) dim = frame_width;
-//                }
-//                _mnn_net->resizeTensor(input_tensor, input_dim);
+        assert(_input_nodes.size() == input.size() && input_shape.size() == input.size());
+        for(int i = 0; i < _input_node_name.size(); i++){
+            auto _input_node = _input_nodes[_input_node_name[i]];
+
+            MNN::Tensor *input_tensor = _input_node_name[i].empty()? get_input_tensor(): get_input_tensor(_input_node_name[i].c_str());
+            if(_dynamic){
+                std::vector<int> input_dim(_input_node.begin(), _input_node.end());
+                for(int d = 0; d < input_dim.size(); d++){
+                    if(-1 == input_dim[d]){
+                        input_dim[d] = input_shape[i][d];
+                    }
+                }
+
+                _mnn_net->resizeTensor(input_tensor, input_dim);
 //                _mnn_net->resizeSession(_mnn_session);
-//            }
+
+            }
+
+            auto nhwc_Tensor = MNN::Tensor::create<float>(input_tensor->shape(), nullptr, MNN::Tensor::CAFFE);
+            auto nchw_data   = nhwc_Tensor->host<float>();
+            auto nchw_size   = nhwc_Tensor->size();
+            ::memcpy(nchw_data, input[i], nchw_size);
+            input_tensor->copyFromHostTensor(nhwc_Tensor);
+
+        }
+
+        if(_dynamic) _mnn_net->resizeSession(_mnn_session);
+        _mnn_net->runSession(_mnn_session);
+
+        outputs.resize(_output_node_name.size());
+        outputs_shape.resize(_output_node_name.size());
+
+        for(const auto& name: _output_node_name){
+            int index = &name - &_output_node_name[0];
+            std::shared_ptr<MNN::Tensor> tensor = get_output_by_name(name.c_str());
+            for(auto dim: tensor->shape()){
+                std::cout << dim << ",";
+                outputs_shape[index].push_back(dim);
+            }
 //
-//            auto nhwc_Tensor = MNN::Tensor::create<float>(input_tensor->shape(), nullptr, MNN::Tensor::CAFFE);
-//            auto nchw_data   = nhwc_Tensor->host<float>();
-//            auto nchw_size   = nhwc_Tensor->size();
-//            ::memcpy(nchw_data, frame, nchw_size);
-//            input_tensor->copyFromHostTensor(nhwc_Tensor);
-//
-//
-//        }
-//
-//        _mnn_net->runSession(_mnn_session);
-//
-//        outputs.resize(_output_node_name.size());
-//        outputs_shape.resize(_output_node_name.size());
-//
-//        for(const auto& name: _output_node_name){
-//            int index = &name - &_output_node_name[0];
-//            std::shared_ptr<MNN::Tensor> tensor = get_output_by_name(name.c_str());
-//            for(auto dim: tensor->shape()){
-////                std::cout << dim << ",";
-//                outputs_shape[index].push_back(dim);
-//            }
-////
-////            std::cout << "\n";
-//            outputs[index].resize(tensor->size());
-//            ::memcpy(outputs[index].data(), tensor->host<float>(), tensor->size());
-//        }
+            std::cout << "\n";
+            outputs[index].resize(tensor->size());
+            ::memcpy(outputs[index].data(), tensor->host<float>(), tensor->size());
+        }
 
     }
 }
