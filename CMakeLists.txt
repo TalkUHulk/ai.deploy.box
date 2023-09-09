@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 14)
 option(ENGINE_MNN "Enable MNN" ON)
 option(ENGINE_ORT "Enable ONNXRuntime" ON)
 option(ENGINE_NCNN "Enable NCNN" ON)
-option(ENGINE_TNN "Enable TNN" ON)
+option(ENGINE_TNN "Enable TNN" OFF)
 option(ENGINE_OPV "Enable OpenVINO" ON) #Mac 与TNN冲突
 option(ENGINE_PPLite "Enable paddle-lite" ON)
 option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)

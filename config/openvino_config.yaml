@@ -61,6 +61,10 @@ ModelPath:
     YOLOV8_M: &mp_yolov8m "./models/openvino/yolov8/yolov8m"
     YOLOV8_L: &mp_yolov8l "./models/openvino/yolov8/yolov8l"
     YOLOV8_X: &mp_yolov8x "./models/openvino/yolov8/yolov8x"
+  MobileSAM:
+    Encoder: &mp_sam_encoder "./models/openvino/mobilesam/encoder_sim"
+    MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/openvino/mobilesam/mobile_sam_point_single"
+    MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/openvino/mobilesam/mobile_sam_box_single"
 
 Detail:
   SCRFD: &scrfd_detail
@@ -723,7 +727,133 @@ Detail:
     output_nodes:
 #      - "softmax_5.tmp_0"
       - "output"
+  MobileSAM_Encoder: &mb_sam_encoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 1024
+        height: 1024
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 123.675
+        - 116.28
+        - 103.53
+      var:
+        - 58.395
+        - 57.12
+        - 57.375
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
 
+    input_node1: &in_node1
+      input_name: "images"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "features"
+
+  MobileSAMPointPrompt: &mb_sam_point_prompt
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "image_embeddings"
+      format: "NCHW"
+      shape:
+        width: 64
+        height: 64
+        channel: 256
+        batch: 1
+    input_node2: &in_node2
+      input_name: "point_coords"
+      format: "NHW"
+      shape:
+        width: 2
+        height: -1
+        batch: 1
+    input_node3: &in_node3
+      input_name: "point_labels"
+      format: "NW"
+      shape:
+        width: -1
+        batch: 1
+    input_node4: &in_node4
+      input_name: "mask_input"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 1
+        batch: 1
+    input_node5: &in_node5
+      input_name: "has_mask_input"
+      format: "N"
+      shape:
+        batch: 1
+
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
+      - *in_node5
+
+    output_nodes:
+      - "masks"
+      - "scores"
+
+  MobileSAMBoxPrompt: &mb_sam_box_prompt
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "image_embeddings"
+      format: "NCHW"
+      shape:
+        width: 64
+        height: 64
+        channel: 256
+        batch: 1
+    input_node2: &in_node2
+      input_name: "boxes"
+      format: "NHW"
+      shape:
+        width: 4
+        height: -1
+        batch: 1
+    input_node4: &in_node3
+      input_name: "mask_input"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 1
+        batch: 1
+    input_node5: &in_node4
+      input_name: "has_mask_input"
+      format: "N"
+      shape:
+        batch: 1
+
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
+
+    output_nodes:
+      - "masks"
+      - "scores"
 
 ModelZoo:
   SCRFD_2_5G_KPS: &scrfd_2_5g_kps
@@ -964,6 +1094,23 @@ ModelZoo:
     backend: "OpenVINO"
     detail: *yolo_v8_detail
 
+  MobileSAM_Encoder: &mobile_sam_encoder
+    name: "MobileSAM_Encoder"
+    model: *mp_sam_encoder
+    backend: "OpenVINO"
+    detail: *mb_sam_encoder_detail
+
+  MobileSAM_Point_Prompt: &mobile_sam_point_prompt
+    name: "MobileSAM_Point_Prompt"
+    model: *mp_mb_sam_point_prompt
+    backend: "OpenVINO"
+    detail: *mb_sam_point_prompt
+
+  MobileSAM_Box_Prompt: &mobile_sam_box_prompt
+    name: "MobileSAM_Box_Prompt"
+    model: *mp_mb_sam_box_prompt
+    backend: "OpenVINO"
+    detail: *mb_sam_box_prompt
 
 AIDBZOO:
   scrfd_2.5g_kps: *scrfd_2_5g_kps
@@ -1013,3 +1160,6 @@ AIDBZOO:
   yolox_nano: *yolox_nano
   yolox_x: *yolox_x
   yolox_s: *yolox_s
+  mobile_sam_encoder: *mobile_sam_encoder
+  mobile_sam_point_prompt: *mobile_sam_point_prompt
+  mobile_sam_box_prompt: *mobile_sam_box_prompt

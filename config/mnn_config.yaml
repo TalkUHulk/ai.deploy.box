@@ -64,8 +64,9 @@ ModelPath:
     YOLOV8_L: &mp_yolov8l "./models/mnn/yolov8/yolov8l"
     YOLOV8_X: &mp_yolov8x "./models/mnn/yolov8/yolov8x"
   MobileSAM:
-    Encoder: &mp_sam_encoder "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/encoder_sim"
-    MobileSamPointPrompt: &mp_mb_sam_point_prompt "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_point_single"
+    Encoder: &mp_sam_encoder "./models/mnn/mobilesam/encoder_sim"
+    MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/mnn/mobilesam/mobile_sam_5point_single"
+    MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/mnn/mobilesam/mobile_sam_box_single"
 
 Detail:
   SCRFD: &scrfd_detail
@@ -783,13 +784,13 @@ Detail:
       format: "NHW"
       shape:
         width: 2
-        height: -1
+        height: 5
         batch: 1
     input_node3: &in_node3
       input_name: "point_labels"
       format: "NW"
       shape:
-        width: -1
+        width: 5
         batch: 1
     input_node4: &in_node4
       input_name: "mask_input"
@@ -811,6 +812,50 @@ Detail:
       - *in_node3
       - *in_node4
       - *in_node5
+
+    output_nodes:
+      - "masks"
+      - "scores"
+
+  MobileSAMBoxPrompt: &mb_sam_box_prompt
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    dynamic: false
+    input_node1: &in_node1
+      input_name: "image_embeddings"
+      format: "NCHW"
+      shape:
+        width: 64
+        height: 64
+        channel: 256
+        batch: 1
+    input_node2: &in_node2
+      input_name: "boxes"
+      format: "NHW"
+      shape:
+        width: 4
+        height: 5
+        batch: 1
+    input_node4: &in_node3
+      input_name: "mask_input"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 1
+        batch: 1
+    input_node5: &in_node4
+      input_name: "has_mask_input"
+      format: "N"
+      shape:
+        batch: 1
+
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
 
     output_nodes:
       - "masks"
@@ -1066,6 +1111,12 @@ ModelZoo:
     backend: "MNN"
     detail: *mb_sam_point_prompt
 
+  MobileSAM_Box_Prompt: &mobile_sam_box_prompt
+    name: "MobileSAM_Box_Prompt"
+    model: *mp_mb_sam_box_prompt
+    backend: "MNN"
+    detail: *mb_sam_box_prompt
+
 
 AIDBZOO:
   scrfd_2.5g_kps: *scrfd_2_5g_kps
@@ -1117,3 +1168,4 @@ AIDBZOO:
   yolox_x: *yolox_x
   mobile_sam_encoder: *mobile_sam_encoder
   mobile_sam_point_prompt: *mobile_sam_point_prompt
+  mobile_sam_box_prompt: *mobile_sam_box_prompt

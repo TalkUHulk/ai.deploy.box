@@ -141,6 +141,7 @@ namespace AIDB {
             _infer_request.set_tensor(_input_node_name[i], input_tensor);
 
         }
+
         // -------- Do inference synchronously --------
         _infer_request.infer();
 
