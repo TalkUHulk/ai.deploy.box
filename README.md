@@ -46,7 +46,7 @@ English | <a href="README_cn.md">简体中文</a>
 <br>
  <img src="./doc/entry/Qt_face.gif" height="185" width="256px"/>
  <img src="./doc/entry/Qt_ocr.gif"  height="185" width="256px"/>
-  <img src="./doc/entry/qt_mobilesam.gif"  height="185" width="256px"/>
+ <img src="./doc/entry/qt_mobilesam.gif"  height="185" width="256px"/>
 <p align="center">
 
 |  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
