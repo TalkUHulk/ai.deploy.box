@@ -49,6 +49,13 @@ English | <a href="README_cn.md">简体中文</a>
  <img src="./doc/entry/qt_mobilesam.gif"  height="185" width="256px"/>
 <p align="center">
 
+
+https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88
+
+https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532
+
+
+
 |  aidb-webassembly-webcam-demo   | aidb-webassembly-capture-demo  |
 |  ----  | ----  |
 | <a href="https://www.youtube.com/watch?v=4ydZgpWTQls"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392448/video_to_markdown/images/youtube--4ydZgpWTQls-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-webcam-demo" width = "480"></a> | <a href="https://www.youtube.com/watch?v=7U65M5Lz_xE"><img src="https://res.cloudinary.com/marcomontalbano/image/upload/v1682392501/video_to_markdown/images/youtube--7U65M5Lz_xE-c05b58ac6eb4c4700831b2b3070cd403.jpg" alt="aidb-webassembly-capture-demo" width = "480"></a>|
