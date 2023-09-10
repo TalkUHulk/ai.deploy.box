@@ -32,11 +32,6 @@ English | <a href="README_cn.md">简体中文</a>
 </div>
 
 
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/f741e34b-93a6-4fe5-beaf-8f53818004e7
-
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/2fbe613b-f652-4749-a261-5fda23e9705c
-
-
 
 📌**AiDB** : A toolbox for deep learning model deployment using C++. Abstract mainstream deep learning inference frameworks into unified interfaces, including ONNXRUNTIME, MNN, NCNN, TNN, PaddleLite, and OpenVINO. Provide deployment demo for multiple scenarios and languages. This project is not only used to record learning, but also a summary of my work over the past few years. If this project inspires you or helps you, welcome ⭐Star⭐ to support me,  which is the driving force for me to keep updating! 🍔
 
@@ -54,9 +49,9 @@ https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/2fbe613b-f652-4749-a2
  <img src="./doc/entry/qt_mobilesam.gif"  height="185" width="256px"/>
 <p align="center">
 
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88
+[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/f741e34b-93a6-4fe5-beaf-8f53818004e7)
 
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532
+[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/2fbe613b-f652-4749-a261-5fda23e9705c)
 
 
 ## Features 🍉🍉
