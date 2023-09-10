@@ -51,9 +51,10 @@ English | <a href="README_cn.md">简体中文</a>
 
 
 
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/82fbbb7f-8847-433d-8c77-fe4dacf6dc9f
+https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/f9a03178-8d50-4627-9c61-21e99734a37a
 
-https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/5dab3c24-ea73-47d5-ac09-16a7020d479a
+https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/6f8136b7-07fa-4d39-97ef-797d6f6c37de
+
 
 
 
