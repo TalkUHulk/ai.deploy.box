@@ -50,6 +50,7 @@ English | <a href="README_cn.md">简体中文</a>
 <p align="center">
 
 https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88
+
 https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532
 
 
