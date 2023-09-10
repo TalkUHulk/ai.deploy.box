@@ -49,7 +49,9 @@ English | <a href="README_cn.md">简体中文</a>
  <img src="./doc/entry/qt_mobilesam.gif"  height="185" width="256px"/>
 <p align="center">
 
-[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/f741e34b-93a6-4fe5-beaf-8f53818004e7)[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/2fbe613b-f652-4749-a261-5fda23e9705c)
+[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/33823d89-a259-48f1-aeea-e5524d18da88](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/f741e34b-93a6-4fe5-beaf-8f53818004e7)
+
+[https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/c311785e-2a69-4ac8-aaea-004807dc4532](https://github.com/TalkUHulk/ai.deploy.box/assets/18474163/2fbe613b-f652-4749-a261-5fda23e9705c)
 
 
 ## Features 🍉🍉
