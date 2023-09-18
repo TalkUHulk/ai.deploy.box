@@ -30,7 +30,7 @@ namespace AIDB {
             auto nchw_size   = nhwc_Tensor->size();
             ::memcpy(nchw_data, frame, nchw_size);
             input_tensor->copyFromHostTensor(nhwc_Tensor);
-
+            delete nhwc_Tensor;
 
         }
 
@@ -175,7 +175,7 @@ namespace AIDB {
             auto nchw_size   = nhwc_Tensor->size();
             ::memcpy(nchw_data, input[i], nchw_size);
             input_tensor->copyFromHostTensor(nhwc_Tensor);
-
+            delete nhwc_Tensor;
         }
 
         if(_dynamic) _mnn_net->resizeSession(_mnn_session);
