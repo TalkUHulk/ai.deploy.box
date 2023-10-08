@@ -795,6 +795,41 @@ namespace AIDB {
 
     }
 
+    // TPSMM
+
+    double Utility::hull_area(const std::vector<float>& pts, float epsilon, bool closed){
+        std::vector<cv::Point2f> hull;
+        std::vector<cv::Point2f> contour;
+        std::vector<cv::Point2f> points;
+        points.reserve(pts.size() / 2);
+        for(int i = 0; i < pts.size() / 2; i++){
+            points.emplace_back(pts[2 * i], pts[2 * i + 1]);
+        }
+        cv::convexHull(cv::Mat(points), hull);
+        cv::approxPolyDP(cv::Mat(hull), contour, epsilon, closed);
+        return cv::contourArea(cv::Mat(contour));
+    }
+
+    int Utility::relative_kp(const std::vector<float>& kp_source,
+                    const std::vector<float>& kp_driving,
+                    const std::vector<float>& kp_driving_initial,
+                    std::vector<float>& kp_norm){
+
+
+        auto source_area = hull_area(kp_source);
+        auto driving_area = hull_area(kp_driving_initial);
+        auto adapt_movement_scale = sqrt(source_area) / sqrt(driving_area);
+
+        kp_norm.clear();
+        kp_norm.resize(kp_source.size(), 0);
+        for(int i = 0; i < kp_source.size(); i++){
+            kp_norm[i] = (kp_driving[i] - kp_driving_initial[i]) * adapt_movement_scale + kp_source[i];
+        }
+
+        return 0;
+    }
+
+
 #endif
     void Utility::yolov7_post_process(const std::vector<std::vector<float>> &outputs,
                              const std::vector<std::vector<int>> &outputs_shape,

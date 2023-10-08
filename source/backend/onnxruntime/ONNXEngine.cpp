@@ -67,9 +67,7 @@ namespace AIDB{
 
             for (int cc = 0; cc < dim_count; cc++){
                 outputs_shape[index].push_back(int(dims[cc]));
-//                std::cout << "@@" << dims[cc];
             }
-//            std::cout << "\n";
             ort_output.GetTensorData<float>();
             outputs[index].resize(output_len);
             ::memcpy(outputs[index].data(), ort_output.GetTensorData<float>(), sizeof(float)*output_len);
@@ -172,9 +170,8 @@ namespace AIDB{
 
             for (int cc = 0; cc < dim_count; cc++){
                 outputs_shape[index].push_back(int(dims[cc]));
-                std::cout << "@@" << dims[cc];
             }
-            std::cout << "\n";
+
             ort_output.GetTensorData<float>();
             outputs[index].resize(output_len);
             ::memcpy(outputs[index].data(), ort_output.GetTensorData<float>(), sizeof(float)*output_len);

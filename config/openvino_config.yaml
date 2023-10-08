@@ -65,6 +65,10 @@ ModelPath:
     Encoder: &mp_sam_encoder "./models/openvino/mobilesam/encoder_sim"
     MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/openvino/mobilesam/mobile_sam_point_single"
     MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/openvino/mobilesam/mobile_sam_box_single"
+  ThinPlateSplineMotionModel:
+    ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/openvino/tpsmm/kp_detector_fp16"
+    ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/openvino/tpsmm/avd_network_fp16"
+    ThinPlateSplineMotionModel: &mp_tpsmm "./models/openvino/tpsmm/tpsmm_fp16"
 
 Detail:
   SCRFD: &scrfd_detail
@@ -359,10 +363,10 @@ Detail:
 
     input_node1: &in_node1
       input_name: "var"
-      format: "VECTOR"
+      format: "NW"
       shape:
         width: 512
-        height: 1
+        batch: 1
 
     input_nodes:
       - *in_node1
@@ -376,10 +380,10 @@ Detail:
 
     input_node1: &in_node1
       input_name: "style"
-      format: "VECTOR"
+      format: "NW"
       shape:
         width: 512
-        height: 1
+        batch: 1
     input_nodes:
       - *in_node1
     output_nodes:
@@ -855,6 +859,111 @@ Detail:
       - "masks"
       - "scores"
 
+
+  ThinPlateSplineMotionModel_KP_Detector: &tpsmm_kp_detector_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+    input_node1: &in_node1
+      input_name: "source"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "kp_source"
+
+
+  ThinPlateSplineMotionModel_AVD_Network: &tpsmm_avd_network_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "kp_source"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node2: &in_node2
+      input_name: "kp_driving"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_nodes:
+      - *in_node1
+      - *in_node2
+    output_nodes:
+      - "kp_norm"
+
+
+  ThinPlateSplineMotionModel: &tpsmm_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "kp_source"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node2: &in_node2
+      input_name: "kp_driving"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node4: &in_node3
+      input_name: "source"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+    input_node5: &in_node4
+      input_name: "driving"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
+
+    output_nodes:
+      - "output"
+
 ModelZoo:
   SCRFD_2_5G_KPS: &scrfd_2_5g_kps
     name: "SCRFD_2.5G_KPS"
@@ -1111,6 +1220,22 @@ ModelZoo:
     model: *mp_mb_sam_box_prompt
     backend: "OpenVINO"
     detail: *mb_sam_box_prompt
+  ThinPlateSplineMotionModel_KP_Detector: &tpsmm_kp_detector
+    name: "ThinPlateSplineMotionModel_KP_Detector"
+    model: *mp_tpsmm_kp_detector
+    backend: "OpenVINO"
+    detail: *tpsmm_kp_detector_detail
+  ThinPlateSplineMotionModel_AVD_Network: &tpsmm_avd_network
+    name: "ThinPlateSplineMotionModel_AVD_Network"
+    model: *mp_tpsmm_avd_network
+    backend: "OpenVINO"
+    detail: *tpsmm_avd_network_detail
+  ThinPlateSplineMotionModel: &tpsmm
+    name: "ThinPlateSplineMotionModel"
+    model: *mp_tpsmm
+    backend: "OpenVINO"
+    detail: *tpsmm_detail
+
 
 AIDBZOO:
   scrfd_2.5g_kps: *scrfd_2_5g_kps
@@ -1163,3 +1288,6 @@ AIDBZOO:
   mobile_sam_encoder: *mobile_sam_encoder
   mobile_sam_point_prompt: *mobile_sam_point_prompt
   mobile_sam_box_prompt: *mobile_sam_box_prompt
+  tpsmm_kp_detector: *tpsmm_kp_detector
+  tpsmm_avd_network: *tpsmm_avd_network
+  tpsmm: *tpsmm

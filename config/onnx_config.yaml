@@ -64,6 +64,11 @@ ModelPath:
     Encoder: &mp_sam_encoder "./models/onnx/mobilesam/encoder_sim"
     MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/onnx/mobilesam/mobile_sam_point_single"
     MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/onnx/mobilesam/mobile_sam_box_single"
+  ThinPlateSplineMotionModel:
+    ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/onnx/tpsmm/kp_detector"
+    ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/onnx/tpsmm/avd_network"
+    ThinPlateSplineMotionModel: &mp_tpsmm "./models/onnx/tpsmm/tpsmm"
+
 Detail:
   SCRFD: &scrfd_detail
     encrypt: false
@@ -362,10 +367,10 @@ Detail:
 
     input_node1: &in_node1
       input_name: "var"
-      format: "VECTOR"
+      format: "NW"
       shape:
         width: 512
-        height: 1
+        batch: 1
 
     input_nodes:
       - *in_node1
@@ -379,10 +384,10 @@ Detail:
 
     input_node1: &in_node1
       input_name: "style"
-      format: "VECTOR"
+      format: "NW"
       shape:
         width: 512
-        height: 1
+        batch: 1
     input_nodes:
       - *in_node1
     output_nodes:
@@ -835,7 +840,7 @@ Detail:
         width: 4
         height: -1
         batch: 1
-    input_node4: &in_node3
+    input_node3: &in_node3
       input_name: "mask_input"
       format: "NCHW"
       shape:
@@ -843,7 +848,7 @@ Detail:
         height: 256
         channel: 1
         batch: 1
-    input_node5: &in_node4
+    input_node4: &in_node4
       input_name: "has_mask_input"
       format: "N"
       shape:
@@ -858,6 +863,110 @@ Detail:
     output_nodes:
       - "masks"
       - "scores"
+
+  ThinPlateSplineMotionModel_KP_Detector: &tpsmm_kp_detector_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    PreProcess:
+      shape: &shape
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+      keep_ratio: true
+      mean:
+        - 0.0
+        - 0.0
+        - 0.0
+      var:
+        - 255.0
+        - 255.0
+        - 255.0
+      border_constant:
+        - 0.0
+        - 0.0
+        - 0.0
+      imageformat: "RGB"
+      inputformat: &format "NCHW"
+    input_node1: &in_node1
+      input_name: "source"
+      format: *format
+      shape: *shape
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "kp_source"
+
+
+  ThinPlateSplineMotionModel_AVD_Network: &tpsmm_avd_network_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "kp_source"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node2: &in_node2
+      input_name: "kp_driving"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_nodes:
+      - *in_node1
+      - *in_node2
+    output_nodes:
+      - "kp_norm"
+
+
+  ThinPlateSplineMotionModel: &tpsmm_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "kp_source"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node2: &in_node2
+      input_name: "kp_driving"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 50
+        batch: 1
+    input_node4: &in_node3
+      input_name: "source"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+    input_node5: &in_node4
+      input_name: "driving"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 3
+        batch: 1
+
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
+
+    output_nodes:
+      - "output"
 
 #Detail:
 #  SCRFD: &scrfd
@@ -1758,6 +1867,22 @@ ModelZoo:
       backend: "ONNX"
       detail: *mb_sam_box_prompt
 
+    ThinPlateSplineMotionModel_KP_Detector: &tpsmm_kp_detector
+      name: "ThinPlateSplineMotionModel_KP_Detector"
+      model: *mp_tpsmm_kp_detector
+      backend: "ONNX"
+      detail: *tpsmm_kp_detector_detail
+    ThinPlateSplineMotionModel_AVD_Network: &tpsmm_avd_network
+      name: "ThinPlateSplineMotionModel_AVD_Network"
+      model: *mp_tpsmm_avd_network
+      backend: "ONNX"
+      detail: *tpsmm_avd_network_detail
+    ThinPlateSplineMotionModel: &tpsmm
+      name: "ThinPlateSplineMotionModel"
+      model: *mp_tpsmm
+      backend: "ONNX"
+      detail: *tpsmm_detail
+
 #AIBox:
 #  - *scrfd
 #  - *pfpld
@@ -1829,6 +1954,10 @@ AIDBZOO:
   mobile_sam_encoder: *mobile_sam_encoder
   mobile_sam_point_prompt: *mobile_sam_point_prompt
   mobile_sam_box_prompt: *mobile_sam_box_prompt
+  tpsmm_kp_detector: *tpsmm_kp_detector
+  tpsmm_avd_network: *tpsmm_avd_network
+  tpsmm: *tpsmm
+
 
 
 

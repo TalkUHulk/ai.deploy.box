@@ -12,9 +12,9 @@ namespace AIDB {
         assert(input_mode["inputformat"].IsDefined());
         assert(input_mode["imageformat"].IsDefined());
 #endif
-        _shape.width = input_mode["shape"]["width"].as<int>();
-        _shape.height = input_mode["shape"]["height"].as<int>();
-        _shape.channel = input_mode["shape"]["channel"].as<int>();
+        _shape.width = input_mode["shape"]["width"].IsDefined()? input_mode["shape"]["width"].as<int>(): 0;
+        _shape.height = input_mode["shape"]["height"].IsDefined()? input_mode["shape"]["height"].as<int>(): 0;
+        _shape.channel = input_mode["shape"]["channel"].IsDefined()? input_mode["shape"]["channel"].as<int>(): 0;
 
 #ifdef ENABLE_NCNN_WASM
         if("RGB" == input_mode["originimageformat"].as<std::string>())
