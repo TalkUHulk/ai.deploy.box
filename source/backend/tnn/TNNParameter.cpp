@@ -27,9 +27,9 @@ namespace AIDB {
                 if('C' == fm)
                     cur_shape.push_back(in["shape"]["channel"].as<int>());
                 if('H' == fm)
-                    cur_shape.push_back(in["shape"]["height"].as<int>());
+                    cur_shape.push_back(in["shape"]["height"].as<int>() < 0 ? -1:in["shape"]["height"].as<int>());
                 if('W' == fm)
-                    cur_shape.push_back(in["shape"]["width"].as<int>());
+                    cur_shape.push_back(in["shape"]["width"].as<int>() < 0 ? -2: in["shape"]["width"].as<int>());
 
             }
             _input_node_name.emplace_back(in["input_name"].as<std::string>());
