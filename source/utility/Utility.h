@@ -96,7 +96,7 @@ namespace AIDB{
                                                 const std::vector<int> &outputs_shape, cv::Mat &animated);
 
         static void bisenet_post_process(const cv::Mat &src_image, cv::Mat &parsing_image, const std::vector<float> &outputs,
-                                           const std::vector<int> &outputs_shape);
+                                           const std::vector<int> &outputs_shape, bool fushion=true, const std::vector<int>& ignore={});
 
         static void stylegan_post_process(cv::Mat &result_image,
                                          const std::vector<float> &output,
