@@ -65,8 +65,8 @@ ModelPath:
     MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/onnx/mobilesam/mobile_sam_point_single"
     MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/onnx/mobilesam/mobile_sam_box_single"
   ThinPlateSplineMotionModel:
-    ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/onnx/tpsmm/kp_detector"
-    ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/onnx/tpsmm/avd_network"
+    ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/onnx/tpsmm/kp_detector_int8"
+    ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/onnx/tpsmm/avd_network_int8"
     ThinPlateSplineMotionModel: &mp_tpsmm "./models/onnx/tpsmm/tpsmm"
 
 Detail:
