@@ -725,7 +725,7 @@ namespace AIDB {
     }
 
     void Utility::bisenet_post_process(const cv::Mat &src_image, cv::Mat &parsing_image, const std::vector<float> &outputs,
-                              const std::vector<int> &outputs_shape){
+                              const std::vector<int> &outputs_shape, bool fushion, const std::vector<int>& ignore){
 
         int dim = outputs_shape.size();
         int output_n = dim == 3? 1: outputs_shape[0];
@@ -757,9 +757,23 @@ namespace AIDB {
         cv::Mat vis_parsing_anno_color(output_h, output_w, CV_8UC3, cv::Scalar::all(255));
 
         for(int i = 0; i < vis_parsing_anno_color.rows; i++){
-            for(int j = 0; j < vis_parsing_anno_color.cols; j++)
-            {
+            for(int j = 0; j < vis_parsing_anno_color.cols; j++){
+                bool skip = false;
                 if(parsing_anno[i * output_w + j] > 0 && parsing_anno[i * output_w + j] < 20) {
+                    if(!ignore.empty()){
+                        for(auto ign: ignore){
+                            if(parsing_anno[i * output_w + j] == ign){
+                                skip = true;
+                                continue;
+                            }
+                        }
+                    }
+                    if(skip)
+                        continue;
+//                    if(parsing_anno[i * output_w + j] == 18)
+//                        continue;
+//                    if(parsing_anno[i * output_w + j] == 16)
+//                        continue;
                     auto color = parsing_part_colors[parsing_anno[i * output_w + j]];
                     vis_parsing_anno_color.at<cv::Vec3b>(i,j) = cv::Vec3b(color[0], color[1], color[2]);
                 }
@@ -767,11 +781,17 @@ namespace AIDB {
             }
 
         }
-        cv::Mat resized = src_image;
-        if(src_image.cols != output_w || src_image.rows != output_h){
-             cv::resize(src_image, resized, cv::Size(output_w, output_h));
+        if(fushion){
+            cv::Mat resized = src_image;
+            if(src_image.cols != output_w || src_image.rows != output_h){
+                cv::resize(src_image, resized, cv::Size(output_w, output_h));
+            }
+            cv::addWeighted(resized, 0.4, vis_parsing_anno_color, 0.6, 0, parsing_image);
+        } else{
+            parsing_image = vis_parsing_anno_color.clone();
         }
-        cv::addWeighted(resized, 0.4, vis_parsing_anno_color, 0.6, 0, parsing_image);
+
+
     }
 
 
@@ -794,6 +814,41 @@ namespace AIDB {
         cv::cvtColor(generated_image, result_image, cv::COLOR_BGR2RGB);
 
     }
+
+    // TPSMM
+
+    double Utility::hull_area(const std::vector<float>& pts, float epsilon, bool closed){
+        std::vector<cv::Point2f> hull;
+        std::vector<cv::Point2f> contour;
+        std::vector<cv::Point2f> points;
+        points.reserve(pts.size() / 2);
+        for(int i = 0; i < pts.size() / 2; i++){
+            points.emplace_back(pts[2 * i], pts[2 * i + 1]);
+        }
+        cv::convexHull(cv::Mat(points), hull);
+        cv::approxPolyDP(cv::Mat(hull), contour, epsilon, closed);
+        return cv::contourArea(cv::Mat(contour));
+    }
+
+    int Utility::relative_kp(const std::vector<float>& kp_source,
+                    const std::vector<float>& kp_driving,
+                    const std::vector<float>& kp_driving_initial,
+                    std::vector<float>& kp_norm){
+
+
+        auto source_area = hull_area(kp_source);
+        auto driving_area = hull_area(kp_driving_initial);
+        auto adapt_movement_scale = sqrt(source_area) / sqrt(driving_area);
+
+        kp_norm.clear();
+        kp_norm.resize(kp_source.size(), 0);
+        for(int i = 0; i < kp_source.size(); i++){
+            kp_norm[i] = (kp_driving[i] - kp_driving_initial[i]) * adapt_movement_scale + kp_source[i];
+        }
+
+        return 0;
+    }
+
 
 #endif
     void Utility::yolov7_post_process(const std::vector<std::vector<float>> &outputs,

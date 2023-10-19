@@ -96,11 +96,18 @@ namespace AIDB{
                                                 const std::vector<int> &outputs_shape, cv::Mat &animated);
 
         static void bisenet_post_process(const cv::Mat &src_image, cv::Mat &parsing_image, const std::vector<float> &outputs,
-                                           const std::vector<int> &outputs_shape);
+                                           const std::vector<int> &outputs_shape, bool fushion=true, const std::vector<int>& ignore={});
 
         static void stylegan_post_process(cv::Mat &result_image,
                                          const std::vector<float> &output,
                                          const std::vector<int> &output_shape);
+
+        static double hull_area(const std::vector<float>& pts, float epsilon=.001, bool closed=true);
+
+        static int relative_kp(const std::vector<float>& kp_source,
+                        const std::vector<float>& kp_driving,
+                        const std::vector<float>& kp_driving_initial,
+                        std::vector<float>& kp_norm);
 #endif
         // without grid
         static void yolov7_post_process(const std::vector<float> &output,

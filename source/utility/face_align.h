@@ -197,8 +197,157 @@ namespace AIDB{
         face_aligned.create(target_size, target_size, CV_32FC3);
 
         cv::Mat transfer_mat = transform(cv::Rect(0, 0, 3, 2));
+//        cv::warpAffine(img_src, face_aligned, transfer_mat,
+//                       cv::Size(target_size, target_size), cv::INTER_LINEAR, cv::BORDER_REFLECT);
         cv::warpAffine(img_src, face_aligned, transfer_mat,
-                       cv::Size(target_size, target_size), cv::INTER_LINEAR, cv::BORDER_REFLECT);
+                       cv::Size(target_size, target_size), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+
+//        cv::Mat inverse;
+//        inverse.create(img_src.rows, img_src.cols, CV_32FC3);
+//        std::cout << transfer_mat << std::endl;
+//        cv::Mat T(transfer_mat);
+//        T.at<float>(0, 2) = -transfer_mat.at<float>(0, 2);
+//        T.at<float>(1, 2) = -transfer_mat.at<float>(1, 2);
+//        cv::Mat rotate = T(cv::Rect(0, 0,2,2));
+//        rotate = rotate.inv();
+//        std::cout << T << std::endl;
+//        cv::warpAffine(face_aligned, inverse, T,
+//                       cv::Size(img_src.cols, img_src.rows), cv::INTER_LINEAR, cv::BORDER_REFLECT);
+//
+//        cv::imshow("inverse", inverse);
+
+        return 0;
+    }
+
+
+    int faceAlign(const cv::Mat & img_src,
+                  cv::Mat& face_aligned,
+                  const std::shared_ptr<AIDB::FaceMeta>& face_meta,
+                  cv::Mat &inverse_transformation_matrix,
+                  int target_size = 112, const std::string& mode="ffhq") {
+        if (img_src.empty()) {
+            std::cout << "input empty." << std::endl;
+            return 1;
+        }
+        if (face_meta->kps.empty()) {
+            std::cout << "keypoints empty." << std::endl;
+            return 2;
+        }
+
+        cv::Mat src_mat;
+        cv::Mat dst_mat;
+        if(face_meta->kps.size() == 10){
+            src_mat = cv::Mat(5, 2, CV_32FC1, face_meta->kps.data());
+        } else{
+            float points[5][2] = {
+                    {face_meta->kps[2 * 96], face_meta->kps[96 * 2 + 1]},
+                    {face_meta->kps[2 * 97], face_meta->kps[2 * 97 + 1]},
+                    {face_meta->kps[2 * 54], face_meta->kps[54 * 2 + 1] },
+                    {face_meta->kps[2 * 88], face_meta->kps[88 * 2 + 1]},
+                    {face_meta->kps[2 * 92], face_meta->kps[92 * 2 + 1]}
+            };
+            src_mat = cv::Mat(5, 2, CV_32FC1, points);
+        }
+
+        if("ffhq" == mode){
+            dst_mat = cv::Mat(5, 2, CV_32FC1, ffhq_src) * target_size / 512;
+        } else{
+            dst_mat = cv::Mat(5, 2, CV_32FC1, arcface_src) * target_size / 112;
+        }
+
+        cv::Mat transform = similarTransform(src_mat, dst_mat);
+
+        face_aligned.create(target_size, target_size, CV_32FC3);
+
+        cv::Mat transfer_mat = transform(cv::Rect(0, 0, 3, 2));
+
+        cv::warpAffine(img_src, face_aligned, transfer_mat,
+                       cv::Size(target_size, target_size), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+
+//        cv::Mat inverse;
+//        inverse.create(img_src.rows, img_src.cols, CV_32FC3);
+
+//        inverse_transformation_matrix = cv::Mat(transfer_mat);
+//        inverse_transformation_matrix.at<float>(0, 2) = -transfer_mat.at<float>(0, 2);
+//        inverse_transformation_matrix.at<float>(1, 2) = -transfer_mat.at<float>(1, 2);
+//        cv::Mat rotate = inverse_transformation_matrix(cv::Rect(0, 0,2,2));
+//        rotate = rotate.inv();
+
+        cv::invertAffineTransform(transfer_mat, inverse_transformation_matrix);
+
+//        cv::warpAffine(face_aligned, inverse, inverse_transformation_matrix,
+//                       cv::Size(img_src.cols, img_src.rows), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+//
+//        cv::imshow("inverse", inverse);
+
+        return 0;
+    }
+
+    int faceAlign(const cv::Mat &img_src,
+                  const cv::Mat &img_dst,
+                  cv::Mat& face_aligned,
+                  const std::shared_ptr<AIDB::FaceMeta>& source_face_meta,
+                  const std::shared_ptr<AIDB::FaceMeta>& dst_face_meta,
+                  cv::Mat &inverse_transformation_matrix,
+                  cv::Size target_size) {
+        if (img_src.empty()) {
+            std::cout << "input empty." << std::endl;
+            return 1;
+        }
+        if (source_face_meta->kps.empty() || dst_face_meta->kps.empty()) {
+            std::cout << "keypoints empty." << std::endl;
+            return 2;
+        }
+
+        cv::Mat src_mat;
+        cv::Mat dst_mat;
+        if(source_face_meta->kps.size() == 10){
+            src_mat = cv::Mat(5, 2, CV_32FC1, source_face_meta->kps.data());
+        } else{
+            float points[5][2] = {
+                    {source_face_meta->kps[2 * 96], source_face_meta->kps[96 * 2 + 1]},
+                    {source_face_meta->kps[2 * 97], source_face_meta->kps[2 * 97 + 1]},
+                    {source_face_meta->kps[2 * 54], source_face_meta->kps[54 * 2 + 1] },
+                    {source_face_meta->kps[2 * 88], source_face_meta->kps[88 * 2 + 1]},
+                    {source_face_meta->kps[2 * 92], source_face_meta->kps[92 * 2 + 1]}
+            };
+            src_mat = cv::Mat(5, 2, CV_32FC1, points);
+        }
+
+        if(dst_face_meta->kps.size() == 10){
+            dst_mat = cv::Mat(5, 2, CV_32FC1, dst_face_meta->kps.data());
+        } else{
+            float points[5][2] = {
+                    {dst_face_meta->kps[2 * 96], dst_face_meta->kps[96 * 2 + 1]},
+                    {dst_face_meta->kps[2 * 97], dst_face_meta->kps[2 * 97 + 1]},
+                    {dst_face_meta->kps[2 * 54], dst_face_meta->kps[54 * 2 + 1] },
+                    {dst_face_meta->kps[2 * 88], dst_face_meta->kps[88 * 2 + 1]},
+                    {dst_face_meta->kps[2 * 92], dst_face_meta->kps[92 * 2 + 1]}
+            };
+            dst_mat = cv::Mat(5, 2, CV_32FC1, points);
+        }
+
+        for(int i = 0; i < 5; i++){
+            dst_mat.at<float>(i, 0) *= (float(target_size.width) / float(img_dst.cols));
+            dst_mat.at<float>(i, 1) *= (float(target_size.height) / float(img_dst.rows));
+        }
+//        dst_mat = dst_mat * target_size / 410;
+//        std::cout << dst_mat << std::endl;
+        cv::Mat transform = similarTransform(src_mat, dst_mat);
+
+        face_aligned.create(target_size, CV_32FC3);
+
+        cv::Mat transfer_mat = transform(cv::Rect(0, 0, 3, 2));
+
+        cv::warpAffine(img_src, face_aligned, transfer_mat,
+                       target_size, cv::INTER_LINEAR, cv::BORDER_REPLICATE);
+
+//        inverse_transformation_matrix = cv::Mat(transfer_mat);
+//        inverse_transformation_matrix.at<float>(0, 2) = -transfer_mat.at<float>(0, 2);
+//        inverse_transformation_matrix.at<float>(1, 2) = -transfer_mat.at<float>(1, 2);
+//        cv::Mat rotate = inverse_transformation_matrix(cv::Rect(0, 0,2,2));
+//        rotate = rotate.inv();
+        cv::invertAffineTransform(transfer_mat, inverse_transformation_matrix);
 
         return 0;
     }

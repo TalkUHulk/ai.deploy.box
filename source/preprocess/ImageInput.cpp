@@ -12,9 +12,9 @@ namespace AIDB {
         assert(input_mode["inputformat"].IsDefined());
         assert(input_mode["imageformat"].IsDefined());
 #endif
-        _shape.width = input_mode["shape"]["width"].as<int>();
-        _shape.height = input_mode["shape"]["height"].as<int>();
-        _shape.channel = input_mode["shape"]["channel"].as<int>();
+        _shape.width = input_mode["shape"]["width"].IsDefined()? input_mode["shape"]["width"].as<int>(): 0;
+        _shape.height = input_mode["shape"]["height"].IsDefined()? input_mode["shape"]["height"].as<int>(): 0;
+        _shape.channel = input_mode["shape"]["channel"].IsDefined()? input_mode["shape"]["channel"].as<int>(): 0;
 
 #ifdef ENABLE_NCNN_WASM
         if("RGB" == input_mode["originimageformat"].as<std::string>())
@@ -164,7 +164,7 @@ namespace AIDB {
         int resize_w = _shape.width;
         int resize_h = _shape.height;
 
-        if(resize_w == -1 && resize_h == -1){
+        if(resize_w < 0 && resize_h < 0){
             if(_limit_side_len > 0){
                 float tmp_ratio = 1.f;
                 int max_wh = std::max(image.cols, image.rows);
@@ -189,12 +189,12 @@ namespace AIDB {
             set_height(resize_h);
             set_width(resize_w);
 
-        } else if(resize_h!= -1 && resize_w == -1){
+        } else if(resize_h >= 0 && resize_w < 0){
             resize_w = resize_h / image.rows * image.cols;
             resize_w = std::max(int(round(float(resize_w) / 32) * 32), 32);
             set_width(resize_w);
 
-        } else if(resize_h == -1){
+        } else if(resize_h < 0){
             resize_h = resize_w / image.cols * image.rows;
             resize_h = std::max(int(round(float(resize_h) / 32) * 32), 32);
             set_height(resize_h);

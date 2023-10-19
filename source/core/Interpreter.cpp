@@ -265,21 +265,21 @@ namespace AIDB {
     }
 #endif
     int Interpreter::width() const {
-        return _ptr_input->width();
+        return _ptr_input? _ptr_input->width(): -1;
     }
     int Interpreter::height() const {
-        return _ptr_input->height();
+        return _ptr_input? _ptr_input->height(): -1;
     }
     int Interpreter::channel() const {
-        return _ptr_input->channel();
+        return _ptr_input? _ptr_input->channel(): -1;
     }
 
     float Interpreter::scale_h() const {
-        return _ptr_input->_scale_h;
+        return _ptr_input? _ptr_input->_scale_h: -1;
     }
 
     float Interpreter::scale_w() const {
-        return _ptr_input->_scale_w;
+        return _ptr_input? _ptr_input->_scale_w: -1;
     }
 
 //    Input &Input::operator>>(cv::Mat &dst) {

@@ -43,11 +43,8 @@ namespace AIDB {
             int index = &name - &_output_node_name[0];
             std::shared_ptr<MNN::Tensor> tensor = get_output_by_name(name.c_str());
             for(auto dim: tensor->shape()){
-//                std::cout << dim << ",";
                 outputs_shape[index].push_back(dim);
             }
-//
-//            std::cout << "\n";
             outputs[index].resize(tensor->size());
             ::memcpy(outputs[index].data(), tensor->host<float>(), tensor->size());
         }
@@ -188,11 +185,10 @@ namespace AIDB {
             int index = &name - &_output_node_name[0];
             std::shared_ptr<MNN::Tensor> tensor = get_output_by_name(name.c_str());
             for(auto dim: tensor->shape()){
-                std::cout << dim << ",";
                 outputs_shape[index].push_back(dim);
             }
 //
-            std::cout << "\n";
+
             outputs[index].resize(tensor->size());
             ::memcpy(outputs[index].data(), tensor->host<float>(), tensor->size());
         }
