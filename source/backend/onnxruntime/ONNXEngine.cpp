@@ -15,7 +15,6 @@ namespace AIDB{
     }
 
     void ONNXEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape){
-
         Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtAllocatorType::OrtArenaAllocator, OrtMemType::OrtMemTypeDefault);
 
         std::vector<Ort::Value> ort_inputs;
@@ -27,7 +26,6 @@ namespace AIDB{
                 if(dim == -1) dim = frame_height;
                 if(dim == -2) dim = frame_width;
             }
-
             Ort::Value input_tensor = Ort::Value::CreateTensor(memory_info,
                                                                (void *) frame,
                                                                frame_width * frame_height * frame_channel * sizeof(float) ,
@@ -36,7 +34,6 @@ namespace AIDB{
             ort_inputs.push_back(std::move(input_tensor));
             input_node_names.push_back(const_cast<char*>(_input_node.first.c_str()));
         }
-
         std::vector<Ort::Value> ort_outputs;
         std::vector<char*> output_node_names;
 
@@ -44,14 +41,12 @@ namespace AIDB{
             output_node_names.push_back(const_cast<char*>(name.c_str()));
 
         }
-
         ort_outputs = _session->Run(Ort::RunOptions{nullptr},
                                       input_node_names.data(),
                                       ort_inputs.data(),
                                       ort_inputs.size(),
                                       output_node_names.data(),
                                       output_node_names.size());
-
         outputs.clear();
         outputs.resize(_output_node_name.size());
         outputs_shape.clear();
@@ -73,7 +68,6 @@ namespace AIDB{
             ::memcpy(outputs[index].data(), ort_output.GetTensorData<float>(), sizeof(float)*output_len);
 
         }
-
     }
 
     StatusCode ONNXEngine::init(const Parameter &param){
@@ -119,9 +113,8 @@ namespace AIDB{
 //        for (auto & _input_node : _input_nodes) {
             auto _input_node = _input_nodes[_input_node_name[i]];
             std::vector<int64_t> input_dim(_input_node.begin(), _input_node.end());
-
             for(int d = 0; d < input_dim.size(); d++){
-                if(-1 == input_dim[d]){
+                if(input_dim[d] < 0){
                     input_dim[d] = input_shape[i][d];
                 }
             }
