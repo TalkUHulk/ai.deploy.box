@@ -14,7 +14,6 @@ namespace AIDB {
 
     void NCNNEngine::forward(const void *frame, int frame_width, int frame_height, int frame_channel, std::vector<std::vector<float>> &outputs, std::vector<std::vector<int>> &outputs_shape) {
 
-
         ncnn::Extractor ex = _net->create_extractor();
         for (auto & _input_node : _input_nodes) {
             ncnn::Mat in(frame_width, frame_height, frame_channel);
@@ -34,18 +33,16 @@ namespace AIDB {
             ex.input(std::stoi(_input_node.first), in);
 #endif
         }
-
         outputs.resize(_output_node_name.size());
         outputs_shape.resize(_output_node_name.size());
         for(const auto& name: _output_node_name){
             int index = &name - &_output_node_name[0];
-
             ncnn::Mat pred;
 
 //            ex.extract(name.c_str(), pred);
 //            ex.extract(std::stoi(name), pred);
 #ifndef ENABLE_NCNN_WASM
-            ex.extract(name.c_str(), pred);
+            ex.extract(name.c_str(), pred); //mobilesam floating point exception
 #else
             ex.extract(std::stoi(name), pred);
 #endif
@@ -69,10 +66,6 @@ namespace AIDB {
                 outputs_shape[index].push_back(pred.h);
                 outputs_shape[index].push_back(pred.w);
             }
-//            for(auto aa: outputs_shape[index])
-//                std::cout << aa << ",";
-//            std::cout << "\n";
-//            outputs_size.push_back(pred.total());
             outputs[index].resize(pred.total());
             ::memcpy(outputs[index].data(), pred.data, pred.total() * sizeof(float));
         }
@@ -112,6 +105,16 @@ namespace AIDB {
         if (0 != status) {
             return MODEL_CREATE_ERROR;
         }
+
+//        _opt.lightmode = false;
+//        _opt.use_bf16_storage = false;
+//        _opt.use_fp16_arithmetic = false;
+//        _opt.use_fp16_packed = false;
+//        _opt.use_fp16_storage = true;
+//        _opt.use_fp16_arithmetic = true;
+//        _opt.use_int8_packed = false;
+//        _opt.use_int8_storage = false;
+//        _opt.use_int8_arithmetic = false;
 
         _net->opt = _opt;
         spdlog::get(AIDB_DEBUG)->debug("backend ncnn init succeed!");
@@ -170,17 +173,22 @@ namespace AIDB {
                 }
             }
             ncnn::Mat in;
+            size_t _elemsize = 4;
             switch (input_dim.size()) {
+                case 1:{
+                    in = ncnn::Mat((int)input_dim[0], _elemsize);
+                    break;
+                }
                 case 2:{
-                    in = ncnn::Mat((int)input_dim[0]);
+                    in = ncnn::Mat((int)input_dim[1], _elemsize);
                     break;
                 }
                 case 3:{
-                    in = ncnn::Mat((int)input_dim[1], (int)input_dim[0]);
+                    in = ncnn::Mat((int)input_dim[2], (int)input_dim[1], _elemsize);
                     break;
                 }
                 case 4:{
-                    in = ncnn::Mat((int)input_dim[1], (int)input_dim[0], (int)input_dim[2]);
+                    in = ncnn::Mat((int)input_dim[3], (int)input_dim[2], (int)input_dim[1], _elemsize);
                     break;
                 }
 
@@ -203,6 +211,7 @@ namespace AIDB {
 //            ex.input(std::stoi(_input_node.first), in);
 #ifndef ENABLE_NCNN_WASM
             ex.input(_input_node_name[i].c_str(), in);
+//            std::cout << _input_node_name[i] << ":" << "w=" << in.w << ", h=" << in.h << ", c=" << in.c << ", dim=" << in.dims << std::endl;
 #else
             ex.input(std::stoi(_input_node.first), in);
 #endif
@@ -215,15 +224,13 @@ namespace AIDB {
 
             ncnn::Mat pred;
 
-//            ex.extract(name.c_str(), pred);
-//            ex.extract(std::stoi(name), pred);
 #ifndef ENABLE_NCNN_WASM
             ex.extract(name.c_str(), pred);
 #else
             ex.extract(std::stoi(name), pred);
 #endif
+            outputs_shape[index].clear();
             outputs_shape[index].push_back(1); //占位，方便统一后处理
-//            std::cout << "w:" << pred.w << "h:" << pred.h << "c" << pred.c << "d" << pred.d<< " dims:"<< pred.dims << std::endl;
             if (pred.dims == 1){
                 outputs_shape[index].push_back(pred.w);
             }
@@ -237,14 +244,12 @@ namespace AIDB {
                 outputs_shape[index].push_back(pred.w);
             }
             if (pred.dims == 4){
-                outputs_shape[index].push_back(pred.c);
                 outputs_shape[index].push_back(pred.d);
+                outputs_shape[index].push_back(pred.c);
                 outputs_shape[index].push_back(pred.h);
                 outputs_shape[index].push_back(pred.w);
             }
-//            for(auto aa: outputs_shape[index])
-//                std::cout << aa << ",";
-//            std::cout << "\n";
+
 //            outputs_size.push_back(pred.total());
             outputs[index].resize(pred.total());
             ::memcpy(outputs[index].data(), pred.data, pred.total() * sizeof(float));
