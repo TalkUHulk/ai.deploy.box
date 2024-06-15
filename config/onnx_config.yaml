@@ -61,13 +61,24 @@ ModelPath:
     YOLOV8_L: &mp_yolov8l "./models/onnx/yolov8/yolov8l"
     YOLOV8_X: &mp_yolov8x "./models/onnx/yolov8/yolov8x"
   MobileSAM:
-    Encoder: &mp_sam_encoder "./models/onnx/mobilesam/encoder_sim"
-    MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/onnx/mobilesam/mobile_sam_point_single"
+    Encoder: &mp_sam_encoder "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/encoder_gelu_approximate_sim" #"./models/onnx/mobilesam/encoder_sim"
+#    MobileSamPointPrompt: &mp_mb_sam_point_prompt "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_points" #"./models/onnx/mobilesam/mobile_sam_point_single"
+    MobileSamPointPrompt: &mp_mb_sam_point_prompt "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_points"
+    MobileSamPointPrompt1: &mp_mb_sam_point_prompt1 "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_embedding"
+
     MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/onnx/mobilesam/mobile_sam_box_single"
   ThinPlateSplineMotionModel:
     ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/onnx/tpsmm/kp_detector_int8"
     ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/onnx/tpsmm/avd_network_int8"
     ThinPlateSplineMotionModel: &mp_tpsmm "./models/onnx/tpsmm/tpsmm"
+  StableDiffusion:
+    StableDiffusionInpaintingUnet: &mp_sd_inpaint_unet "./models/onnx/stable-diffusion-inpainting/unet/model"
+    StableDiffusionInpaintingVAEEncoder: &mp_sd_inpaint_vae_encoder "./models/onnx/stable-diffusion-inpainting/vae_encoder/model"
+    StableDiffusionInpaintingVAEDecoder: &mp_sd_inpaint_vae_decoder "./models/onnx/stable-diffusion-inpainting/vae_decoder/model"
+    TextEncoder: &mp_text_encoder "./models/onnx/stable-diffusion-inpainting/text_encoder/model"
+    StableDiffusionUnetControlNetLora: &mp_sd_unet_with_controlnet_with_lora "./models/onnx/sd_controlnet_lora_shinkawa_youji/unet/model"
+    StableDiffusionVAEEncoderControlNet: &mp_sd_vae_encoder_with_controlnet "./models/onnx/sd_controlnet_lora_shinkawa_youji/vae_encoder/model"
+    StableDiffusionVAEDecoderControlNet: &mp_sd_vae_decoder_with_controlnet "./models/onnx/sd_controlnet_lora_shinkawa_youji/vae_decoder/model"
 
 Detail:
   SCRFD: &scrfd_detail
@@ -100,6 +111,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -140,6 +152,7 @@ Detail:
       input_name: "input"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -173,6 +186,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -206,6 +220,7 @@ Detail:
       input_name: "input"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -244,6 +259,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -281,6 +297,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -318,6 +335,7 @@ Detail:
       input_name: "AnimeGANv3_input:0"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -354,6 +372,7 @@ Detail:
       input_name: "animeganv3_input:0"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -371,6 +390,7 @@ Detail:
       shape:
         width: 512
         batch: 1
+      type: "f32"
 
     input_nodes:
       - *in_node1
@@ -388,6 +408,7 @@ Detail:
       shape:
         width: 512
         batch: 1
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -419,6 +440,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -442,6 +464,7 @@ Detail:
       input_name: "input"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -480,6 +503,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
 
     input_nodes:
       - *in_node1
@@ -518,6 +542,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
 
     input_nodes:
       - *in_node1
@@ -554,6 +579,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -589,6 +615,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -624,6 +651,7 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -657,6 +685,7 @@ Detail:
       input_name: "x"
       format: *format
       shape: *shape
+      type: "f32"
 
     input_nodes:
       - *in_node1
@@ -694,6 +723,7 @@ Detail:
       input_name: "x"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -730,6 +760,7 @@ Detail:
       input_name: "x"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -766,10 +797,103 @@ Detail:
       input_name: "images"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
       - "features"
+
+#  MobileSAMPointPrompt: &mb_sam_point_prompt
+#    encrypt: false
+#    num_thread: 4
+#    device: "CPU"
+#    input_node1: &in_node1
+#      input_name: "image_embeddings"
+#      format: "NCHW"
+#      shape:
+#        width: 64
+#        height: 64
+#        channel: 256
+#        batch: 1
+#    input_node2: &in_node2
+#      input_name: "point_coords"
+#      format: "NHW"
+#      shape:
+#        width: 2
+#        height: -1
+#        batch: 1
+#    input_node3: &in_node3
+#      input_name: "point_labels"
+#      format: "NW"
+#      shape:
+#        width: -1
+#        batch: 1
+#    input_node4: &in_node4
+#      input_name: "mask_input"
+#      format: "NCHW"
+#      shape:
+#        width: 256
+#        height: 256
+#        channel: 1
+#        batch: 1
+#    input_node5: &in_node5
+#      input_name: "has_mask_input"
+#      format: "N"
+#      shape:
+#        batch: 1
+#
+#    input_nodes:
+#      - *in_node1
+#      - *in_node2
+#      - *in_node3
+#      - *in_node4
+#      - *in_node5
+#
+#    output_nodes:
+#      - "masks"
+#      - "scores"
+
+  MobileSAMPointPrompt1: &mb_sam_point_prompt1
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+
+    input_node2: &in_node0
+      input_name: "point_coords"
+      format: "NHW"
+      shape:
+        width: 2
+        height: 5
+        batch: 1
+    input_node3: &in_node1
+      input_name: "point_labels"
+      format: "NW"
+      shape:
+        width: 5
+        batch: 1
+    input_node4: &in_node2
+      input_name: "mask_input"
+      format: "NCHW"
+      shape:
+        width: 256
+        height: 256
+        channel: 1
+        batch: 1
+    input_node5: &in_node3
+      input_name: "has_mask_input"
+      format: "N"
+      shape:
+        batch: 1
+
+    input_nodes:
+      - *in_node0
+      - *in_node1
+      - *in_node2
+      - *in_node3
+
+    output_nodes:
+      - "sparse_embedding"
+      - "dense_embedding"
 
   MobileSAMPointPrompt: &mb_sam_point_prompt
     encrypt: false
@@ -783,43 +907,33 @@ Detail:
         height: 64
         channel: 256
         batch: 1
+      type: "f32"
     input_node2: &in_node2
-      input_name: "point_coords"
+      input_name: "sparse_embedding"
       format: "NHW"
       shape:
-        width: 2
-        height: -1
+        width: 256
+        height: 5
         batch: 1
+      type: "f32"
     input_node3: &in_node3
-      input_name: "point_labels"
-      format: "NW"
-      shape:
-        width: -1
-        batch: 1
-    input_node4: &in_node4
-      input_name: "mask_input"
+      input_name: "dense_embedding"
       format: "NCHW"
       shape:
-        width: 256
-        height: 256
-        channel: 1
+        width: 64
+        height: 64
+        channel: 256
         batch: 1
-    input_node5: &in_node5
-      input_name: "has_mask_input"
-      format: "N"
-      shape:
-        batch: 1
-
+      type: "f32"
     input_nodes:
       - *in_node1
       - *in_node2
       - *in_node3
-      - *in_node4
-      - *in_node5
 
     output_nodes:
       - "masks"
       - "scores"
+
 
   MobileSAMBoxPrompt: &mb_sam_box_prompt
     encrypt: false
@@ -833,6 +947,7 @@ Detail:
         height: 64
         channel: 256
         batch: 1
+      type: "f32"
     input_node2: &in_node2
       input_name: "boxes"
       format: "NHW"
@@ -840,6 +955,7 @@ Detail:
         width: 4
         height: -1
         batch: 1
+      type: "f32"
     input_node3: &in_node3
       input_name: "mask_input"
       format: "NCHW"
@@ -848,12 +964,13 @@ Detail:
         height: 256
         channel: 1
         batch: 1
+      type: "f32"
     input_node4: &in_node4
       input_name: "has_mask_input"
       format: "N"
       shape:
         batch: 1
-
+      type: "f32"
     input_nodes:
       - *in_node1
       - *in_node2
@@ -893,6 +1010,7 @@ Detail:
       input_name: "source"
       format: *format
       shape: *shape
+      type: "f32"
     input_nodes:
       - *in_node1
     output_nodes:
@@ -910,6 +1028,7 @@ Detail:
         width: 2
         height: 50
         batch: 1
+      type: "f32"
     input_node2: &in_node2
       input_name: "kp_driving"
       format: "NHW"
@@ -917,6 +1036,7 @@ Detail:
         width: 2
         height: 50
         batch: 1
+      type: "f32"
     input_nodes:
       - *in_node1
       - *in_node2
@@ -935,6 +1055,7 @@ Detail:
         width: 2
         height: 50
         batch: 1
+      type: "f32"
     input_node2: &in_node2
       input_name: "kp_driving"
       format: "NHW"
@@ -942,6 +1063,7 @@ Detail:
         width: 2
         height: 50
         batch: 1
+      type: "f32"
     input_node4: &in_node3
       input_name: "source"
       format: "NCHW"
@@ -950,6 +1072,7 @@ Detail:
         height: 256
         channel: 3
         batch: 1
+      type: "f32"
     input_node5: &in_node4
       input_name: "driving"
       format: "NCHW"
@@ -958,7 +1081,7 @@ Detail:
         height: 256
         channel: 3
         batch: 1
-
+      type: "f32"
     input_nodes:
       - *in_node1
       - *in_node2
@@ -967,6 +1090,181 @@ Detail:
 
     output_nodes:
       - "output"
+
+  # stable diffusion
+
+  StableDiffusionInpaintingUnet: &sd_inpaint_unet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 9
+        batch: 2
+      type: "f32"
+    input_node2: &in_node2
+      input_name: "timestep"
+      format: "N"
+      shape:
+        batch: 1
+      type: "i64"
+    input_node3: &in_node3
+      input_name: "encoder_hidden_states"
+      format: "NHW"
+      shape:
+        width: 768
+        height: 77
+        batch: 2
+      type: "f32"
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+    output_nodes:
+      - "out_sample"
+
+  StableDiffusionInpaintingVAEEncoder: &sd_inpaint_vae_encoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "latent_sample"
+
+  StableDiffusionInpaintingVAEDecoder: &sd_inpaint_vae_decoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "latent_sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 4
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "sample"
+
+  TextEncoder: &text_encoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "input_ids"
+      format: "NW"
+      shape:
+        batch: 1
+        width: -1
+      type: "i32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "last_hidden_state"
+
+  StableDiffusionUnetControlNetLora: &sd_unet_with_controlnet_with_lora_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 4
+        batch: 2
+      type: "f32"
+    input_node2: &in_node2
+      input_name: "timestep"
+      format: "N"
+      shape:
+        batch: 1
+      type: "f32"
+    input_node3: &in_node3
+      input_name: "encoder_hidden_states"
+      format: "NHW"
+      shape:
+        width: 768
+        height: 77
+        batch: 2
+      type: "f32"
+    input_node4: &in_node4
+      input_name: "controlnet_cond"
+      format: "NCHW"
+      shape:
+        width: 512
+        height: 512
+        channel: 3
+        batch: 2
+      type: "f32"
+    input_node5: &in_node5
+      input_name: "conditioning_scale"
+      format: "N"
+      shape:
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+      - *in_node4
+      - *in_node5
+    output_nodes:
+      - "noise_pred"
+
+  StableDiffusionVAEDecoderControlNetLora: &sd_vae_decoder_with_controlnet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "latent_sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 4
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "sample"
+
+  StableDiffusionVAEEncoderControlNetLora: &sd_vae_encoder_with_controlnet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "latent_sample"
 
 #Detail:
 #  SCRFD: &scrfd
@@ -1855,6 +2153,12 @@ ModelZoo:
       backend: "ONNX"
       detail: *mb_sam_encoder_detail
 
+    MobileSAM_Point_Prompt1: &mobile_sam_point_prompt1
+      name: "MobileSAM_Point_Prompt1"
+      model: *mp_mb_sam_point_prompt1
+      backend: "ONNX"
+      detail: *mb_sam_point_prompt1
+
     MobileSAM_Point_Prompt: &mobile_sam_point_prompt
        name: "MobileSAM_Point_Prompt"
        model: *mp_mb_sam_point_prompt
@@ -1882,6 +2186,50 @@ ModelZoo:
       model: *mp_tpsmm
       backend: "ONNX"
       detail: *tpsmm_detail
+    # stable diffusion
+    StableDiffusionInpaintingUnet: &sd_inpaint_unet
+      name: "StableDiffusionInpaintingUnet"
+      model: *mp_sd_inpaint_unet
+      backend: "ONNX"
+      detail: *sd_inpaint_unet_detail
+
+    StableDiffusionInpaintingVAEEncoder: &sd_inpaint_vae_encoder
+      name: "StableDiffusionInpaintingVAEEncoder"
+      model: *mp_sd_inpaint_vae_encoder
+      backend: "ONNX"
+      detail: *sd_inpaint_vae_encoder_detail
+
+    StableDiffusionInpaintingVAEDecoder: &sd_inpaint_vae_decoder
+      name: "StableDiffusionInpaintingVAEDecoder"
+      model: *mp_sd_inpaint_vae_decoder
+      backend: "ONNX"
+      detail: *sd_inpaint_vae_decoder_detail
+
+    TextEncoder: &text_encoder
+      name: "TextEncoder"
+      model: *mp_text_encoder
+      backend: "ONNX"
+      detail: *text_encoder_detail
+
+    StableDiffusionUnetControlNetLora: &sd_unet_with_controlnet_with_lora
+      name: "StableDiffusionUnetControlNetLora"
+      model: *mp_sd_unet_with_controlnet_with_lora
+      backend: "ONNX"
+      detail: *sd_unet_with_controlnet_with_lora_detail
+
+    StableDiffusionVAEEncoderControlNet: &sd_vae_encoder_with_controlnet
+      name: "StableDiffusionVAEEncoderControlNet"
+      model: *mp_sd_vae_encoder_with_controlnet
+      backend: "ONNX"
+      detail: *sd_vae_encoder_with_controlnet_detail
+
+    StableDiffusionVAEDecoderControlNet: &sd_vae_decoder_with_controlnet
+      name: "StableDiffusionVAEDecoderControlNet"
+      model: *mp_sd_vae_decoder_with_controlnet
+      backend: "ONNX"
+      detail: *sd_vae_decoder_with_controlnet_detail
+
+
 
 #AIBox:
 #  - *scrfd
@@ -1953,10 +2301,42 @@ AIDBZOO:
   yolox_s: *yolox_s
   mobile_sam_encoder: *mobile_sam_encoder
   mobile_sam_point_prompt: *mobile_sam_point_prompt
+  mobile_sam_point_prompt1: *mobile_sam_point_prompt1
   mobile_sam_box_prompt: *mobile_sam_box_prompt
   tpsmm_kp_detector: *tpsmm_kp_detector
   tpsmm_avd_network: *tpsmm_avd_network
   tpsmm: *tpsmm
+  #  stable diffusion
+  sd_inpaint_unet: *sd_inpaint_unet
+  sd_inpaint_vae_encoder: *sd_inpaint_vae_encoder
+  sd_inpaint_vae_decoder: *sd_inpaint_vae_decoder
+  text_encoder: *text_encoder
+
+  sd_unet_with_controlnet_with_lora: *sd_unet_with_controlnet_with_lora
+  sd_vae_encoder_with_controlnet: *sd_vae_encoder_with_controlnet
+  sd_vae_decoder_with_controlnet: *sd_vae_decoder_with_controlnet
+LoRa:
+  mix4:
+    path: "./models/onnx/Lora/mix4.lora"
+    trigger:
+      - "mix4"
+  shinkawa:
+    path: "./models/onnx/Lora/shinkawa_youji_offset.lora"
+    trigger:
+      - "shinkawa youji"
+      - "metal gear"
+  moxin:
+    path: "./models/onnx/Lora/MoXinV1.lora"
+    trigger:
+      - "shuimobysim"
+      - "wuchangshuo"
+      - "bonian"
+      - "zhenbanqiao"
+      - "badashanren"
+  blindbox:
+    path: "./models/onnx/Lora/blindbox_v1_mix.lora"
+    trigger:
+      - "full body, chibi,"
 
 
 

@@ -1,0 +1,6 @@
+[submodule "3rdparty/tokenizers-cpp"]
+	path = 3rdparty/tokenizers-cpp
+	url = https://github.com/mlc-ai/tokenizers-cpp.git
+[submodule "3rdparty/ddim-scheduler-cpp"]
+	path = 3rdparty/ddim-scheduler-cpp
+	url = https://github.com/TalkUHulk/ddim_scheduler_cpp.git

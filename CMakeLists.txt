@@ -1,27 +1,28 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.19)
 set(ALL_TARGETS "" CACHE INTERNAL "")
 
 project(AiDB)
 SET(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 #add_definitions(-std=c++11 -g -O3 -pthread)
 #add_definitions(-std=c++11 -pthread)
 
 
 # backend options
-option(ENGINE_MNN "Enable MNN" ON)
+option(ENGINE_MNN "Enable MNN" OFF)
 option(ENGINE_ORT "Enable ONNXRuntime" ON)
-option(ENGINE_NCNN "Enable NCNN" ON)
+option(ENGINE_NCNN "Enable NCNN" OFF)
 option(ENGINE_TNN "Enable TNN" OFF)
-option(ENGINE_OPV "Enable OpenVINO" ON) #Mac 与TNN冲突
-option(ENGINE_PPLite "Enable paddle-lite" ON)
+option(ENGINE_OPV "Enable OpenVINO" OFF) #Mac 与TNN冲突
+option(ENGINE_PPLite "Enable paddle-lite" OFF)
 option(ENGINE_NCNN_WASM "Enable NCNN WASM" OFF)
 option(BUILD_SAMPLE "Enable build sample" ON)
 option(BUILD_PYTHON "Enable python api" OFF)
 option(BUILD_LUA "Enable lua api" OFF)
 option(OPENCV_HAS_FREETYPE "opencv-contrib complied with freetype or not. cv::putText can put chinese." OFF)
 option(C_API "open c api" OFF)
+option(ENABLE_SD "open stable diffusion" OFF) # Experimental
 
 message(STATUS ">>>>>>>>>>>>>")
 message(STATUS "AiDB BUILD INFO:")
@@ -38,6 +39,12 @@ message(STATUS "\tBuild C_API: ${C_API}")
 message(STATUS "\tOPENCV_HAS_FREETYPE: ${OPENCV_HAS_FREETYPE}")
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/tools/aidbCommon.cmake")
+
+if(ENABLE_SD AND ENGINE_ORT)
+    add_definitions(-DSD_ON)
+    find_package(Protobuf REQUIRED)
+endif ()
+
 
 if(OPENCV_HAS_FREETYPE)
     add_definitions(-DOPENCV_HAS_FREETYPE)

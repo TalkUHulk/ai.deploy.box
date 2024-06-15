@@ -18,6 +18,7 @@
 #include "clipper.h"
 #include <chrono>
 #include <thread>
+#include <random>
 
 //#if !defined(ENABLE_NCNN_WASM) && !defined(__ANDROID__)
 //#include <opencv2/freetype.hpp>
@@ -1083,6 +1084,20 @@ namespace AIDB {
 
     }
 
+    void Utility::stable_diffusion_process(const float* data, int h, int w, int c, cv::Mat &sd_image){
+        sd_image = cv::Mat(h, w, CV_8UC3);
+        for(int y = 0; y < h; y++){
+            for(int x = 0; x < w; x++){
+                for(int z = 0; z < c; z++){
+                    float item = data[z * h * w + y * w + x];
+                    auto pixel = clip<uchar>((item / 2.0f + .5f) * 255.0f + .5f, 0, 255);
+                    sd_image.data[y * w * c + c * x + z] = pixel;
+                }
+            }
+        }
+        cv::cvtColor(sd_image, sd_image, cv::COLOR_RGB2BGR);
+    }
+
     void Utility::mobile_sam_post_process(const std::vector<float> &output,
                                           const cv::Mat &source,
                                           cv::Mat &result,
@@ -1124,6 +1139,16 @@ namespace AIDB {
 
         result = _result2 + 0.5 * _result1 + 0.5 * Mask;
 
+    }
+
+    void Utility::randn(float* data, size_t n) {
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::default_random_engine generator(seed);
+        std::normal_distribution<float> distribution(.0, 1.0);
+
+        for(int i = 0; i < n; i++){
+            data[i] = distribution(generator);
+        }
     }
 
 

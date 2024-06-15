@@ -34,7 +34,8 @@ namespace AIDB {
 
     enum InputFormat {
         NCHW = 0,
-        NHWC
+        NHWC = 1,
+
     };
 
     class AIDB_PUBLIC AIDBInput {

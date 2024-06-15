@@ -69,6 +69,11 @@ ModelPath:
     ThinPlateSplineMotionModel_KP_Detector: &mp_tpsmm_kp_detector "./models/openvino/tpsmm/kp_detector_fp16"
     ThinPlateSplineMotionModel_AVD_Network: &mp_tpsmm_avd_network "./models/openvino/tpsmm/avd_network_fp16"
     ThinPlateSplineMotionModel: &mp_tpsmm "./models/openvino/tpsmm/tpsmm_fp16"
+  StableDiffusion:
+    StableDiffusionInpaintingUnet: &mp_sd_inpaint_unet "/Users/hulk/Downloads/openvino-sd-inpainting-int8/unet/openvino_model"
+    StableDiffusionInpaintingVAEEncoder: &mp_sd_inpaint_vae_encoder "/Users/hulk/Downloads/openvino-sd-inpainting-int8/vae_encoder/openvino_model"
+    StableDiffusionInpaintingVAEDecoder: &mp_sd_inpaint_vae_decoder "/Users/hulk/Downloads/openvino-sd-inpainting-int8/vae_decoder/openvino_model"
+    TextEncoder: &mp_text_encoder "/Users/hulk/Downloads/openvino-sd-inpainting-int8/text_encoder/openvino_model"
 
 Detail:
   SCRFD: &scrfd_detail
@@ -964,6 +969,94 @@ Detail:
     output_nodes:
       - "output"
 
+  # stable diffusion
+
+  StableDiffusionInpaintingUnet: &sd_inpaint_unet_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 9
+        batch: 2
+      type: "f32"
+    input_node2: &in_node2
+      input_name: "timestep"
+      format: "N"
+      shape:
+        batch: 1
+      type: "i64"
+    input_node3: &in_node3
+      input_name: "encoder_hidden_states"
+      format: "NHW"
+      shape:
+        width: 768
+        height: 77
+        batch: 2
+      type: "f32"
+    input_nodes:
+      - *in_node1
+      - *in_node2
+      - *in_node3
+    output_nodes:
+      - "out_sample"
+
+  StableDiffusionInpaintingVAEEncoder: &sd_inpaint_vae_encoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 3
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "latent_sample"
+
+  StableDiffusionInpaintingVAEDecoder: &sd_inpaint_vae_decoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "latent_sample"
+      format: "NCHW"
+      shape:
+        width: -1
+        height: -1
+        channel: 4
+        batch: 1
+      type: "f32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "sample"
+
+  TextEncoder: &text_encoder_detail
+    encrypt: false
+    num_thread: 4
+    device: "CPU"
+    input_node1: &in_node1
+      input_name: "input_ids"
+      format: "NW"
+      shape:
+        batch: 1
+        width: -1
+      type: "i32"
+    input_nodes:
+      - *in_node1
+    output_nodes:
+      - "last_hidden_state"
+
 ModelZoo:
   SCRFD_2_5G_KPS: &scrfd_2_5g_kps
     name: "SCRFD_2.5G_KPS"
@@ -1235,7 +1328,30 @@ ModelZoo:
     model: *mp_tpsmm
     backend: "OpenVINO"
     detail: *tpsmm_detail
+  # stable diffusion
+  StableDiffusionInpaintingUnet: &sd_inpaint_unet
+    name: "StableDiffusionInpaintingUnet"
+    model: *mp_sd_inpaint_unet
+    backend: "OpenVINO"
+    detail: *sd_inpaint_unet_detail
 
+  StableDiffusionInpaintingVAEEncoder: &sd_inpaint_vae_encoder
+    name: "StableDiffusionInpaintingVAEEncoder"
+    model: *mp_sd_inpaint_vae_encoder
+    backend: "OpenVINO"
+    detail: *sd_inpaint_vae_encoder_detail
+
+  StableDiffusionInpaintingVAEDecoder: &sd_inpaint_vae_decoder
+    name: "StableDiffusionInpaintingVAEDecoder"
+    model: *mp_sd_inpaint_vae_decoder
+    backend: "OpenVINO"
+    detail: *sd_inpaint_vae_decoder_detail
+
+  TextEncoder: &text_encoder
+    name: "TextEncoder"
+    model: *mp_text_encoder
+    backend: "OpenVINO"
+    detail: *text_encoder_detail
 
 AIDBZOO:
   scrfd_2.5g_kps: *scrfd_2_5g_kps
@@ -1291,3 +1407,8 @@ AIDBZOO:
   tpsmm_kp_detector: *tpsmm_kp_detector
   tpsmm_avd_network: *tpsmm_avd_network
   tpsmm: *tpsmm
+  #  stable diffusion
+  sd_inpaint_unet: *sd_inpaint_unet
+  sd_inpaint_vae_encoder: *sd_inpaint_vae_encoder
+  sd_inpaint_vae_decoder: *sd_inpaint_vae_decoder
+  text_encoder: *text_encoder

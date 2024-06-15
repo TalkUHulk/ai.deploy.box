@@ -70,6 +70,10 @@ namespace AIDB{
             static void draw_objects(const cv::Mat& src, cv::Mat &dst, const std::vector<std::shared_ptr<ObjectMeta>>& objects);
         };
 
+        static void randn(float* data, size_t n);
+
+        static void stable_diffusion_process(const float* data, int h, int w, int c, cv::Mat &sd_image);
+
         static void mobile_sam_post_process(const std::vector<float> &output,
                                             const cv::Mat &source,
                                             cv::Mat &result,

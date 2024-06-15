@@ -22,6 +22,10 @@ namespace AIDB{
         Ort::SessionOptions _session_options;
         std::shared_ptr<Ort::Session> _session;
 //        OrtMemoryInfo* _memory_info;
+        std::map<std::string, std::vector<int>> _input_nodes;
+        std::vector<std::string> _output_node_name;
+        std::vector<std::string> _input_node_name;
+        std::map<std::string, std::string> _input_types;
     };
 } //AIDB
 

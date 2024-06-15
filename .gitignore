@@ -6,3 +6,5 @@ cmake-build-debug
 logs/
 .DS_Store
 *.pb.*
+models
+models-lite

@@ -31,11 +31,12 @@ namespace AIDB {
         bool _dynamic=false;
         std::string _model_path{};
         std::string _param_path{};
-        // To Do
+        std::vector<std::string> _lora_path{}; // 理论上支持多个，为未来留个坑
         // 有些模型可能有多个输入输出节点，后续再修改
         std::map<std::string, std::vector<int>> _input_nodes;  /*!< 输入节点信息 {name: shape}*/
         std::vector<std::string> _input_node_name{};  /*!< 输入节点名称*/
         std::vector<std::string> _output_node_name{};  /*!< 输出节点名称*/
+        std::map<std::string, std::string> _input_types;
         std::string _model_name{};  /*!< 模型名称*/
         std::string _backend_name{};  /*!< 模型名称*/
         std::vector<std::string> _register_layers{}  /*!< 自定义layer*/;

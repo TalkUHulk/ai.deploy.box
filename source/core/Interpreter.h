@@ -24,6 +24,7 @@ namespace AIDB {
     public:
 //        static Interpreter* createFromNode(const YAML::Node& engine_mode);
         static Interpreter* createInstance(const std::string& model, const std::string& backend, const std::string& config_zoo="./config");
+        static Interpreter* createInstance2(const std::string& model, const std::string& lora, const std::string& backend, const std::string& config_zoo="./config");
 #ifdef ENABLE_NCNN_WASM
         static Interpreter* createInstance(const void* buffer_in1, const void* buffer_in2, const std::string &config);
 #endif

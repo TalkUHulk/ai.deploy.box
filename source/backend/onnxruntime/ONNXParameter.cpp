@@ -11,6 +11,12 @@ namespace AIDB {
         _model_name = node["name"].as<std::string>();
         _model_path = node["model"].as<std::string>() + ".onnx";
 
+        if(node["lora"].IsDefined()){
+            std::cout << "这里" <<node["lora"] << std::endl;
+            for(auto lora: node["lora"]){
+                _lora_path.emplace_back(lora.as<std::string>());
+            }
+        }
         auto detail = node["detail"];
         for(auto in: detail["input_nodes"]){
 
@@ -29,6 +35,10 @@ namespace AIDB {
             }
             _input_node_name.emplace_back(in["input_name"].as<std::string>());
             _input_nodes.insert({in["input_name"].as<std::string>(), cur_shape});
+            if(in["type"].IsDefined())
+                _input_types.insert({in["input_name"].as<std::string>(), in["type"].as<std::string>()});
+            else
+                _input_types.insert({in["input_name"].as<std::string>(), "f32"});
 
 //            if(in["format"].IsDefined() && in["format"].as<std::string>() == "VECTOR") {
 //                std::vector<int> cur_shape;

@@ -7,7 +7,6 @@
 #include "Interpreter.h"
 #include "utility/Utility.h"
 #include <chrono>
-#include <random>
 #if __linux__
 #include <fstream>
 #endif
@@ -27,18 +26,10 @@ int main(int argc, char** argv){
         return -1;
     }
 
-
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator(seed);
-    std::normal_distribution<float> distribution(.0, 1.0);
-
     std::vector<float> z(512);
 
     while(true){
-        for(int i = 0; i < 512; i++){
-            z[i] = distribution(generator);
-        }
-
+        AIDB::Utility::randn(z.data(), z.size());
         std::vector<std::vector<float>> outputs_map;
         std::vector<std::vector<int>> outputs_shape_map;
 

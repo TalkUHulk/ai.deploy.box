@@ -61,6 +61,37 @@ IF(ENGINE_MNN)
 ENDIF()
 
 IF(ENGINE_ORT)
+    # Support LoRa
+    if(ENABLE_SD)
+#        include(FetchContent)
+#
+#        option(CMAKE_TLS_VERIFY "Verify SSL certificates" ON)
+#
+#        function(download_file url hash)
+#
+#            FetchContent_Declare(download_${hash}
+#                    URL ${url}
+#                    URL_HASH SHA256=${hash}
+#                    DOWNLOAD_NO_EXTRACT true
+#                    )
+#
+#            if(NOT download_${hash}_POPULATED)
+#                FetchContent_Populate(download_${hash})
+#            endif()
+#
+#        endfunction(download_file)
+#
+#        download_file(
+#                https://raw.githubusercontent.com/onnx/onnx/v1.12.0/onnx/onnx.proto
+#                3ea17458a064d102e8591f3d4a58cba06f78b643
+#        )
+
+#        find_package(Protobuf REQUIRED)
+        include_directories(${Protobuf_INCLUDE_DIRS})
+        list(APPEND LINK_LIBS ${PROTOBUF_LIBRARIES})
+        list(APPEND SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/../proto/onnx.pb.cc)
+        include_directories(${CMAKE_CURRENT_LIST_DIR}/../proto/)
+    endif()
     add_definitions(-DENABLE_ORT)
     file(GLOB_RECURSE ONNXRUNTIME_SOURCE_FILES ${CMAKE_CURRENT_LIST_DIR}/backend/onnxruntime/*.cpp)
     list(APPEND SOURCE_FILES ${ONNXRUNTIME_SOURCE_FILES})
@@ -71,6 +102,8 @@ IF(ENGINE_ORT)
                 onnxruntime
                 PROPERTIES IMPORTED_LOCATION
                 ${CMAKE_CURRENT_LIST_DIR}/../libs/android/onnxruntime/${ANDROID_ABI}/libonnxruntime.so)
+        # if cuda
+        # onnxruntime_providers_cuda libonnxruntime_providers_shared
     endif()
     list(APPEND LINK_LIBS onnxruntime)
 ENDIF()
