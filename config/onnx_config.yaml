@@ -61,10 +61,10 @@ ModelPath:
     YOLOV8_L: &mp_yolov8l "./models/onnx/yolov8/yolov8l"
     YOLOV8_X: &mp_yolov8x "./models/onnx/yolov8/yolov8x"
   MobileSAM:
-    Encoder: &mp_sam_encoder "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/encoder_gelu_approximate_sim" #"./models/onnx/mobilesam/encoder_sim"
-#    MobileSamPointPrompt: &mp_mb_sam_point_prompt "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_points" #"./models/onnx/mobilesam/mobile_sam_point_single"
-    MobileSamPointPrompt: &mp_mb_sam_point_prompt "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_points"
-    MobileSamPointPrompt1: &mp_mb_sam_point_prompt1 "/Users/hulk/Documents/DX_Work/CodeZoo/AI-GitHub/MobileSAM-master/mobile_sam_embedding"
+    Encoder: &mp_sam_encoder "./models/onnx/mobilesam/encoder_gelu_approximate_sim" #"./models/onnx/mobilesam/encoder_sim"
+#    MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/onnx/mobilesam/mobile_sam_point_single"
+    MobileSamPointPrompt: &mp_mb_sam_point_prompt "./models/onnx/mobilesam/mobile_sam_points"
+    MobileSamPointPrompt1: &mp_mb_sam_point_prompt1 "./models/onnx/mobilesam/mobile_sam_embedding"
 
     MobileSamBoxPrompt: &mp_mb_sam_box_prompt "./models/onnx/mobilesam/mobile_sam_box_single"
   ThinPlateSplineMotionModel:
