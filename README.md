@@ -35,6 +35,18 @@ English | <a href="README_cn.md">简体中文</a>
 
 📌**AiDB** : A toolbox for deep learning model deployment using C++. Abstract mainstream deep learning inference frameworks into unified interfaces, including ONNXRUNTIME, MNN, NCNN, TNN, PaddleLite, and OpenVINO. Provide deployment demo for multiple scenarios and languages. This project is not only used to record learning, but also a summary of my work over the past few years. If this project inspires you or helps you, welcome ⭐Star⭐ to support me,  which is the driving force for me to keep updating! 🍔
 
+📌**Article**
+
+**AiDB:一个集合了6大推理框架的AI工具箱 | 加速你的模型部署**
+
+[知乎](https://zhuanlan.zhihu.com/p/652612635) | [GiantPandaCV](https://mp.weixin.qq.com/s/D3mj9Dj2nmqeUIJMy8BIag)
+
+**如何使用“LoRa”的方式加载ONNX模型：StableDiffusion相关模型 的C++推理**
+
+[知乎](https://zhuanlan.zhihu.com/p/704354004) | [GiantPandaCV](https://mp.weixin.qq.com/s/a-qQG9GpzwQg22juOMO-4w)
+
+
+
 <p align="center">
  <img src="./doc/entry/android_front_base.gif"  width="128px"/>
  <img src="./doc/entry/android_front_dense.gif" width="128px"/>
@@ -183,6 +195,7 @@ make -j8
 * **ENGINE_TNN**: enable tnn;
 * **ENGINE_OPV**: enable openvino;
 * **ENGINE_PPLite**: enable paddle-lite;
+* **ENABLE_SD**: enable stable diffusion;
 
 
 ### Models
