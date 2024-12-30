@@ -18,7 +18,7 @@ ModelPath:
     MOVENET: &mp_movenet "./models/ncnn/movenet/movenet-simplify"
   MOBILEVIT:
 #    MOBILEVITS: &mp_mb_vit_x "./models/ncnn/mobilevit/MobileViT_S"
-    MOBILEVITXXS: &mp_mb_vit_xxs "/Users/hulk/Documents/电信工作/CodeZoo/AI-GitHub/MobileViT-main/MobileViT_XXS-simplify"
+    MOBILEVITXXS: &mp_mb_vit_xxs "./models/ncnn/mobilevit/MobileViT_S"
 #  ANIMATED:
 #    ANIMEGAN2_PPK: &mp_anime2_ppk "./models/ncnn/animated/paprika_simplify"
 #    ANIMEGAN2_PPK_DYN: &mp_anime2_ppk_dyn "./models/ncnn/animated/paprika_dynamic_simplify"
